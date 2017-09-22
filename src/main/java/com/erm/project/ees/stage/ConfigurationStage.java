@@ -2,6 +2,7 @@ package com.erm.project.ees.stage;
 
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.util.ResourceHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -60,7 +61,7 @@ public class ConfigurationStage extends Stage{
     public void callBack(DBManager dbManager, boolean status) {
         this.dbManager = dbManager;
         this.status = status;
-        this.close();
+        Platform.runLater(()->{ this.close(); });
         onFinishListener.onFinish(dbManager, status);
     }
 

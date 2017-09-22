@@ -1,6 +1,9 @@
 package com.erm.project.ees;
 
+import com.erm.project.ees.dao.StudentDao;
 import com.erm.project.ees.dao.conn.DBManager;
+import com.erm.project.ees.dao.impl.StudentDaoImpl;
+import com.erm.project.ees.model.Student;
 import com.erm.project.ees.stage.ConfigurationStage;
 import com.erm.project.ees.stage.LoginStage;
 import javafx.application.Application;
@@ -11,7 +14,11 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
     private Stage primaryStage;
 
     public static void main(String args[]) {
-        launch(args);
+        StudentDao studentDao = new StudentDaoImpl();
+        Student student = new Student(1, "ff","l","m",14,
+                "male", 12334, 1);
+        System.out.println(studentDao.updateStudentById(1, student));
+        //launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -19,15 +26,16 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         DBManager dbManager = new DBManager();
         if (!dbManager.connect()) {
             showConfig(dbManager);
-        }
-        showLogin(dbManager);
+        } else
+            showLogin(dbManager);
     }
 
     @Override
     public void onFinish(DBManager dbManager, boolean status) {
         if (!status)
             primaryStage.close();
-        showLogin(dbManager);
+        else
+            showLogin(dbManager);
     }
 
     @Override

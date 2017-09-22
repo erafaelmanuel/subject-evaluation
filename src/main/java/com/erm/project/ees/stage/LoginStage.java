@@ -2,6 +2,7 @@ package com.erm.project.ees.stage;
 
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.util.ResourceHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-public class LoginStage extends Stage{
+public class LoginStage extends Stage {
 
     private Logger logger = Logger.getLogger(LoginStage.class.getSimpleName());
 
@@ -35,14 +36,14 @@ public class LoginStage extends Stage{
         try {
             URL url = ResourceHelper.resource(path);
             Parent root = FXMLLoader.load(url);
-            Scene scene = new Scene(root, 520 , 390);
+            Scene scene = new Scene(root, 520, 390);
             scene.getStylesheets().add(ResourceHelper.resource("/css/login.css").toString());
 
             this.setTitle("Login");
             this.setScene(scene);
             this.setMinWidth(540);
             this.setMinHeight(420);
-            this.setOnCloseRequest((e)->{
+            this.setOnCloseRequest((e) -> {
                 onLoginListener.onLogin(false);
             });
         } catch (IOException e) {
@@ -60,7 +61,9 @@ public class LoginStage extends Stage{
 
     public void callBack(boolean status) {
         this.status = status;
-        this.close();
+        Platform.runLater(() -> {
+            this.close();
+        });
         onLoginListener.onLogin(status);
     }
 
