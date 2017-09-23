@@ -5,12 +5,14 @@ import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.stage.ConfigurationStage;
 import com.erm.project.ees.stage.LoginStage;
 import com.erm.project.ees.util.ResourceHelper;
-import com.sun.org.apache.xerces.internal.impl.xs.SchemaNamespaceSupport;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -23,6 +25,7 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
     }
 
     public void start(Stage primaryStage) throws Exception {
+
         this.primaryStage = primaryStage;
         DBManager dbManager = new DBManager();
         if (!dbManager.connect()) {

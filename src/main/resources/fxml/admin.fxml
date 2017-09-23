@@ -44,7 +44,7 @@
                <left>
                   <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="bnAdd" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Add">
+                        <Button fx:id="bnAdd" mnemonicParsing="false" onAction="#onClickAdd" prefHeight="40.0" prefWidth="200.0" text="Add">
                            <HBox.margin>
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>

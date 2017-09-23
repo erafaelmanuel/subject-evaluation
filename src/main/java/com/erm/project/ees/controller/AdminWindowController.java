@@ -4,7 +4,9 @@ import com.erm.project.ees.dao.impl.StudentDaoImpl;
 import com.erm.project.ees.dao.impl.SubjectDaoImpl;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.Subject;
+import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.stage.window.PopOnExitWindow;
+import com.erm.project.ees.stage.window.StudentInputWindow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -35,6 +37,12 @@ public class AdminWindowController implements Initializable {
 
     private static final ObservableList<Object> OBSERVABLE_LIST = FXCollections.observableArrayList();
 
+    private static final int NO_TABLE = 0;
+    private static final int TABLE_STUDENT = 1;
+    private static final int TABLE_SUBJECT = 2;
+
+    private int cTable = TABLE_STUDENT;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tblData.setItems(OBSERVABLE_LIST);
@@ -45,6 +53,12 @@ public class AdminWindowController implements Initializable {
         Stage stage = (Stage) menuBar.getScene().getWindow();
         if(PopOnExitWindow.display("Are you sure you want to exit?"))
             stage.close();
+    }
+
+    @FXML
+    protected void onClickAdd() {
+        if(cTable == TABLE_STUDENT)
+            StudentInputWindow.display();
     }
 
     @FXML
