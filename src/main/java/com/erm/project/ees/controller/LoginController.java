@@ -41,19 +41,15 @@ public class LoginController implements Initializable {
 	@FXML
 	private Label lbMessage;
 	@FXML
-	private ComboBox<String> cbUserType;
-	@FXML
 	private ImageView imgLogo;
+
+	private UserDetail userDetail;
 
 	@Override
 	public void initialize(URL url, ResourceBundle bundle) {
 		try{
-			String args[] = new String[]{"ADMIN", "EMPLOYEE", "DEAN"};
 			Image image = new Image(ResourceHelper.resourceAsStream("/image/loading.gif"));
 			Image logo = new Image(ResourceHelper.resourceAsStream("/image/ccslogo.png"));
-
-			cbUserType.getItems().addAll(args);
-			cbUserType.getSelectionModel().select(0);
 
 			plLoading.setVisible(false);
 			imgLoading.setVisible(false);
@@ -75,32 +71,29 @@ public class LoginController implements Initializable {
 		new Thread(()-> {
 			Platform.runLater(loading());
 
+			try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
 			LoginStage loginStage = (LoginStage) ((Node) event.getSource()).getScene().getWindow();
 			UserDetailDao userDetailDao = new UserDetailDaoImpl(loginStage.getDbManager());
 
 			boolean isValid = false;
-			UserType userType = UserType.ADMIN;
-
-			switch(cbUserType.getSelectionModel().getSelectedIndex()) {
-				case 0: userType = UserType.ADMIN;
-					break;
-				case 1: userType = UserType.TEACHER;
-					break;
-				default:
-					break;
-			}
 
 			for (UserDetail userDetail : userDetailDao.getUserDetailList()) {
 				if (txUsername.getText().trim().equals(userDetail.getUsername()) &&
-						txPassword.getText().trim().equals(userDetail.getPassword()) &&
-						userType.getType().equals(userDetail.getUserType().getType())) {
+						txPassword.getText().trim().equals(userDetail.getPassword())) {
 					isValid = true;
+					this.userDetail = userDetail;
+					break;
 				}
 			}
 			if(!isValid) {
 				Platform.runLater(loginFail());
 			}else {
-				Platform.runLater(()->{ loginStage.callBack(true); });
+				Platform.runLater(()->{ loginStage.callBack(true, userDetail.getUserType()); });
 			}
 
 			Platform.runLater(()-> {

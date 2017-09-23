@@ -1,6 +1,7 @@
 package com.erm.project.ees.stage;
 
 import com.erm.project.ees.dao.conn.DBManager;
+import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.util.ResourceHelper;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ public class LoginStage extends Stage {
 
     private DBManager dbManager;
     private boolean status;
+    private UserType userType;
 
     private OnLoginListener onLoginListener;
 
@@ -44,7 +46,7 @@ public class LoginStage extends Stage {
             this.setMinWidth(540);
             this.setMinHeight(420);
             this.setOnCloseRequest((e) -> {
-                onLoginListener.onLogin(false);
+                onLoginListener.onLogin(false, userType);
             });
         } catch (IOException e) {
             logger.info("IOException");
@@ -59,16 +61,15 @@ public class LoginStage extends Stage {
         this.onLoginListener = onLoginListener;
     }
 
-    public void callBack(boolean status) {
+    public void callBack(boolean status, UserType userType) {
         this.status = status;
-        Platform.runLater(() -> {
-            this.close();
-        });
-        onLoginListener.onLogin(status);
+        this.userType = userType;
+        Platform.runLater(() -> { this.close(); });
+        onLoginListener.onLogin(status, userType);
     }
 
     @FunctionalInterface
     public interface OnLoginListener {
-        void onLogin(boolean status);
+        void onLogin(boolean status, UserType userType);
     }
 }

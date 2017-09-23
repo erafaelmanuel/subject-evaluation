@@ -1,24 +1,25 @@
 package com.erm.project.ees;
 
-import com.erm.project.ees.dao.StudentDao;
 import com.erm.project.ees.dao.conn.DBManager;
-import com.erm.project.ees.dao.impl.StudentDaoImpl;
-import com.erm.project.ees.model.Student;
+import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.stage.ConfigurationStage;
 import com.erm.project.ees.stage.LoginStage;
+import com.erm.project.ees.util.ResourceHelper;
+import com.sun.org.apache.xerces.internal.impl.xs.SchemaNamespaceSupport;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Main extends Application implements ConfigurationStage.OnFinishListener, LoginStage.OnLoginListener {
 
     private Stage primaryStage;
 
     public static void main(String args[]) {
-        StudentDao studentDao = new StudentDaoImpl();
-        Student student = new Student(1, "ff","l","m",14,
-                "male", 12334, 1);
-        System.out.println(studentDao.updateStudentById(1, student));
-        //launch(args);
+        launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -39,9 +40,13 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
     }
 
     @Override
-    public void onLogin(boolean status) {
+    public void onLogin(boolean status, UserType userType) {
         if (!status)
             primaryStage.close();
+        else if(userType.getType().equals(UserType.ADMIN.getType()))
+            showAdminWindow();
+        else
+            System.out.println("Something else");
     }
 
     private void showConfig(DBManager dbManager) {
@@ -54,5 +59,17 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         LoginStage loginStage = new LoginStage("/fxml/login.fxml", dbManager);
         loginStage.setOnLoginListener(this);
         loginStage.showAndWait();
+    }
+
+    private void showAdminWindow() {
+        try {
+            Parent root = FXMLLoader.load(ResourceHelper.resource("/fxml/admin.fxml"));
+            Scene scene = new Scene(root, 0, 0);
+            primaryStage.setScene(scene);
+            primaryStage.setMaximized(true);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
