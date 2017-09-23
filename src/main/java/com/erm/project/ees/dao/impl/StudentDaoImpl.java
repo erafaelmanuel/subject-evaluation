@@ -24,15 +24,19 @@ public class StudentDaoImpl implements StudentDao {
 
     public StudentDaoImpl() {
         dbManager = new DBManager();
+        SectionDaoImpl sectionDao = new SectionDaoImpl();
+        sectionDao.init();
         init();
     }
 
     public StudentDaoImpl(DBManager dbManager) {
+        this();
         this.dbManager = dbManager;
         init();
     }
 
     public StudentDaoImpl(UserLibrary userLibrary) {
+        this();
         dbManager = new DBManager(userLibrary);
         init();
     }
@@ -53,7 +57,14 @@ public class StudentDaoImpl implements StudentDao {
                         .concat("gender varchar(100),")
                         .concat("contactNumber int,")
                         .concat("sectionId bigint,")
-                        .concat("FOREIGN KEY (sectionId) REFERENCES tblsection(id));");
+                        .concat("courseId bigint,")
+                        .concat("FOREIGN KEY (sectionId) REFERENCES tblsection(id),")
+                        .concat("FOREIGN KEY (courseId) REFERENCES tblcourse(id));");
+
+
+                //SQL INFO
+                LOGGER.info("SQL : " + sql);
+
                 connection = dbManager.getConnection();
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.executeUpdate();
@@ -87,6 +98,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setGender(rs.getString(7));
                     student.setContactNumber(rs.getInt(8));
                     student.setSectionId(rs.getLong(9));
+                    student.setCourseId(rs.getLong(10));
                     return student;
                 }
             }
@@ -125,6 +137,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setGender(rs.getString(7));
                     student.setContactNumber(rs.getInt(8));
                     student.setSectionId(rs.getLong(9));
+                    student.setCourseId(rs.getLong(10));
                     return student;
                 }
             }
@@ -161,6 +174,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setGender(rs.getString(7));
                     student.setContactNumber(rs.getInt(8));
                     student.setSectionId(rs.getLong(9));
+                    student.setCourseId(rs.getLong(10));
                     studentList.add(student);
                 }
                 return studentList;
@@ -201,6 +215,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setGender(rs.getString(7));
                     student.setContactNumber(rs.getInt(8));
                     student.setSectionId(rs.getLong(9));
+                    student.setCourseId(rs.getLong(10));
                     studentList.add(student);
                 }
                 return studentList;
@@ -223,7 +238,7 @@ public class StudentDaoImpl implements StudentDao {
                 Connection connection = dbManager.getConnection();
 
                 String sql = "INSERT INTO " + TABLE_NAME + "(id, studentNumber, firstName, lastName, middleName, " +
-                        "age, gender, contactNumber, sectionId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                        "age, gender, contactNumber, sectionId, courseId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, student.getId());
                 pst.setLong(2, student.getStudentNumber());
@@ -234,6 +249,7 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setString(7, student.getGender());
                 pst.setInt(8, student.getContactNumber());
                 pst.setLong(9, student.getSectionId());
+                pst.setLong(10, student.getCourseId());
                 pst.executeUpdate();
             }
             return true;
@@ -249,7 +265,7 @@ public class StudentDaoImpl implements StudentDao {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "UPDATE " + TABLE_NAME + " SET firstName=?, lastName=?, middleName=?, age = ?, " +
-                        "gender = ?, contactNumber=?, sectionId=? WHERE id = ? OR studentNumber = ?";
+                        "gender = ?, contactNumber=?, sectionId=?, courseId=? WHERE id = ? OR studentNumber = ?";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setString(1, student.getFirstName());
@@ -261,6 +277,7 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setLong(7, student.getSectionId());
                 pst.setLong(8, id);
                 pst.setLong(9, student.getStudentNumber());
+                pst.setLong(10, student.getCourseId());
                 pst.executeUpdate();
             }
             return true;

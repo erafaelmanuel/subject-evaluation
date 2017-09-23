@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.erm.project.ees.controller.StudentInputController">
+   <children>
+      <AnchorPane prefHeight="35.0" prefWidth="334.0" style="-fx-background-color: #7f8c8d;">
+         <children>
+            <Label layoutX="146.0" layoutY="12.0" text="Student" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <VBox layoutY="35.0" prefHeight="336.0" prefWidth="334.0">
+         <children>
+            <HBox prefHeight="299.0" prefWidth="389.0">
+               <children>
+                  <VBox prefHeight="271.0" prefWidth="219.0">
+                     <children>
+                        <JFXTextField fx:id="txFirstName" focusColor="#34495e" prefHeight="25.0" prefWidth="184.0" promptText="First Name" unFocusColor="#f39c12">
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="txLastName" focusColor="#34495e" promptText="Last Name" unFocusColor="#f39c12">
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="txMiddleName" focusColor="#34495e" promptText="Middle Name" unFocusColor="#f39c12">
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="txAge" focusColor="#34495e" promptText="Age" unFocusColor="#f39c12">
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXComboBox fx:id="cbGender" focusColor="#34495e" prefHeight="25.0" prefWidth="220.0" promptText="Gender" unFocusColor="#f39c12">
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </VBox.margin>
+                        </JFXComboBox>
+                        <JFXTextField fx:id="txContact" focusColor="#34495e" promptText="Contact Number" unFocusColor="#f39c12">
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXComboBox fx:id="cbSection" focusColor="#34495e" prefHeight="25.0" prefWidth="214.0" promptText="Section" unFocusColor="#f39c12">
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </VBox.margin>
+                        </JFXComboBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="239.0" prefWidth="71.0">
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                     <children>
+                        <VBox prefHeight="8.0" prefWidth="71.0" />
+                        <Label fx:id="lbfn" prefWidth="66.0" text="Invalid" textFill="#ee0f0f" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="1.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lbln" text="Invalid" textFill="#ee0f0f" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lbmn" text="Invalid" textFill="#ee0f0f" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lbage" text="Invalid" textFill="#ee0f0f" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Invalid" textFill="#ee0f0f" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lbcontact" text="Invalid" textFill="#ee0f0f" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="53.0" prefWidth="389.0">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="392.0">
+                     <children>
+                        <JFXButton buttonType="RAISED" layoutX="196.0" layoutY="3.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="30.0" prefWidth="80.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Cancel" textFill="WHITE" />
+                        <JFXButton buttonType="RAISED" layoutX="103.0" layoutY="3.0" mnemonicParsing="false" onAction="#onClickSave" prefHeight="29.0" prefWidth="80.0" ripplerFill="WHITE" style="-fx-background-color: #f39c12;" text="Save" textFill="WHITE" />
+                     </children>
+                  </AnchorPane>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</AnchorPane>

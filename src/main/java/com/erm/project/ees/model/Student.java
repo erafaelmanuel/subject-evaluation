@@ -11,13 +11,14 @@ public class Student {
     private String gender;
     private int contactNumber;
     private long sectionId;
+    private long courseId;
 
     public Student() {
         super();
     }
 
     public Student(long studentNumber, String firstName, String lastName, String middleName, int age, String gender,
-                   int contactNumber, long sectionId) {
+                   int contactNumber, long sectionId, long courseId) {
         this.studentNumber = studentNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,10 +27,11 @@ public class Student {
         this.gender = gender;
         this.contactNumber = contactNumber;
         this.sectionId = sectionId;
+        this.courseId = courseId;
     }
 
     public Student(long id, long studentNumber, String firstName, String lastName, String middleName, int age,
-                   String gender, int contactNumber, long sectionId) {
+                   String gender, int contactNumber, long sectionId, long courseId) {
         this.id = id;
         this.studentNumber = studentNumber;
         this.firstName = firstName;
@@ -39,6 +41,7 @@ public class Student {
         this.gender = gender;
         this.contactNumber = contactNumber;
         this.sectionId = sectionId;
+        this.courseId = courseId;
     }
 
     public long getId() {
@@ -113,6 +116,14 @@ public class Student {
         this.sectionId = sectionId;
     }
 
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -125,6 +136,7 @@ public class Student {
                 ", gender='" + gender + '\'' +
                 ", contactNumber=" + contactNumber +
                 ", sectionId=" + sectionId +
+                ", courseId=" + courseId +
                 '}';
     }
 }

@@ -1,10 +1,10 @@
 package com.erm.project.ees.dao.impl;
 
-import com.erm.project.ees.dao.SubjectDao;
+import com.erm.project.ees.dao.SectionDao;
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.dao.conn.UserLibrary;
 import com.erm.project.ees.dao.exception.NoResultFoundException;
-import com.erm.project.ees.model.Subject;
+import com.erm.project.ees.model.Section;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SectionDaoImpl implements SubjectDao {
+public class SectionDaoImpl implements SectionDao {
 
     protected static final Logger LOGGER = Logger.getLogger(SectionDaoImpl.class.getSimpleName());
-    protected static final String TABLE_NAME = "tblsubject";
+    protected static final String TABLE_NAME = "tblsection";
 
     private DBManager dbManager;
 
@@ -36,7 +36,7 @@ public class SectionDaoImpl implements SubjectDao {
         init();
     }
 
-    private void init() {
+    public void init() {
         Connection connection = null;
         try {
             if (dbManager.connect()) {
@@ -45,8 +45,11 @@ public class SectionDaoImpl implements SubjectDao {
                         .concat("(")
                         .concat("id bigint PRIMARY KEY AUTO_INCREMENT,")
                         .concat("_name varchar(100),")
-                        .concat("_desc varchar(200),")
-                        .concat("_unit int);");
+                        .concat("_year int);");
+
+                //SQL INFO
+                LOGGER.info("SQL : " + sql);
+
                 connection = dbManager.getConnection();
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.executeUpdate();
@@ -58,9 +61,9 @@ public class SectionDaoImpl implements SubjectDao {
     }
 
     @Override
-    public Subject getSubjectById(long id) {
+    public Section getSectionById(long id) {
         try {
-            Subject subject = null;
+            Section section = null;
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
@@ -70,12 +73,11 @@ public class SectionDaoImpl implements SubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {
-                    subject = new Subject();
-                    subject.setId(rs.getLong(1));
-                    subject.setName(rs.getString(2));
-                    subject.setDesc(rs.getString(3));
-                    subject.setUnit(rs.getInt(4));
-                    return subject;
+                    section = new Section();
+                    section.setId(rs.getLong(1));
+                    section.setName(rs.getString(2));
+                    section.setYear(rs.getInt(3));
+                    return section;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
@@ -89,9 +91,9 @@ public class SectionDaoImpl implements SubjectDao {
     }
 
     @Override
-    public Subject getSubject(String query) {
+    public Section getSection(String query) {
         try {
-            Subject subject = null;
+            Section section = null;
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM "
@@ -103,12 +105,11 @@ public class SectionDaoImpl implements SubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {
-                    subject = new Subject();
-                    subject.setId(rs.getLong(1));
-                    subject.setName(rs.getString(2));
-                    subject.setDesc(rs.getString(3));
-                    subject.setUnit(rs.getInt(4));
-                    return subject;
+                    section = new Section();
+                    section.setId(rs.getLong(1));
+                    section.setName(rs.getString(2));
+                    section.setYear(rs.getInt(3));
+                    return section;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
@@ -123,8 +124,8 @@ public class SectionDaoImpl implements SubjectDao {
     }
 
     @Override
-    public List<Subject> getSubjectList() {
-        List<Subject> subjectList = new ArrayList<>();
+    public List<Section> getSectionList() {
+        List<Section> sectionList = new ArrayList<>();
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
@@ -134,29 +135,28 @@ public class SectionDaoImpl implements SubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
-                    Subject subject = new Subject();
-                    subject.setId(rs.getLong(1));
-                    subject.setName(rs.getString(2));
-                    subject.setDesc(rs.getString(3));
-                    subject.setUnit(rs.getInt(4));
-                    subjectList.add(subject);
+                    Section section = new Section();
+                    section.setId(rs.getLong(1));
+                    section.setName(rs.getString(2));
+                    section.setYear(rs.getInt(3));
+                    sectionList.add(section);
                 }
-                return subjectList;
+                return sectionList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            return subjectList;
+            return sectionList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            return subjectList;
+            return sectionList;
         }
     }
 
     @Override
-    public List<Subject> getSubjectList(String query) {
-        List<Subject> subjectList = new ArrayList<>();
+    public List<Section> getSectionList(String query) {
+        List<Section> sectionList = new ArrayList<>();
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
@@ -169,38 +169,36 @@ public class SectionDaoImpl implements SubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
-                    Subject subject = new Subject();
-                    subject.setId(rs.getLong(1));
-                    subject.setName(rs.getString(2));
-                    subject.setDesc(rs.getString(3));
-                    subject.setUnit(rs.getInt(4));
-                    subjectList.add(subject);
+                    Section section = new Section();
+                    section.setId(rs.getLong(1));
+                    section.setName(rs.getString(2));
+                    section.setYear(rs.getInt(3));
+                    sectionList.add(section);
                 }
-                return subjectList;
+                return sectionList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            return subjectList;
+            return sectionList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            return subjectList;
+            return sectionList;
         }
     }
 
     @Override
-    public boolean addSubject(Subject subject) {
+    public boolean addSection(Section section) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
-                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _desc, _unit) VALUES (?, ?, ?, ?);";
+                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _year) VALUES (?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setLong(1, subject.getId());
-                pst.setString(2, subject.getName());
-                pst.setString(3, subject.getDesc());
-                pst.setInt(4, subject.getUnit());
+                pst.setLong(1, section.getId());
+                pst.setString(2, section.getName());
+                pst.setInt(3, section.getYear());
                 pst.executeUpdate();
             }
             return true;
@@ -211,17 +209,16 @@ public class SectionDaoImpl implements SubjectDao {
     }
 
     @Override
-    public boolean updateSubjectById(long id, Subject subject) {
+    public boolean updateSectionById(long id, Section section) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _desc=?, _unit=? WHERE id = ?;";
+                String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _year=? WHERE id = ?;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setString(1, subject.getName());
-                pst.setString(2, subject.getDesc());
-                pst.setInt(3, subject.getUnit());
-                pst.setLong(4, subject.getId());
+                pst.setLong(1, section.getId());
+                pst.setString(2, section.getName());
+                pst.setInt(3, section.getYear());
                 pst.executeUpdate();
             }
             return true;
@@ -232,12 +229,12 @@ public class SectionDaoImpl implements SubjectDao {
     }
 
     @Override
-    public boolean updateSubject(String query, Subject subject) {
+    public boolean updateSection(String query, Section section) {
         return false;
     }
 
     @Override
-    public boolean deleteSubjectById(long id) {
+    public boolean deleteSectionById(long id) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
@@ -255,7 +252,7 @@ public class SectionDaoImpl implements SubjectDao {
     }
 
     @Override
-    public boolean deleteSubject(String query) {
+    public boolean deleteSection(String query) {
         return false;
     }
 }

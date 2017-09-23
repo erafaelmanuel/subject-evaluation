@@ -4,15 +4,13 @@ import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.stage.ConfigurationStage;
 import com.erm.project.ees.stage.LoginStage;
+import com.erm.project.ees.stage.TeacherStage;
 import com.erm.project.ees.util.ResourceHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -49,7 +47,7 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         else if(userType.getType().equals(UserType.ADMIN.getType()))
             showAdminWindow();
         else
-            System.out.println("Something else");
+            showTeacherWindow();
     }
 
     private void showConfig(DBManager dbManager) {
@@ -74,5 +72,10 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showTeacherWindow() {
+        TeacherStage teacherStage = new TeacherStage();
+        teacherStage.show();
     }
 }
