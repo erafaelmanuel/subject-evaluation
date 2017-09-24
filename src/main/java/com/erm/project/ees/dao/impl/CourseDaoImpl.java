@@ -1,10 +1,10 @@
 package com.erm.project.ees.dao.impl;
 
-import com.erm.project.ees.dao.SectionDao;
+import com.erm.project.ees.dao.CourseDao;
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.dao.conn.UserLibrary;
 import com.erm.project.ees.dao.exception.NoResultFoundException;
-import com.erm.project.ees.model.Section;
+import com.erm.project.ees.model.Course;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,24 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SectionDaoImpl implements SectionDao {
+public class CourseDaoImpl implements CourseDao {
 
-    protected static final Logger LOGGER = Logger.getLogger(SectionDaoImpl.class.getSimpleName());
-    protected static final String TABLE_NAME = "tblsection";
+    protected static final Logger LOGGER = Logger.getLogger(CourseDaoImpl.class.getSimpleName());
+    protected static final String TABLE_NAME = "tblcourse";
 
     private DBManager dbManager;
 
-    public SectionDaoImpl() {
+    public CourseDaoImpl() {
         dbManager = new DBManager();
         init();
     }
 
-    public SectionDaoImpl(DBManager dbManager) {
+    public CourseDaoImpl(DBManager dbManager) {
         this.dbManager = dbManager;
         init();
     }
 
-    public SectionDaoImpl(UserLibrary userLibrary) {
+    public CourseDaoImpl(UserLibrary userLibrary) {
         dbManager = new DBManager(userLibrary);
         init();
     }
@@ -45,7 +45,9 @@ public class SectionDaoImpl implements SectionDao {
                         .concat("(")
                         .concat("id bigint PRIMARY KEY AUTO_INCREMENT,")
                         .concat("_name varchar(100),")
-                        .concat("_year int);");
+                        .concat("_desc int,")
+                        .concat("_totalYear int,")
+                        .concat("_totalSemester int);");
 
                 //SQL INFO
                 LOGGER.info("SQL : " + sql);
@@ -61,9 +63,9 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public Section getSectionById(long id) {
+    public Course getCourseById(long id) {
         try {
-            Section section = null;
+            Course course = null;
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
@@ -73,11 +75,13 @@ public class SectionDaoImpl implements SectionDao {
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {
-                    section = new Section();
-                    section.setId(rs.getLong(1));
-                    section.setName(rs.getString(2));
-                    section.setYear(rs.getInt(3));
-                    return section;
+                    course = new Course();
+                    course.setId(rs.getLong(1));
+                    course.setName(rs.getString(2));
+                    course.setDesc(rs.getString(3));
+                    course.setTotalYear(rs.getInt(4));
+                    course.setTotalSemester(rs.getInt(5));
+                    return course;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
@@ -91,9 +95,9 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public Section getSection(String query) {
+    public Course getCourse(String query) {
         try {
-            Section section = null;
+            Course course = null;
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM "
@@ -105,11 +109,13 @@ public class SectionDaoImpl implements SectionDao {
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {
-                    section = new Section();
-                    section.setId(rs.getLong(1));
-                    section.setName(rs.getString(2));
-                    section.setYear(rs.getInt(3));
-                    return section;
+                    course = new Course();
+                    course.setId(rs.getLong(1));
+                    course.setName(rs.getString(2));
+                    course.setDesc(rs.getString(3));
+                    course.setTotalYear(rs.getInt(4));
+                    course.setTotalSemester(rs.getInt(5));
+                    return course;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
@@ -124,8 +130,8 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public List<Section> getSectionList() {
-        List<Section> sectionList = new ArrayList<>();
+    public List<Course> getCourseList() {
+        List<Course> courseList = new ArrayList<>();
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
@@ -135,28 +141,30 @@ public class SectionDaoImpl implements SectionDao {
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
-                    Section section = new Section();
-                    section.setId(rs.getLong(1));
-                    section.setName(rs.getString(2));
-                    section.setYear(rs.getInt(3));
-                    sectionList.add(section);
+                    Course course = new Course();
+                    course.setId(rs.getLong(1));
+                    course.setName(rs.getString(2));
+                    course.setDesc(rs.getString(3));
+                    course.setTotalYear(rs.getInt(4));
+                    course.setTotalSemester(rs.getInt(5));
+                    courseList.add(course);
                 }
-                return sectionList;
+                return courseList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            return sectionList;
+            return courseList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            return sectionList;
+            return courseList;
         }
     }
 
     @Override
-    public List<Section> getSectionList(String query) {
-        List<Section> sectionList = new ArrayList<>();
+    public List<Course> getCourseList(String query) {
+        List<Course> courseList = new ArrayList<>();
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
@@ -169,36 +177,40 @@ public class SectionDaoImpl implements SectionDao {
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
-                    Section section = new Section();
-                    section.setId(rs.getLong(1));
-                    section.setName(rs.getString(2));
-                    section.setYear(rs.getInt(3));
-                    sectionList.add(section);
+                    Course course = new Course();
+                    course.setId(rs.getLong(1));
+                    course.setName(rs.getString(2));
+                    course.setDesc(rs.getString(3));
+                    course.setTotalYear(rs.getInt(4));
+                    course.setTotalSemester(rs.getInt(5));
+                    courseList.add(course);
                 }
-                return sectionList;
+                return courseList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            return sectionList;
+            return courseList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            return sectionList;
+            return courseList;
         }
     }
 
     @Override
-    public boolean addSection(Section section) {
+    public boolean addCourse(Course course) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
-                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _year) VALUES (?, ?, ?);";
+                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _desc, _totalYear, _totalSemester) VALUES (?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setLong(1, section.getId());
-                pst.setString(2, section.getName());
-                pst.setInt(3, section.getYear());
+                pst.setLong(1, course.getId());
+                pst.setString(2, course.getName());
+                pst.setString(3, course.getDesc());
+                pst.setInt(4, course.getTotalYear());
+                pst.setInt(5, course.getTotalSemester());
                 pst.executeUpdate();
             }
             return true;
@@ -209,16 +221,18 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public boolean updateSectionById(long id, Section section) {
+    public boolean updateCourseById(long id, Course course) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _year=? WHERE id = ?;";
+                String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _desc=?, _totalYear=?, _totalSemester=? WHERE id = ?;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setString(1, section.getName());
-                pst.setInt(2, section.getYear());
-                pst.setLong(3, section.getId());
+                pst.setString(1, course.getName());
+                pst.setString(2, course.getDesc());
+                pst.setLong(3, course.getId());
+                pst.setInt(4, course.getTotalYear());
+                pst.setInt(5, course.getTotalSemester());
                 pst.executeUpdate();
             }
             return true;
@@ -229,12 +243,12 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public boolean updateSection(String query, Section section) {
+    public boolean updateCourse(String query, Course course) {
         return false;
     }
 
     @Override
-    public boolean deleteSectionById(long id) {
+    public boolean deleteCourseById(long id) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
@@ -252,7 +266,7 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public boolean deleteSection(String query) {
+    public boolean deleteCourse(String query) {
         return false;
     }
 }

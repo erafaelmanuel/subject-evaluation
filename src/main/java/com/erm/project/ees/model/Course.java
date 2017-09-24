@@ -5,6 +5,8 @@ public class Course {
     private long id;
     private String name;
     private String desc;
+    private int totalYear;
+    private int totalSemester;
 
     public Course() {
         super();
@@ -19,6 +21,22 @@ public class Course {
         this.id = id;
         this.name = name;
         this.desc = desc;
+    }
+
+    public int getTotalYear() {
+        return totalYear;
+    }
+
+    public void setTotalYear(int totalYear) {
+        this.totalYear = totalYear;
+    }
+
+    public int getTotalSemester() {
+        return totalSemester;
+    }
+
+    public void setTotalSemester(int totalSemester) {
+        this.totalSemester = totalSemester;
     }
 
     public long getId() {
@@ -51,6 +69,8 @@ public class Course {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", desc='" + desc + '\'' +
+                ", totalYear=" + totalYear +
+                ", totalSemester=" + totalSemester +
                 '}';
     }
 }

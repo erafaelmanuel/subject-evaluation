@@ -58,6 +58,7 @@ public class StudentDaoImpl implements StudentDao {
                         .concat("contactNumber int,")
                         .concat("sectionId bigint,")
                         .concat("courseId bigint,")
+                        .concat("status varchar(100),")
                         .concat("FOREIGN KEY (sectionId) REFERENCES tblsection(id),")
                         .concat("FOREIGN KEY (courseId) REFERENCES tblcourse(id));");
 
@@ -99,6 +100,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setContactNumber(rs.getInt(8));
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
+                    student.setStatus(rs.getString(11));
                     return student;
                 }
             }
@@ -138,6 +140,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setContactNumber(rs.getInt(8));
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
+                    student.setStatus(rs.getString(11));
                     return student;
                 }
             }
@@ -175,6 +178,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setContactNumber(rs.getInt(8));
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
+                    student.setStatus(rs.getString(11));
                     studentList.add(student);
                 }
                 return studentList;
@@ -216,6 +220,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setContactNumber(rs.getInt(8));
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
+                    student.setStatus(rs.getString(11));
                     studentList.add(student);
                 }
                 return studentList;
@@ -237,8 +242,9 @@ public class StudentDaoImpl implements StudentDao {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
-                String sql = "INSERT INTO " + TABLE_NAME + "(id, studentNumber, firstName, lastName, middleName, " +
-                        "age, gender, contactNumber, sectionId, courseId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                String sql =
+                        "INSERT INTO " + TABLE_NAME + "(id, studentNumber, firstName, lastName, middleName, age, " +
+                        "gender, contactNumber, sectionId, courseId, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, student.getId());
                 pst.setLong(2, student.getStudentNumber());
@@ -250,6 +256,7 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setInt(8, student.getContactNumber());
                 pst.setLong(9, student.getSectionId());
                 pst.setLong(10, student.getCourseId());
+                pst.setString(11, student.getStatus());
                 pst.executeUpdate();
             }
             return true;
@@ -265,7 +272,7 @@ public class StudentDaoImpl implements StudentDao {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "UPDATE " + TABLE_NAME + " SET firstName=?, lastName=?, middleName=?, age = ?, " +
-                        "gender = ?, contactNumber=?, sectionId=?, courseId=? WHERE id = ? OR studentNumber = ?";
+                        "gender = ?, contactNumber=?, sectionId=?, courseId=?, status=? WHERE id = ? OR studentNumber = ?";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setString(1, student.getFirstName());
@@ -278,6 +285,7 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setLong(8, id);
                 pst.setLong(9, student.getStudentNumber());
                 pst.setLong(10, student.getCourseId());
+                pst.setString(11, student.getStatus());
                 pst.executeUpdate();
             }
             return true;

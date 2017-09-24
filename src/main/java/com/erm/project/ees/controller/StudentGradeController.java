@@ -1,12 +1,20 @@
 package com.erm.project.ees.controller;
 
+import com.erm.project.ees.dao.CourseDao;
+import com.erm.project.ees.dao.SectionDao;
+import com.erm.project.ees.dao.impl.CourseDaoImpl;
 import com.erm.project.ees.dao.impl.DirtyDaoImpl;
+import com.erm.project.ees.dao.impl.SectionDaoImpl;
+import com.erm.project.ees.model.Section;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.StudentSubjectRecord;
+import com.erm.project.ees.stage.EnrollmentStage;
 import com.erm.project.ees.util.ResourceHelper;
 import com.jfoenix.controls.JFXComboBox;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -49,6 +57,9 @@ public class StudentGradeController implements Initializable {
 
     private ObservableList<String> OBSERVABLE_LIST_CURRICULUM = FXCollections.observableArrayList();
     private ObservableList<StudentSubjectRecord> OBSERVABLE_LIST_RECORD = FXCollections.observableArrayList();
+
+    private final CourseDao courseDao = new CourseDaoImpl();
+    private final SectionDao sectionDao = new SectionDaoImpl();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -108,6 +119,14 @@ public class StudentGradeController implements Initializable {
         }
     }
 
+    @FXML
+    protected void onClickAssessment(ActionEvent event) {
+        EnrollmentStage enrollmentStage = new EnrollmentStage("/fxml/enrollment.fxml");
+        Platform.runLater(()-> enrollmentStage.showAndWait());
+        enrollmentStage.getController().listener(student);
+
+    }
+
     private void loadStudent(Student student, int year, int semester) {
         TableColumn<StudentSubjectRecord, String> sName = new TableColumn<>("Subject");
         sName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
@@ -149,10 +168,12 @@ public class StudentGradeController implements Initializable {
 
     public void listener(Student student) {
         this.student = student;
-        lbCourse.setText(student.getCourseId() + "");
+        final Section section = sectionDao.getSectionById(student.getSectionId());
+        lbCourse.setText(courseDao.getCourseById(student.getCourseId()).getName());
         lbSN.setText(student.getStudentNumber() + "");
         lbStudent.setText(student.getFirstName() + " " + student.getLastName());
-        lbYS.setText(student.getSectionId() + "");
+        lbYS.setText(section.getYear() + "-" +section.getName().toUpperCase());
+        lbStatus.setText(student.getStatus());
 
         clear();
         loadStudent(student ,1, 1);

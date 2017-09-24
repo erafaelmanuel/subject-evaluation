@@ -64,7 +64,7 @@ public class TeacherWindowController implements Initializable {
                     TeacherStage teacherStage = (TeacherStage) ((Node) event.getSource()).getScene().getWindow();
                     FXMLLoader loader = new FXMLLoader(ResourceHelper.resource("/fxml/student_grade.fxml"));
                     Parent root = loader.load();
-                    blSpace.setCenter(root);
+                    Platform.runLater(()->blSpace.setCenter(root));
 
                     StudentGradeController controller = loader.getController();
                     controller.listener(student);

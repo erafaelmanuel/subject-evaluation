@@ -154,7 +154,7 @@
             </TableView>
             <BorderPane prefHeight="54.0" prefWidth="399.0">
                <right>
-                  <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="98.0" ripplerFill="WHITE" style="-fx-background-color: #2ecc71;" text="Proceed" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="98.0" ripplerFill="WHITE" style="-fx-background-color: #2ecc71;" text="Assessment" onAction="#onClickAssessment" textFill="WHITE" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>
