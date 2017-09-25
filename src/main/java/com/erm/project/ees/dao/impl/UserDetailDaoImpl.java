@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class UserDetailDaoImpl implements UserDetailDao {
 
-    private Logger logger = Logger.getLogger(UserDetailDaoImpl.class.getSimpleName());
+    public static final Logger LOGGER = Logger.getLogger(UserDetailDaoImpl.class.getSimpleName());
 
     private DBManager dbManager;
     private static final String TABLE_NAME = "tbluserdetail";
@@ -37,10 +37,10 @@ public class UserDetailDaoImpl implements UserDetailDao {
     }
 
     private void init() {
-        Connection connection = null;
+        String sql = null;
         try {
             if(dbManager.connect()) {
-                String sql = "CREATE TABLE IF NOT EXISTS "
+                sql = "CREATE TABLE IF NOT EXISTS "
                         .concat(TABLE_NAME)
                         .concat("(")
                         .concat("id bigint PRIMARY KEY AUTO_INCREMENT,")
@@ -49,29 +49,32 @@ public class UserDetailDaoImpl implements UserDetailDao {
                         .concat("userType varchar(100),")
                         .concat("isActivated boolean,")
                         .concat("registrationDate varchar(100));");
-                connection = dbManager.getConnection();
-                PreparedStatement pst = connection.prepareStatement(sql);
+
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.executeUpdate();
-                connection.close();
+
+                dbManager.close();
             }
         }catch (SQLException e) {
-            logger.info("SQLException");
+            LOGGER.info(sql);
+            LOGGER.warning("SQLException");
+            dbManager.close();
         }
     }
 
     @Override
     public UserDetail getUserDetailById(long id) {
+        String sql = null;
         try {
             UserDetail userDetail = null;
             if(dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
+                sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, id);
 
                 ResultSet rs = pst.executeQuery();
-
                 if(rs.next()) {
                     userDetail = new UserDetail();
                     userDetail.setId(rs.getLong(1));
@@ -80,15 +83,21 @@ public class UserDetailDaoImpl implements UserDetailDao {
                     userDetail.setUserType(rs.getString(4));
                     userDetail.setActivated(rs.getBoolean(5));
                     userDetail.setRegistrationDate(rs.getString(6));
+
+                    dbManager.close();
                     return userDetail;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
         }catch (SQLException e) {
-            logger.info("Connection error");
+            LOGGER.info(sql);
+            LOGGER.warning("Unable to connect");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
-            logger.info("NoResultFoundException");
+            LOGGER.info(sql);
+            LOGGER.info("No result found");
+            dbManager.close();
             return null;
         }
     }
@@ -115,16 +124,19 @@ public class UserDetailDaoImpl implements UserDetailDao {
                     userDetail.setUserType(rs.getString(4));
                     userDetail.setActivated(rs.getBoolean(5));
                     userDetail.setRegistrationDate(rs.getString(6));
+
+                    dbManager.close();
                     return userDetail;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
         }catch (SQLException e) {
-            e.printStackTrace();
-            logger.info("Connection error");
+            LOGGER.warning("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
-            logger.info("NoResultFoundException");
+            LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -150,15 +162,18 @@ public class UserDetailDaoImpl implements UserDetailDao {
                     userDetail.setRegistrationDate(rs.getString(6));
                     userDetailList.add(userDetail);
                 }
+                dbManager.close();
                 return userDetailList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         }catch (SQLException e) {
             e.printStackTrace();
-            logger.info("Connection error");
+            LOGGER.info("Connection error");
+            dbManager.close();
             return userDetailList;
         } catch (NoResultFoundException e) {
-            logger.info("NoResultFoundException");
+            LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return userDetailList;
         }
     }
@@ -187,15 +202,17 @@ public class UserDetailDaoImpl implements UserDetailDao {
                     userDetail.setRegistrationDate(rs.getString(6));
                     userDetailList.add(userDetail);
                 }
+                dbManager.close();
                 return userDetailList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         }catch (SQLException e) {
-            e.printStackTrace();
-            logger.info("Connection error");
+            LOGGER.info("Connection error");
+            dbManager.close();
             return userDetailList;
         } catch (NoResultFoundException e) {
-            logger.info("NoResultFoundException");
+            LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return userDetailList;
         }
     }
@@ -217,9 +234,11 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 pst.setString(6, userDetail.getRegistrationDate());
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -240,9 +259,11 @@ public class UserDetailDaoImpl implements UserDetailDao {
 
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -263,9 +284,11 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }

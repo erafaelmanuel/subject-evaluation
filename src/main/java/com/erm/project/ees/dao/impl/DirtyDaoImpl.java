@@ -42,18 +42,20 @@ public class DirtyDaoImpl implements DirtyDao {
                     record.setFinalterm(rs.getDouble(3));
                     record.setDate(rs.getString(4));
                     record.setMark(rs.getString(5));
+
+                    dbManager.close();
                     return record;
                 }
-                dbManager.getConnection().close();
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
+            dbManager.close();
             return null;
         }
     }
 
+    @Override
     public List<StudentSubjectRecord> getStudentSubjectRecordByMark(long studentId, String mark) {
         List<StudentSubjectRecord> recordList = new ArrayList<>();
         try {
@@ -70,16 +72,41 @@ public class DirtyDaoImpl implements DirtyDao {
                     record.setDate(rs.getString(4));
                     record.setMark(rs.getString(5));
                     record.setSubjectId(rs.getLong(6));
+                    record.setSemester(rs.getInt(8));
                     recordList.add(record);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return recordList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
+            dbManager.close();
             return recordList;
+        }
+    }
+
+    @Override
+    public int getStudentSubjectRecordSemester(long studentId, String mark) {
+        List<StudentSubjectRecord> recordList = new ArrayList<>();
+        try {
+            if(dbManager.connect()) {
+                String sql = "SELECT DISTINCT semester FROM tblstudentsubjectlist WHERE studentId=? AND _mark=?";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setLong(1, studentId);
+                pst.setString(2, mark);
+                ResultSet rs = pst.executeQuery();
+                if (rs.next()) {
+                    int semester = rs.getInt(1);
+                    dbManager.close();
+                    return semester;
+                }
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            dbManager.close();
+            return 1;
         }
     }
 
@@ -106,13 +133,13 @@ public class DirtyDaoImpl implements DirtyDao {
                     record.setMark(rs.getString(6));
                     recordList.add(record);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return recordList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return recordList;
         }
     }
@@ -136,13 +163,13 @@ public class DirtyDaoImpl implements DirtyDao {
                     subject.setUnit(rs.getInt(4));
                     subjectList.add(subject);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return subjectList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         }catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return subjectList;
         }
     }
@@ -167,13 +194,13 @@ public class DirtyDaoImpl implements DirtyDao {
                     subject.setUnit(rs.getInt(4));
                     subjectList.add(subject);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return subjectList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         }catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return subjectList;
         }
     }
@@ -191,13 +218,13 @@ public class DirtyDaoImpl implements DirtyDao {
                     Subject subject = new SubjectDaoImpl().getSubjectById(rs.getLong(1));
                     subjectList.add(subject);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return subjectList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         }catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
+            dbManager.close();
             return subjectList;
         }
     }
@@ -207,12 +234,12 @@ public class DirtyDaoImpl implements DirtyDao {
         return 0;
     }
 
+    @Override
     public boolean addStudentRecord(StudentSubjectRecord record, long subjectId, long studentId) {
-        List<StudentSubjectRecord> recordList = new ArrayList<>();
         try {
             if(dbManager.connect()) {
-                String sql = "INSERT INTO tblstudentsubjectlist (_midterm, _finalterm, _date, _mark, subjectId, studentId) " +
-                        "VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO tblstudentsubjectlist (_midterm, _finalterm, _date, _mark, subjectId, studentId, semester) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setDouble(1, record.getMidterm());
                 pst.setDouble(2, record.getFinalterm());
@@ -220,12 +247,33 @@ public class DirtyDaoImpl implements DirtyDao {
                 pst.setString(4, record.getMark());
                 pst.setLong(5, subjectId);
                 pst.setLong(6, studentId);
+                pst.setInt(7, record.getSemester());
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
+            dbManager.close();
             return true;
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
+            dbManager.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteStudentRecord(long studentId, String mark) {
+        try {
+            if(dbManager.connect()) {
+                String sql = "DELETE FROM tblstudentsubjectlist WHERE studentId=? AND _mark=?;";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setLong(1, studentId);
+                pst.setString(2, mark);
+                pst.executeUpdate();
+            }
+            dbManager.close();
+            return true;
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            dbManager.close();
             return false;
         }
     }

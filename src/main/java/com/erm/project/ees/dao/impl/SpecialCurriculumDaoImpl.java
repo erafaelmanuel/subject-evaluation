@@ -84,15 +84,19 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
                     curriculum.setCourseId(rs.getLong(4));
                     curriculum.setName(rs.getString(5));
                     curriculum.setType(rs.getString(6));
+
+                    dbManager.close();
                     return curriculum;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -119,6 +123,8 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
                     curriculum.setCourseId(rs.getLong(4));
                     curriculum.setName(rs.getString(5));
                     curriculum.setType(rs.getString(6));
+
+                    dbManager.close();
                     return curriculum;
                 }
             }
@@ -126,9 +132,11 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -154,15 +162,18 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
                     curriculum.setType(rs.getString(6));
                     curriculumList.add(curriculum);
                 }
+                dbManager.close();
                 return curriculumList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return curriculumList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return curriculumList;
         }
     }
@@ -194,15 +205,18 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
                     curriculum.setType(rs.getString(6));
                     curriculumList.add(curriculum);
                 }
+                dbManager.close();
                 return curriculumList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return curriculumList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return curriculumList;
         }
     }
@@ -223,9 +237,11 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
                 pst.setString(6, curriculum.getType());
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -246,9 +262,11 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
                 pst.setLong(6, curriculum.getId());
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -269,9 +287,11 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }

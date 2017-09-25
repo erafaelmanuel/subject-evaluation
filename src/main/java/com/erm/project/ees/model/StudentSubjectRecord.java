@@ -9,6 +9,7 @@ public class StudentSubjectRecord {
     private double midterm;
     private double finalterm;
     private String mark;
+    private int semester;
 
     public StudentSubjectRecord() {
         super();
@@ -33,6 +34,18 @@ public class StudentSubjectRecord {
         this.midterm = midterm;
         this.finalterm = finalterm;
         this.mark = mark;
+    }
+
+    public StudentSubjectRecord(long subjectId, String subjectName, String subjectDesc, String date, double midterm,
+                                double finalterm, String mark, int semester) {
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+        this.subjectDesc = subjectDesc;
+        this.date = date;
+        this.midterm = midterm;
+        this.finalterm = finalterm;
+        this.mark = mark;
+        this.semester = semester;
     }
 
     public long getSubjectId() {
@@ -91,15 +104,25 @@ public class StudentSubjectRecord {
         this.mark = mark;
     }
 
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
     @Override
     public String toString() {
         return "StudentSubjectRecord{" +
-                "subjectName=" + subjectName +
-                ", subjectDesc=" + subjectDesc +
+                "subjectId=" + subjectId +
+                ", subjectName='" + subjectName + '\'' +
+                ", subjectDesc='" + subjectDesc + '\'' +
                 ", date='" + date + '\'' +
                 ", midterm=" + midterm +
                 ", finalterm=" + finalterm +
                 ", mark='" + mark + '\'' +
+                ", semester=" + semester +
                 '}';
     }
 }

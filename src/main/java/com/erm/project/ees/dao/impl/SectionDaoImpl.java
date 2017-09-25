@@ -56,6 +56,7 @@ public class SectionDaoImpl implements SectionDao {
                 connection.close();
             }
         } catch (SQLException e) {
+            dbManager.close();
             LOGGER.info("SQLException");
         }
     }
@@ -78,17 +79,18 @@ public class SectionDaoImpl implements SectionDao {
                     section.setName(rs.getString(2));
                     section.setYear(rs.getInt(3));
 
-                    dbManager.getConnection().close();
+                    dbManager.close();
                     return section;
                 }
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -113,18 +115,19 @@ public class SectionDaoImpl implements SectionDao {
                     section.setName(rs.getString(2));
                     section.setYear(rs.getInt(3));
 
-                    dbManager.getConnection().close();
+                    dbManager.close();
                     return section;
                 }
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -147,17 +150,18 @@ public class SectionDaoImpl implements SectionDao {
                     section.setYear(rs.getInt(3));
                     sectionList.add(section);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return sectionList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return sectionList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return sectionList;
         }
     }
@@ -183,17 +187,18 @@ public class SectionDaoImpl implements SectionDao {
                     section.setYear(rs.getInt(3));
                     sectionList.add(section);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return sectionList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return sectionList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return sectionList;
         }
     }
@@ -211,10 +216,11 @@ public class SectionDaoImpl implements SectionDao {
                 pst.setInt(3, section.getYear());
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -232,10 +238,11 @@ public class SectionDaoImpl implements SectionDao {
                 pst.setLong(3, section.getId());
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -256,10 +263,11 @@ public class SectionDaoImpl implements SectionDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }

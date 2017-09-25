@@ -59,6 +59,7 @@ public class CurriculumDaoImpl implements CurriculumDao {
             }
         } catch (SQLException e) {
             LOGGER.info("SQLException");
+            dbManager.close();
         }
     }
 
@@ -81,17 +82,18 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     curriculum.setSemester(rs.getInt(3));
                     curriculum.setCourseId(rs.getLong(4));
 
-                    dbManager.getConnection().close();
+                    dbManager.close();
                     return curriculum;
                 }
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -117,18 +119,19 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     curriculum.setSemester(rs.getInt(3));
                     curriculum.setCourseId(rs.getLong(4));
 
-                    dbManager.getConnection().close();
+                    dbManager.close();
                     return curriculum;
                 }
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -152,17 +155,18 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     curriculum.setCourseId(rs.getLong(4));
                     curriculumList.add(curriculum);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return curriculumList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return curriculumList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return curriculumList;
         }
     }
@@ -192,17 +196,17 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     curriculum.setCourseId(rs.getLong(4));
                     curriculumList.add(curriculum);
                 }
-                dbManager.getConnection().close();
+                dbManager.close();
                 return curriculumList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
-            e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return curriculumList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return curriculumList;
         }
     }
@@ -221,10 +225,10 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setLong(4, curriculum.getCourseId());
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
+            dbManager.close();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -243,10 +247,11 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setLong(4, curriculum.getId());
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -267,10 +272,11 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }

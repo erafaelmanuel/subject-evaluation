@@ -121,10 +121,11 @@ public class StudentGradeController implements Initializable {
 
     @FXML
     protected void onClickAssessment(ActionEvent event) {
-        EnrollmentStage enrollmentStage = new EnrollmentStage("/fxml/enrollment.fxml");
-        Platform.runLater(()-> enrollmentStage.showAndWait());
-        enrollmentStage.getController().listener(student);
-
+        final EnrollmentStage enrollmentStage = new EnrollmentStage("/fxml/enrollment.fxml");
+        new Thread(()->{
+            Platform.runLater(()->enrollmentStage.showAndWait());
+            enrollmentStage.getController().listener(student);
+        }).start();
     }
 
     private void loadStudent(Student student, int year, int semester) {

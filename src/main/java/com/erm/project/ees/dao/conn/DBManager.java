@@ -68,4 +68,15 @@ public class DBManager {
             return false;
         }
     }
+
+    public void close() {
+        try {
+            if(connection != null) {
+                connection.close();
+                connection = null;
+            }
+        } catch (SQLException e) {
+            logger.warning("SQLException");
+        }
+    }
 }

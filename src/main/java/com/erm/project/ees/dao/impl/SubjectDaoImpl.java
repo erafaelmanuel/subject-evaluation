@@ -37,7 +37,6 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     private void init() {
-        Connection connection = null;
         try {
             if (dbManager.connect()) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
@@ -47,10 +46,11 @@ public class SubjectDaoImpl implements SubjectDao {
                         .concat("_name varchar(100),")
                         .concat("_desc varchar(200),")
                         .concat("_unit int);");
-                connection = dbManager.getConnection();
-                PreparedStatement pst = connection.prepareStatement(sql);
+
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.executeUpdate();
-                connection.close();
+
+                dbManager.close();
             }
         } catch (SQLException e) {
             LOGGER.info("SQLException");
@@ -75,15 +75,19 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+
+                    dbManager.close();
                     return subject;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -108,16 +112,19 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+
+                    dbManager.close();
                     return subject;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
-            e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -141,15 +148,17 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setUnit(rs.getInt(4));
                     subjectList.add(subject);
                 }
+                dbManager.close();
                 return subjectList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
-            e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return subjectList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return subjectList;
         }
     }
@@ -176,15 +185,18 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setUnit(rs.getInt(4));
                     subjectList.add(subject);
                 }
+                dbManager.close();
                 return subjectList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return subjectList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return subjectList;
         }
     }
@@ -203,9 +215,11 @@ public class SubjectDaoImpl implements SubjectDao {
                 pst.setInt(4, subject.getUnit());
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -224,9 +238,11 @@ public class SubjectDaoImpl implements SubjectDao {
                 pst.setLong(4, subject.getId());
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -250,6 +266,7 @@ public class SubjectDaoImpl implements SubjectDao {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }

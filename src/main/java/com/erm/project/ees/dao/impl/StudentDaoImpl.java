@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 
 public class StudentDaoImpl implements StudentDao {
 
-    protected static final Logger LOGGER = Logger.getLogger(StudentDaoImpl.class.getSimpleName());
-    protected static final String TABLE_NAME = "tblstudent";
+    public static final Logger LOGGER = Logger.getLogger(StudentDaoImpl.class.getSimpleName());
+    private static final String TABLE_NAME = "tblstudent";
 
     private DBManager dbManager;
 
@@ -101,15 +101,19 @@ public class StudentDaoImpl implements StudentDao {
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
                     student.setStatus(rs.getString(11));
+
+                    dbManager.close();
                     return student;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -141,6 +145,8 @@ public class StudentDaoImpl implements StudentDao {
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
                     student.setStatus(rs.getString(11));
+
+                    dbManager.close();
                     return student;
                 }
             }
@@ -148,9 +154,11 @@ public class StudentDaoImpl implements StudentDao {
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return null;
         }
     }
@@ -181,15 +189,19 @@ public class StudentDaoImpl implements StudentDao {
                     student.setStatus(rs.getString(11));
                     studentList.add(student);
                 }
+
+                dbManager.close();
                 return studentList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return studentList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return studentList;
         }
     }
@@ -223,15 +235,18 @@ public class StudentDaoImpl implements StudentDao {
                     student.setStatus(rs.getString(11));
                     studentList.add(student);
                 }
+                dbManager.close();
                 return studentList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
+            dbManager.close();
             return studentList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
+            dbManager.close();
             return studentList;
         }
     }
@@ -259,9 +274,11 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setString(11, student.getStatus());
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -288,9 +305,11 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setString(11, student.getStatus());
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
@@ -311,9 +330,11 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
+            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            dbManager.close();
             return false;
         }
     }
