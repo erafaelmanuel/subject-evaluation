@@ -13,7 +13,11 @@ public interface DirtyDao {
 
     List<Subject> getCurriculumSubjectList(long courseId, int year, int semester);
 
+    List<Subject> getSpecialCurriculumSubjectList(long courseId, int year, int semester, String type);
+
     List<Subject> getPrerequisiteBySujectId(long subjectId);
 
     int getCurrentSemByCourseId(long courseId);
+
+    boolean addStudentRecord(StudentSubjectRecord record, long subjectId, long studentId);
 }

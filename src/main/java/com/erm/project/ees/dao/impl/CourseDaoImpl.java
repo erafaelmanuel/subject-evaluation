@@ -81,9 +81,12 @@ public class CourseDaoImpl implements CourseDao {
                     course.setDesc(rs.getString(3));
                     course.setTotalYear(rs.getInt(4));
                     course.setTotalSemester(rs.getInt(5));
+
+                    dbManager.getConnection().close();
                     return course;
                 }
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
@@ -115,9 +118,12 @@ public class CourseDaoImpl implements CourseDao {
                     course.setDesc(rs.getString(3));
                     course.setTotalYear(rs.getInt(4));
                     course.setTotalSemester(rs.getInt(5));
+
+                    dbManager.getConnection().close();
                     return course;
                 }
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -149,8 +155,10 @@ public class CourseDaoImpl implements CourseDao {
                     course.setTotalSemester(rs.getInt(5));
                     courseList.add(course);
                 }
+                dbManager.getConnection().close();
                 return courseList;
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -185,8 +193,10 @@ public class CourseDaoImpl implements CourseDao {
                     course.setTotalSemester(rs.getInt(5));
                     courseList.add(course);
                 }
+                dbManager.getConnection().close();
                 return courseList;
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -213,6 +223,7 @@ public class CourseDaoImpl implements CourseDao {
                 pst.setInt(5, course.getTotalSemester());
                 pst.executeUpdate();
             }
+            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -235,6 +246,7 @@ public class CourseDaoImpl implements CourseDao {
                 pst.setInt(5, course.getTotalSemester());
                 pst.executeUpdate();
             }
+            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -258,6 +270,7 @@ public class CourseDaoImpl implements CourseDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
+            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

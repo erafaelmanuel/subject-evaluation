@@ -58,6 +58,7 @@ public class DBManager {
             connection = null;
             return false;
         } catch (SQLException e) {
+            e.printStackTrace();
             logger.info("SQLException");
             connection = null;
             return false;

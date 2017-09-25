@@ -22,7 +22,7 @@
             <VBox alignment="CENTER" prefHeight="82.0" prefWidth="159.0" BorderPane.alignment="TOP_LEFT">
                <children>
                   <JFXComboBox fx:id="cbCurSemester" onAction="#onChooseSemester" prefHeight="25.0" prefWidth="134.0" promptText="Semester" />
-                  <JFXButton buttonType="RAISED" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #e67e22;" text="Print/Save" textFill="WHITE">
+                  <JFXButton fx:id="btnSave" buttonType="RAISED" onAction="#onClickSave" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #e67e22;" text="Save" textFill="WHITE">
                      <VBox.margin>
                         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                      </VBox.margin></JFXButton>
@@ -189,17 +189,34 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="420.0">
                      <children>
-                        <Label prefHeight="25.0" prefWidth="83.0" text="Filter by :" />
-                        <JFXComboBox fx:id="cbAbSubject" onAction="#onChooseFilter" prefHeight="25.0" prefWidth="253.0" promptText="Year" />
+                        <Label layoutX="200.0" layoutY="10.0" prefHeight="25.0" prefWidth="40.0" text="Type : " />
+                        <JFXComboBox fx:id="cbClass" layoutX="257.0" layoutY="10.0" prefHeight="25.0" prefWidth="190.0" promptText="Class" />
+                        <Label prefHeight="25.0" prefWidth="57.0" text="Filter by :">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin></Label>
+                        <JFXComboBox fx:id="cbAbSubject" onAction="#onChooseFilter" prefHeight="25.0" prefWidth="112.0" promptText="Year">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></JFXComboBox>
                      </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding>
                   </HBox>
                   <JFXTreeTableView fx:id="tblAbSubject" prefHeight="399.0" prefWidth="350.0" />
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="139.0" text="TOTAL UNITS : AVAILABLE" />
-                        <Label text="-/-" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="139.0" text="TOTAL UNITS : " />
+                        <Label fx:id="lbAbUnit" style="-fx-text-fill: #27ae60;" text="0">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="+ Add" textFill="WHITE">
                            <FlowPane.margin>
                               <Insets left="20.0" />
@@ -226,12 +243,30 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <JFXComboBox prefHeight="25.0" prefWidth="173.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label prefHeight="25.0" prefWidth="34.0" text="Year : " />
+                        <JFXComboBox fx:id="cbMaxYear" onAction="#onChooseMaxYear" prefHeight="25.0" prefWidth="149.0" promptText="Year">
+                           <HBox.margin>
+                              <Insets bottom="5.0" />
+                           </HBox.margin>
+                        </JFXComboBox>
+                     </children>
+                  </HBox>
                   <JFXTreeTableView fx:id="tblYeSubject" prefWidth="350.0" />
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="139.0" text="TOTAL UNITS : AVAILABLE" />
-                        <Label text="-/-" />
+                        <Label fx:id="lbexceed" prefHeight="22.0" prefWidth="125.0" style="-fx-text-fill: #c0392b;" text="(LIMIT IS EXCEEDED)">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="84.0" text="TOTAL UNITS :  " />
+                        <Label fx:id="lbYeUnit" style="-fx-text-fill: #c0392b;" text="0">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
                         <JFXButton buttonType="RAISED" onAction="#onClickRemove" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="- Remove" textFill="WHITE">
                            <FlowPane.margin>
                               <Insets left="20.0" />

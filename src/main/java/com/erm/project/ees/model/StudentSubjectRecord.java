@@ -2,6 +2,7 @@ package com.erm.project.ees.model;
 
 public class StudentSubjectRecord {
 
+    private long subjectId;
     private String subjectName;
     private String subjectDesc;
     private String date;
@@ -21,6 +22,25 @@ public class StudentSubjectRecord {
         this.midterm = midterm;
         this.finalterm = finalterm;
         this.mark = mark;
+    }
+
+    public StudentSubjectRecord(long subjectId, String subjectName, String subjectDesc, String date, double midterm,
+                                double finalterm, String mark) {
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+        this.subjectDesc = subjectDesc;
+        this.date = date;
+        this.midterm = midterm;
+        this.finalterm = finalterm;
+        this.mark = mark;
+    }
+
+    public long getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(long subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getSubjectName() {

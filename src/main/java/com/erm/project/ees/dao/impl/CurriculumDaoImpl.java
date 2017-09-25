@@ -80,9 +80,12 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     curriculum.setYear(rs.getInt(2));
                     curriculum.setSemester(rs.getInt(3));
                     curriculum.setCourseId(rs.getLong(4));
+
+                    dbManager.getConnection().close();
                     return curriculum;
                 }
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
@@ -113,9 +116,12 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     curriculum.setYear(rs.getInt(2));
                     curriculum.setSemester(rs.getInt(3));
                     curriculum.setCourseId(rs.getLong(4));
+
+                    dbManager.getConnection().close();
                     return curriculum;
                 }
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,8 +152,10 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     curriculum.setCourseId(rs.getLong(4));
                     curriculumList.add(curriculum);
                 }
+                dbManager.getConnection().close();
                 return curriculumList;
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -184,8 +192,10 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     curriculum.setCourseId(rs.getLong(4));
                     curriculumList.add(curriculum);
                 }
+                dbManager.getConnection().close();
                 return curriculumList;
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -211,6 +221,7 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setLong(4, curriculum.getCourseId());
                 pst.executeUpdate();
             }
+            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -232,6 +243,7 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setLong(4, curriculum.getId());
                 pst.executeUpdate();
             }
+            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -255,6 +267,7 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
+            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

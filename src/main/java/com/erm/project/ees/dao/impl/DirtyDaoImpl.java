@@ -44,12 +44,42 @@ public class DirtyDaoImpl implements DirtyDao {
                     record.setMark(rs.getString(5));
                     return record;
                 }
-
+                dbManager.getConnection().close();
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
             return null;
+        }
+    }
+
+    public List<StudentSubjectRecord> getStudentSubjectRecordByMark(long studentId, String mark) {
+        List<StudentSubjectRecord> recordList = new ArrayList<>();
+        try {
+            if(dbManager.connect()) {
+                String sql = "SELECT * FROM tblstudentsubjectlist WHERE studentId=? AND _mark=?";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setLong(1, studentId);
+                pst.setString(2, mark);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    StudentSubjectRecord record = new StudentSubjectRecord();
+                    record.setMidterm(rs.getDouble(2));
+                    record.setFinalterm(rs.getDouble(3));
+                    record.setDate(rs.getString(4));
+                    record.setMark(rs.getString(5));
+                    record.setSubjectId(rs.getLong(6));
+                    recordList.add(record);
+                }
+                dbManager.getConnection().close();
+                return recordList;
+            }
+            dbManager.getConnection().close();
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            return recordList;
         }
     }
 
@@ -74,11 +104,12 @@ public class DirtyDaoImpl implements DirtyDao {
                     record.setMidterm(rs.getDouble(4));
                     record.setFinalterm(rs.getDouble(5));
                     record.setMark(rs.getString(6));
-
                     recordList.add(record);
                 }
+                dbManager.getConnection().close();
                 return recordList;
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,8 +136,41 @@ public class DirtyDaoImpl implements DirtyDao {
                     subject.setUnit(rs.getInt(4));
                     subjectList.add(subject);
                 }
+                dbManager.getConnection().close();
                 return subjectList;
             }
+            dbManager.getConnection().close();
+            throw new NoResultFoundException("No result found");
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return subjectList;
+        }
+    }
+
+    @Override
+    public List<Subject> getSpecialCurriculumSubjectList(long courseId, int year, int semester, String type) {
+        List<Subject> subjectList = new ArrayList<>();
+        try {
+            if(dbManager.connect()) {
+                String sql = "SELECT S.id, S._name, S._desc, S._unit from tblcourse as C JOIN tblspecialcurriculum as SCU ON C.id = SCU.course_id JOIN tblspecialcurriculumsubjectlist as SCSL ON SCSL.curriculumId = SCU.id JOIN tblsubject as S ON S.id = SCSL.subjectId WHERE SCU._year = ? AND SCU._semester = ? AND C.id = ? AND SCU._type = ?";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setInt(1, year);
+                pst.setInt(2, semester);
+                pst.setLong(3, courseId);
+                pst.setString(4, type);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    Subject subject = new Subject();
+                    subject.setId(rs.getLong(1));
+                    subject.setName(rs.getString(2));
+                    subject.setDesc(rs.getString(3));
+                    subject.setUnit(rs.getInt(4));
+                    subjectList.add(subject);
+                }
+                dbManager.getConnection().close();
+                return subjectList;
+            }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         }catch (SQLException e) {
             e.printStackTrace();
@@ -127,8 +191,10 @@ public class DirtyDaoImpl implements DirtyDao {
                     Subject subject = new SubjectDaoImpl().getSubjectById(rs.getLong(1));
                     subjectList.add(subject);
                 }
+                dbManager.getConnection().close();
                 return subjectList;
             }
+            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found");
         }catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
@@ -141,5 +207,26 @@ public class DirtyDaoImpl implements DirtyDao {
         return 0;
     }
 
-
+    public boolean addStudentRecord(StudentSubjectRecord record, long subjectId, long studentId) {
+        List<StudentSubjectRecord> recordList = new ArrayList<>();
+        try {
+            if(dbManager.connect()) {
+                String sql = "INSERT INTO tblstudentsubjectlist (_midterm, _finalterm, _date, _mark, subjectId, studentId) " +
+                        "VALUES (?, ?, ?, ?, ?, ?)";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setDouble(1, record.getMidterm());
+                pst.setDouble(2, record.getFinalterm());
+                pst.setString(3, record.getDate());
+                pst.setString(4, record.getMark());
+                pst.setLong(5, subjectId);
+                pst.setLong(6, studentId);
+                pst.executeUpdate();
+            }
+            dbManager.getConnection().close();
+            return true;
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            return false;
+        }
+    }
 }

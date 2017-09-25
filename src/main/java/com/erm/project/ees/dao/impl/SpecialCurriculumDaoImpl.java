@@ -1,10 +1,10 @@
 package com.erm.project.ees.dao.impl;
 
-import com.erm.project.ees.dao.SectionDao;
+import com.erm.project.ees.dao.SpecialCurriculumDao;
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.dao.conn.UserLibrary;
 import com.erm.project.ees.dao.exception.NoResultFoundException;
-import com.erm.project.ees.model.Section;
+import com.erm.project.ees.model.SpecialCurriculum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,24 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SectionDaoImpl implements SectionDao {
+public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
 
-    protected static final Logger LOGGER = Logger.getLogger(SectionDaoImpl.class.getSimpleName());
-    protected static final String TABLE_NAME = "tblsection";
+    protected static final Logger LOGGER = Logger.getLogger(SpecialCurriculumDaoImpl.class.getSimpleName());
+    protected static final String TABLE_NAME = "tblspecialcurriculum";
 
     private DBManager dbManager;
 
-    public SectionDaoImpl() {
+    public SpecialCurriculumDaoImpl() {
         dbManager = new DBManager();
         init();
     }
 
-    public SectionDaoImpl(DBManager dbManager) {
+    public SpecialCurriculumDaoImpl(DBManager dbManager) {
         this.dbManager = dbManager;
         init();
     }
 
-    public SectionDaoImpl(UserLibrary userLibrary) {
+    public SpecialCurriculumDaoImpl(UserLibrary userLibrary) {
         dbManager = new DBManager(userLibrary);
         init();
     }
@@ -44,8 +44,12 @@ public class SectionDaoImpl implements SectionDao {
                         .concat(TABLE_NAME)
                         .concat("(")
                         .concat("id bigint PRIMARY KEY AUTO_INCREMENT,")
+                        .concat("_year int,")
+                        .concat("_semester int,")
+                        .concat("course_id bigint,")
                         .concat("_name varchar(100),")
-                        .concat("_year int);");
+                        .concat("_type varchar(100),")
+                        .concat("FOREIGN KEY (course_id) REFERENCES tblcourse(id));");
 
                 //SQL INFO
                 LOGGER.info("SQL : " + sql);
@@ -61,9 +65,9 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public Section getSectionById(long id) {
+    public SpecialCurriculum getCurriculumById(long id) {
         try {
-            Section section = null;
+            SpecialCurriculum curriculum = null;
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
@@ -73,16 +77,16 @@ public class SectionDaoImpl implements SectionDao {
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {
-                    section = new Section();
-                    section.setId(rs.getLong(1));
-                    section.setName(rs.getString(2));
-                    section.setYear(rs.getInt(3));
-
-                    dbManager.getConnection().close();
-                    return section;
+                    curriculum = new SpecialCurriculum();
+                    curriculum.setId(rs.getLong(1));
+                    curriculum.setYear(rs.getInt(2));
+                    curriculum.setSemester(rs.getInt(3));
+                    curriculum.setCourseId(rs.getLong(4));
+                    curriculum.setName(rs.getString(5));
+                    curriculum.setType(rs.getString(6));
+                    return curriculum;
                 }
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
@@ -94,9 +98,9 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public Section getSection(String query) {
+    public SpecialCurriculum getCurriculum(String query) {
         try {
-            Section section = null;
+            SpecialCurriculum curriculum = null;
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM "
@@ -108,16 +112,16 @@ public class SectionDaoImpl implements SectionDao {
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {
-                    section = new Section();
-                    section.setId(rs.getLong(1));
-                    section.setName(rs.getString(2));
-                    section.setYear(rs.getInt(3));
-
-                    dbManager.getConnection().close();
-                    return section;
+                    curriculum = new SpecialCurriculum();
+                    curriculum.setId(rs.getLong(1));
+                    curriculum.setYear(rs.getInt(2));
+                    curriculum.setSemester(rs.getInt(3));
+                    curriculum.setCourseId(rs.getLong(4));
+                    curriculum.setName(rs.getString(5));
+                    curriculum.setType(rs.getString(6));
+                    return curriculum;
                 }
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -130,8 +134,8 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public List<Section> getSectionList() {
-        List<Section> sectionList = new ArrayList<>();
+    public List<SpecialCurriculum> getCurriculumList() {
+        List<SpecialCurriculum> curriculumList = new ArrayList<>();
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
@@ -141,77 +145,84 @@ public class SectionDaoImpl implements SectionDao {
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
-                    Section section = new Section();
-                    section.setId(rs.getLong(1));
-                    section.setName(rs.getString(2));
-                    section.setYear(rs.getInt(3));
-                    sectionList.add(section);
+                    SpecialCurriculum curriculum = new SpecialCurriculum();
+                    curriculum.setId(rs.getLong(1));
+                    curriculum.setYear(rs.getInt(2));
+                    curriculum.setSemester(rs.getInt(3));
+                    curriculum.setCourseId(rs.getLong(4));
+                    curriculum.setName(rs.getString(5));
+                    curriculum.setType(rs.getString(6));
+                    curriculumList.add(curriculum);
                 }
-                dbManager.getConnection().close();
-                return sectionList;
+                return curriculumList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            return sectionList;
+            return curriculumList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            return sectionList;
+            return curriculumList;
         }
     }
 
     @Override
-    public List<Section> getSectionList(String query) {
-        List<Section> sectionList = new ArrayList<>();
+    public List<SpecialCurriculum> getCurriculumList(String query) {
+        List<SpecialCurriculum> curriculumList = new ArrayList<>();
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM "
                         .concat(TABLE_NAME)
                         .concat(" ")
-                        .concat(query.replace(";", " "));
+                        .concat(query);
+
+                //SQL INFO
+                LOGGER.info("SQL : " + sql);
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
-                    Section section = new Section();
-                    section.setId(rs.getLong(1));
-                    section.setName(rs.getString(2));
-                    section.setYear(rs.getInt(3));
-                    sectionList.add(section);
+                    SpecialCurriculum curriculum = new SpecialCurriculum();
+                    curriculum.setId(rs.getLong(1));
+                    curriculum.setYear(rs.getInt(2));
+                    curriculum.setSemester(rs.getInt(3));
+                    curriculum.setCourseId(rs.getLong(4));
+                    curriculum.setName(rs.getString(5));
+                    curriculum.setType(rs.getString(6));
+                    curriculumList.add(curriculum);
                 }
-                dbManager.getConnection().close();
-                return sectionList;
+                return curriculumList;
             }
-            dbManager.getConnection().close();
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            return sectionList;
+            return curriculumList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            return sectionList;
+            return curriculumList;
         }
     }
 
     @Override
-    public boolean addSection(Section section) {
+    public boolean addCurriculum(SpecialCurriculum curriculum) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
-                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _year) VALUES (?, ?, ?);";
+                String sql = "INSERT INTO " + TABLE_NAME + "(id, _year, _semester, course_id, _name, _year) VALUES (?, ?, ?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setLong(1, section.getId());
-                pst.setString(2, section.getName());
-                pst.setInt(3, section.getYear());
+                pst.setLong(1, curriculum.getId());
+                pst.setInt(2, curriculum.getYear());
+                pst.setInt(3, curriculum.getSemester());
+                pst.setLong(4, curriculum.getCourseId());
+                pst.setString(5, curriculum.getName());
+                pst.setString(6, curriculum.getType());
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -220,19 +231,21 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public boolean updateSectionById(long id, Section section) {
+    public boolean updateCurriculumById(long id, SpecialCurriculum curriculum) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _year=? WHERE id = ?;";
+                String sql = "UPDATE " + TABLE_NAME + " SET _year=?, _semester=?, course_id=?, _name=?, year=? WHERE id = ?;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setString(1, section.getName());
-                pst.setInt(2, section.getYear());
-                pst.setLong(3, section.getId());
+                pst.setInt(1, curriculum.getYear());
+                pst.setInt(2, curriculum.getSemester());
+                pst.setLong(3, curriculum.getCourseId());
+                pst.setString(4, curriculum.getName());
+                pst.setString(5, curriculum.getType());
+                pst.setLong(6, curriculum.getId());
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -241,12 +254,12 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public boolean updateSection(String query, Section section) {
+    public boolean updateCurriculum(String query, SpecialCurriculum curriculum) {
         return false;
     }
 
     @Override
-    public boolean deleteSectionById(long id) {
+    public boolean deleteCurriculumById(long id) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
@@ -256,7 +269,6 @@ public class SectionDaoImpl implements SectionDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
-            dbManager.getConnection().close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -265,7 +277,7 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public boolean deleteSection(String query) {
+    public boolean deleteCurriculum(String query) {
         return false;
     }
 }
