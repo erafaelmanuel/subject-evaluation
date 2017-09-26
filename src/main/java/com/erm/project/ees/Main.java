@@ -53,20 +53,20 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
     }
 
     private void showConfig(DBManager dbManager) {
-        ConfigurationStage configurationStage = new ConfigurationStage("/fxml/config.fxml", dbManager);
+        ConfigurationStage configurationStage = new ConfigurationStage(dbManager);
         configurationStage.setOnFinishListener(this);
         configurationStage.showAndWait();
     }
 
     private void showLogin(DBManager dbManager) {
-        LoginStage loginStage = new LoginStage("/fxml/login.fxml", dbManager);
+        LoginStage loginStage = new LoginStage(dbManager);
         loginStage.setOnLoginListener(this);
         loginStage.showAndWait();
     }
 
     private void showAdminWindow() {
         try {
-            Parent root = FXMLLoader.load(ResourceHelper.resource("/fxml/admin.fxml"));
+            Parent root = FXMLLoader.load(ResourceHelper.resourceWithBasePath("fxml/admin.fxml"));
             Scene scene = new Scene(root, 0, 0);
             primaryStage.setScene(scene);
             primaryStage.setMaximized(true);

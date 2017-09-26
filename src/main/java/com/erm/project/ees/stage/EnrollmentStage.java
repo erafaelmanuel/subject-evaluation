@@ -14,14 +14,9 @@ public class EnrollmentStage extends Stage {
 
     private static EnrollmentController controller;
 
-    public EnrollmentStage(String path) {
-        //super();
-        display(path);
-    }
-
-    private void display(String path) {
+    public EnrollmentStage() {
         try {
-            FXMLLoader loader = new FXMLLoader(ResourceHelper.resource(path));
+            FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/enrollment.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 900, 600);
             this.initModality(Modality.APPLICATION_MODAL);

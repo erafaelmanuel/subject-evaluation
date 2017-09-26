@@ -18,13 +18,16 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.net.URL;
@@ -114,15 +117,15 @@ public class EnrollmentController implements Initializable {
         cbCurSemester.getItems().add("2ND SEMESTER");
         cbCurSemester.getSelectionModel().select(0);
 
-        Image image = new Image(ResourceHelper.resource("/image/studentlogo.png").toString());
+        Image image = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
         imgLogo.setImage(image);
 
-        Image logoLoading = new Image(ResourceHelper.resource("/image/loading.gif").toString());
+        Image logoLoading = new Image(ResourceHelper.resourceWithBasePath("image/loading.gif").toString());
         imgLoading.setImage(logoLoading);
     }
 
     @FXML
-    protected void onClickSave() {
+    protected void onClickSave(ActionEvent event) {
 
         //Delete the enrolled
         dirtyDao.deleteStudentRecord(student.getId(), "ONGOING");
@@ -139,6 +142,9 @@ public class EnrollmentController implements Initializable {
             Platform.runLater(() -> JOptionPane.showMessageDialog(null, "Please add a subject to enroll."));
         else
             Platform.runLater(() -> JOptionPane.showMessageDialog(null, "The limit of unit is exceeded."));
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -185,7 +191,7 @@ public class EnrollmentController implements Initializable {
 
     @FXML
     protected void onClickRefresh() {
-
+        /** TODO **/
     }
 
     @FXML

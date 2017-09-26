@@ -214,14 +214,16 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public boolean addCourse(Course course) {
+    public Course addCourse(Course course) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-
-                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _desc, _totalYear, _totalSemester) VALUES (?, ?, ?);";
+                long id = generate();
+                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _desc, _totalYear, _totalSemester) VALUES (?, ?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setLong(1, course.getId());
+
+                course.setId(id);
+                pst.setLong(1, id);
                 pst.setString(2, course.getName());
                 pst.setString(3, course.getDesc());
                 pst.setInt(4, course.getTotalYear());
@@ -229,11 +231,11 @@ public class CourseDaoImpl implements CourseDao {
                 pst.executeUpdate();
             }
             dbManager.close();
-            return true;
+            return course;
         } catch (SQLException e) {
             e.printStackTrace();
             dbManager.close();
-            return false;
+            return null;
         }
     }
 
@@ -289,5 +291,9 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public boolean deleteCourse(String query) {
         return false;
+    }
+
+    long generate() {
+        return (long) (Math.random() * Long.MAX_VALUE);
     }
 }

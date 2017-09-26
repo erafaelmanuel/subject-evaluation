@@ -88,10 +88,9 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Service">
               <items>
-                  <MenuItem mnemonicParsing="false" text="Enroll student" />
-                <MenuItem mnemonicParsing="false" text="Evaluate" />
+                <MenuItem mnemonicParsing="false" onAction="#onClickEvaluate" text="Evaluate" />
                   <MenuItem mnemonicParsing="false" text="Export report" />
-                  <MenuItem mnemonicParsing="false" text="Manage your user" />
+                  <MenuItem mnemonicParsing="false" text="Manage student" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="System">

@@ -60,7 +60,7 @@ public class PopOnExitWindow {
 			box.getChildren().addAll(header, label , buttonContainer);
 			
 			Scene scene = new Scene(box , 300 , 80);
-			scene.getStylesheets().add(ResourceHelper.resource("/css/pop_on_exit.css").toString());
+			scene.getStylesheets().add(ResourceHelper.resourceWithBasePath("css/pop_on_exit.css").toString());
 			stage.setScene(scene);
 			stage.showAndWait();
 			

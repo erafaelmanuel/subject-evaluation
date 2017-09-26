@@ -50,8 +50,8 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle bundle) {
 		try{
-			Image image = new Image(ResourceHelper.resourceAsStream("/image/loading.gif"));
-			Image logo = new Image(ResourceHelper.resourceAsStream("/image/ccslogo.png"));
+			Image image = new Image(ResourceHelper.resourceWithBasePath("image/loading.gif").toString());
+			Image logo = new Image(ResourceHelper.resourceWithBasePath("image/ccslogo.png").toString());
 
 			plLoading.setVisible(false);
 			imgLoading.setVisible(false);

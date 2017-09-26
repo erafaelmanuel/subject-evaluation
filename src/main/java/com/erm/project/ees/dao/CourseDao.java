@@ -10,7 +10,7 @@ public interface CourseDao {
     Course getCourse(String query);
     List<Course> getCourseList();
     List<Course> getCourseList(String query);
-    boolean addCourse(Course course);
+    Course addCourse(Course course);
     boolean updateCourseById(long id, Course course);
     boolean updateCourse(String query, Course course);
     boolean deleteCourseById(long id);

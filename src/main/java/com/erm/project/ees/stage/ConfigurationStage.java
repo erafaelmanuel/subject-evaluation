@@ -21,21 +21,29 @@ public class ConfigurationStage extends Stage{
 
     private OnFinishListener onFinishListener;
 
-    public ConfigurationStage(final String path, DBManager dbManager) {
+    public ConfigurationStage(DBManager dbManager) {
         this.dbManager = dbManager;
-        display(path);
+        try {
+            URL url = ResourceHelper.resourceWithBasePath("fxml/config.fxml");
+            Parent root = FXMLLoader.load(url);
+            Scene scene = new Scene(root, 365, 345);
+
+            this.setTitle("UserLibrary configuration");
+            this.setResizable(false);
+            this.setScene(scene);
+            this.setOnCloseRequest((e)->{
+                onFinishListener.onFinish(dbManager, status);
+            });
+        } catch (IOException e) {
+            logger.info("IOException");
+        }
     }
 
-    public ConfigurationStage(final String path, DBManager dbManager, OnFinishListener onFinishListener) {
+    public ConfigurationStage(DBManager dbManager, OnFinishListener onFinishListener) {
         this.dbManager = dbManager;
         this.onFinishListener = onFinishListener;
-        display(path);
-
-    }
-
-    private void display(String path) {
         try {
-            URL url = ResourceHelper.resource(path);
+            URL url = ResourceHelper.resourceWithBasePath("fxml/config.fxml");
             Parent root = FXMLLoader.load(url);
             Scene scene = new Scene(root, 365, 345);
 

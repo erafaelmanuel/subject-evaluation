@@ -63,7 +63,7 @@ public class StudentGradeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Image image = new Image(ResourceHelper.resource("/image/studentlogo.png").toString());
+        Image image = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
         imgvLogo.setImage(image);
 
         cbYearSem.setItems(OBSERVABLE_LIST_CURRICULUM);
@@ -121,7 +121,7 @@ public class StudentGradeController implements Initializable {
 
     @FXML
     protected void onClickAssessment(ActionEvent event) {
-        final EnrollmentStage enrollmentStage = new EnrollmentStage("/fxml/enrollment.fxml");
+        final EnrollmentStage enrollmentStage = new EnrollmentStage();
         new Thread(()->{
             Platform.runLater(()->enrollmentStage.showAndWait());
             enrollmentStage.getController().listener(student);

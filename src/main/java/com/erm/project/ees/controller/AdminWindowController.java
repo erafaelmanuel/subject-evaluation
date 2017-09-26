@@ -5,6 +5,7 @@ import com.erm.project.ees.dao.impl.SubjectDaoImpl;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.Subject;
 import com.erm.project.ees.model.UserType;
+import com.erm.project.ees.stage.CourseStage;
 import com.erm.project.ees.stage.window.PopOnExitWindow;
 import com.erm.project.ees.stage.window.StudentInputWindow;
 import javafx.collections.FXCollections;
@@ -40,8 +41,11 @@ public class AdminWindowController implements Initializable {
     private static final int NO_TABLE = 0;
     private static final int TABLE_STUDENT = 1;
     private static final int TABLE_SUBJECT = 2;
+    private static final int TABLE_COURSE = 3;
 
-    private int cTable = TABLE_STUDENT;
+    private int tblCurrent = TABLE_COURSE;
+
+    final CourseStage courseStage = new CourseStage();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,12 +61,17 @@ public class AdminWindowController implements Initializable {
 
     @FXML
     protected void onClickAdd() {
-        if(cTable == TABLE_STUDENT)
+        if(tblCurrent == TABLE_STUDENT)
             StudentInputWindow.display();
+        if(tblCurrent == TABLE_COURSE)
+            courseStage.showAndWait();
+
     }
 
     @FXML
     protected void onClickSubject() {
+        tblCurrent = TABLE_SUBJECT;
+
         Stage stage = (Stage) menuBar.getScene().getWindow();
 
         clear();
@@ -72,6 +81,7 @@ public class AdminWindowController implements Initializable {
 
     @FXML
     protected void onClickStudent() {
+        tblCurrent = TABLE_STUDENT;
 
         //Get the stage of the node
         Stage stage = (Stage) menuBar.getScene().getWindow();

@@ -23,23 +23,13 @@ public class LoginStage extends Stage {
 
     private OnLoginListener onLoginListener;
 
-    public LoginStage(final String path, DBManager dbManager) {
+    public LoginStage(DBManager dbManager) {
         this.dbManager = dbManager;
-        display(path);
-    }
-
-    public LoginStage(final String path, DBManager dbManager, OnLoginListener onLoginListener) {
-        this.dbManager = dbManager;
-        this.onLoginListener = onLoginListener;
-        display(path);
-    }
-
-    private void display(String path) {
         try {
-            URL url = ResourceHelper.resource(path);
+            URL url = ResourceHelper.resourceWithBasePath("fxml/login.fxml");
             Parent root = FXMLLoader.load(url);
             Scene scene = new Scene(root, 520, 390);
-            scene.getStylesheets().add(ResourceHelper.resource("/css/login.css").toString());
+            scene.getStylesheets().add(ResourceHelper.resourceWithBasePath("css/login.css").toString());
 
             this.setTitle("Login");
             this.setScene(scene);
@@ -52,6 +42,28 @@ public class LoginStage extends Stage {
             logger.info("IOException");
         }
     }
+
+    public LoginStage(DBManager dbManager, OnLoginListener onLoginListener) {
+        this.dbManager = dbManager;
+        this.onLoginListener = onLoginListener;
+        try {
+            URL url = ResourceHelper.resourceWithBasePath("fxml/login.fxml");
+            Parent root = FXMLLoader.load(url);
+            Scene scene = new Scene(root, 520, 390);
+            scene.getStylesheets().add(ResourceHelper.resourceWithBasePath("css/login.css").toString());
+
+            this.setTitle("Login");
+            this.setScene(scene);
+            this.setMinWidth(540);
+            this.setMinHeight(420);
+            this.setOnCloseRequest((e) -> {
+                onLoginListener.onLogin(false, userType);
+            });
+        } catch (IOException e) {
+            logger.info("IOException");
+        }
+    }
+
 
     public DBManager getDbManager() {
         return dbManager;

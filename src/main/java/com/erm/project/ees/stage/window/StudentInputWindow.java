@@ -17,7 +17,7 @@ public class StudentInputWindow {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
 
-            Parent root = FXMLLoader.load(ResourceHelper.resource("/fxml/student_input.fxml"));
+            Parent root = FXMLLoader.load(ResourceHelper.resourceWithBasePath("fxml/student_input.fxml"));
             Scene scene = new Scene(root, 324, 380);
             stage.setScene(scene);
             stage.showAndWait();

@@ -5,6 +5,7 @@ import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.dao.conn.UserLibrary;
 import com.erm.project.ees.dao.exception.NoResultFoundException;
 import com.erm.project.ees.model.Curriculum;
+import com.erm.project.ees.model.Subject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -212,24 +213,26 @@ public class CurriculumDaoImpl implements CurriculumDao {
     }
 
     @Override
-    public boolean addCurriculum(Curriculum curriculum) {
+    public Curriculum addCurriculum(Curriculum curriculum) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-
+                long id = generate();
                 String sql = "INSERT INTO " + TABLE_NAME + "(id, _year, _semester, course_id) VALUES (?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setLong(1, curriculum.getId());
+
+                curriculum.setId(id);
+                pst.setLong(1, id);
                 pst.setInt(2, curriculum.getYear());
                 pst.setInt(3, curriculum.getSemester());
                 pst.setLong(4, curriculum.getCourseId());
                 pst.executeUpdate();
             }
             dbManager.close();
-            return true;
+            return curriculum;
         } catch (SQLException e) {
             dbManager.close();
-            return false;
+            return null;
         }
     }
 
@@ -284,5 +287,111 @@ public class CurriculumDaoImpl implements CurriculumDao {
     @Override
     public boolean deleteCurriculum(String query) {
         return false;
+    }
+
+    @Override
+    public Subject addSubject(long curriculumId, long subjectId) {
+        try {
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "INSERT INTO tblcurriculumsubjectlist (curriculumId, subjectId) VALUES (?, ?);";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, curriculumId);
+                pst.setLong(2, subjectId);
+                pst.executeUpdate();
+                dbManager.close();
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbManager.close();
+            return null;
+        }
+    }
+
+    @Override
+    public Subject removeSubject(long curriculumId, long subjectId) {
+        try {
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "DELETE FROM tblcurriculumsubjectlist WHERE curriculumId=? AND subjectId=?;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, curriculumId);
+                pst.setLong(2, subjectId);
+                pst.executeUpdate();
+                dbManager.close();
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbManager.close();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean isSubjectExist(long curriculumId, long subjectId) {
+        try {
+            int count = 0;
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "SELECT * FROM tblcurriculumsubjectlist WHERE curriculumId=? AND subjectId=?";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, curriculumId);
+                pst.setLong(2, subjectId);
+                ResultSet rs = pst.executeQuery();
+
+                while(rs.next()) {
+                    count ++;
+                }
+                dbManager.close();
+            }
+            return count > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbManager.close();
+            return false;
+        }
+    }
+
+    @Override
+    public List<Subject> getSubjectList(long curriculumId) {
+        List<Subject> subjectList = new ArrayList<>();
+        try {
+            int count = 0;
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "SELECT TBL_SUB.id, TBL_SUB._name, TBL_SUB._desc, TBL_SUB._unit FROM " +
+                        "tblcurriculumsubjectlist AS TBL_CCS JOIN tblsubject AS TBL_SUB ON TBL_CCS.subjectId = " +
+                        "TBL_SUB.id WHERE TBL_CCS.curriculumId=?";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, curriculumId);
+                ResultSet rs = pst.executeQuery();
+
+                while(rs.next()) {
+                    Subject subject = new Subject();
+                    subject.setId(rs.getLong(1));
+                    subject.setName(rs.getString(2));
+                    subject.setDesc(rs.getString(3));
+                    subject.setUnit(rs.getInt(4));
+                    subjectList.add(subject);
+                }
+                dbManager.close();
+                return subjectList;
+            }
+            return new ArrayList<>();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbManager.close();
+            return new ArrayList<>();
+        }
+    }
+
+    long generate() {
+        return (long) (Math.random() * Long.MAX_VALUE);
     }
 }

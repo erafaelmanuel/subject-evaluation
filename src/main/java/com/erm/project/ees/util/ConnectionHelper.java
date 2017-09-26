@@ -11,7 +11,7 @@ public class ConnectionHelper {
 
     public static UserLibrary getUserLibrary() {
         try {
-            InputStream inputStream = ResourceHelper.resourceAsStream(CONNECTION_PROPERTIES);
+            InputStream inputStream = ResourceHelper.resourceAsStreamWithBasePath("connection.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
 
@@ -33,7 +33,7 @@ public class ConnectionHelper {
 
     public static void setUserLibrary(UserLibrary userLibrary) {
         try {
-            File file = new File(ResourceHelper.dir() + "/src/main/resources" + CONNECTION_PROPERTIES);
+            File file = new File(ResourceHelper.resourceWithBasePath("connection.properties").toString());
             FileOutputStream fos = new FileOutputStream(file);
 
             Properties properties = new Properties();

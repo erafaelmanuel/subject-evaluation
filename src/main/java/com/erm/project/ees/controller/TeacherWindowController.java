@@ -62,7 +62,7 @@ public class TeacherWindowController implements Initializable {
 
                 if(student != null) {
                     TeacherStage teacherStage = (TeacherStage) ((Node) event.getSource()).getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(ResourceHelper.resource("/fxml/student_grade.fxml"));
+                    FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/student_grade.fxml"));
                     Parent root = loader.load();
                     Platform.runLater(()->blSpace.setCenter(root));
 
@@ -79,9 +79,22 @@ public class TeacherWindowController implements Initializable {
 
     }
 
+
+    @FXML
+    protected void onClickEvaluate() {
+        new Thread(()->{
+            Platform.runLater(()->{
+                TeacherStage teacherStage = (TeacherStage) menuBar.getScene().getWindow();
+                teacherStage.refresh();
+            });
+        }).start();
+
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Image imgLogo = new Image(ResourceHelper.resource("/image/studentlogo.png").toString());
+        Image imgLogo = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
         imgvLogo.setImage(imgLogo);
     }
 
