@@ -59,7 +59,7 @@
          <top>
             <BorderPane prefHeight="76.0" prefWidth="700.0" BorderPane.alignment="CENTER">
                <left>
-                  <VBox prefHeight="98.0" prefWidth="465.0" BorderPane.alignment="CENTER">
+                  <VBox prefHeight="98.0" prefWidth="508.0" BorderPane.alignment="CENTER">
                      <children>
                         <HBox prefHeight="49.0" prefWidth="475.0">
                            <children>
@@ -68,7 +68,7 @@
                                     <Insets bottom="16.0" left="30.0" right="16.0" top="16.0" />
                                  </HBox.margin>
                               </Label>
-                              <JFXComboBox fx:id="cbYS" onAction="#onChooseYS" prefHeight="25.0" prefWidth="163.0" promptText="Select  a year / semester">
+                              <JFXComboBox fx:id="cbYS" onAction="#onChooseYS" prefHeight="25.0" prefWidth="197.0" promptText="Select  a year / semester">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
@@ -87,12 +87,12 @@
                                     <Insets bottom="10.0" left="5.0" right="10.0" top="5.0" />
                                  </HBox.margin>
                               </JFXButton>
-                              <JFXTextField fx:id="txCode" onMousePressed="#onPressedText" prefHeight="25.0" prefWidth="160.0" promptText="Enter a subject code">
+                              <JFXTextField fx:id="txCode" onMousePressed="#onPressedText" prefHeight="25.0" prefWidth="195.0" promptText="Enter a subject code">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                               </JFXTextField>
-                              <Label fx:id="lbStatus" prefHeight="17.0" prefWidth="107.0" text="Not found" textFill="#d35400" visible="false">
+                              <Label fx:id="lbStatus" prefHeight="17.0" prefWidth="118.0" text="Not found" textFill="#d35400" visible="false">
                                  <HBox.margin>
                                     <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                                  </HBox.margin>
@@ -103,10 +103,10 @@
                   </VBox>
                </left>
                <right>
-                  <VBox prefHeight="106.0" prefWidth="235.0" BorderPane.alignment="CENTER">
+                  <VBox prefHeight="98.0" prefWidth="185.0" BorderPane.alignment="CENTER">
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0" />
-                        <HBox prefHeight="40.0" prefWidth="235.0">
+                        <HBox prefHeight="35.0" prefWidth="258.0">
                            <children>
                               <JFXButton fx:id="bnAdd" buttonType="RAISED" disable="true" onAction="#onClickAdd" prefHeight="25.0" prefWidth="69.0" ripplerFill="WHITE" style="-fx-background-color: #16a085;" text="Add" textFill="WHITE">
                                  <HBox.margin>

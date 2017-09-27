@@ -152,6 +152,11 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                         subjectInputStage.getController().listen(subject);
                     }).start();
                     break;
+                case TABLE_COURSE:
+                        Course course = COURSE_LIST.get(index);
+                        Platform.runLater(() -> courseStage.showAndWait());
+                        courseStage.getController().listen(course);
+                    break;
             }
         }
     }

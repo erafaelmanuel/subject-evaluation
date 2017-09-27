@@ -2,27 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="518a7d32-942a-47c9-8bd9-886cd7162f58" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectInputController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/StudentInputStage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/SubjectInputStage.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/window/StudentInputWindow.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/AdminWindowController.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/AdminWindowController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CourseController.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CourseController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CurriculumController.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CurriculumController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/LoginController.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/LoginController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/StudentInputController.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/StudentInputController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectListController.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectListController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/DirtyDao.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/DirtyDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/SubjectDao.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/SubjectDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/DirtyDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/DirtyDaoImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/StudentDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/StudentDaoImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/SubjectDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/SubjectDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CurriculumDao.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CurriculumDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CourseDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CourseDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CurriculumDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CurriculumDaoImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CourseStage.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CourseStage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CurriculumStage.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CurriculumStage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/LoginStage.java" afterPath="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/LoginStage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/fxml/admin.fxml" afterPath="$PROJECT_DIR$/src/main/resources/fxml/admin.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/fxml/student_input.fxml" afterPath="$PROJECT_DIR$/src/main/resources/fxml/student_input.fxml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/fxml/course_curriculum.fxml" afterPath="$PROJECT_DIR$/src/main/resources/fxml/course_curriculum.fxml" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,8 +24,8 @@
       <file leaf-file-name="AdminWindowController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/AdminWindowController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+            <state relative-caret-position="1416">
+              <caret line="155" column="45" lean-forward="true" selection-start-line="155" selection-start-column="45" selection-end-line="155" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -46,95 +33,49 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SubjectInputStage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/SubjectInputStage.java">
+      <file leaf-file-name="CourseStage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CourseStage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1">
-              <caret line="5" column="28" lean-forward="false" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
-              <folding>
-                <element signature="e#1119#1120#0" expanded="true" />
-                <element signature="e#1173#1174#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SubjectInputController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectInputController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="177" column="58" lean-forward="false" selection-start-line="177" selection-start-column="58" selection-end-line="177" selection-end-column="58" />
+            <state relative-caret-position="424">
+              <caret line="28" column="14" lean-forward="false" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1141#1142#0" expanded="true" />
+                <element signature="e#1174#1175#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SubjectListController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectListController.java">
+      <file leaf-file-name="CourseController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CourseController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="32" column="20" lean-forward="false" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
+            <state relative-caret-position="543">
+              <caret line="69" column="61" lean-forward="false" selection-start-line="69" selection-start-column="61" selection-end-line="69" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1103#1104#0" expanded="true" />
-                <element signature="e#1130#1131#0" expanded="true" />
+                <element signature="e#2490#2491#0" expanded="true" />
+                <element signature="e#2544#2545#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginStage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/LoginStage.java">
+      <file leaf-file-name="CurriculumController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CurriculumController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="78" column="8" lean-forward="false" selection-start-line="78" selection-start-column="8" selection-end-line="78" selection-end-column="8" />
+            <state relative-caret-position="480">
+              <caret line="450" column="39" lean-forward="false" selection-start-line="450" selection-start-column="39" selection-end-line="450" selection-end-column="39" />
               <folding>
-                <element signature="e#2349#2350#0" expanded="true" />
-                <element signature="e#2403#2404#0" expanded="true" />
+                <element signature="e#2415#2416#0" expanded="true" />
+                <element signature="e#2442#2443#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginController.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/LoginController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="100" column="33" lean-forward="false" selection-start-line="100" selection-start-column="33" selection-end-line="100" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="admin.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/admin.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1292">
-              <caret line="76" column="15" lean-forward="true" selection-start-line="76" selection-start-column="15" selection-end-line="76" selection-end-column="15" />
-              <folding>
-                <marker date="1506493713213" expanded="true" signature="3912:3932" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SubjectListStage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/SubjectListStage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="26" lean-forward="true" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SubjectDao.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/SubjectDao.java">
+      <file leaf-file-name="CourseDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CourseDao.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
               <caret line="13" column="12" lean-forward="false" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
@@ -143,11 +84,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SubjectDaoImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/SubjectDaoImpl.java">
+      <file leaf-file-name="CourseDaoImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CourseDaoImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="239" column="52" lean-forward="true" selection-start-line="239" selection-start-column="52" selection-end-line="239" selection-end-column="52" />
+            <state relative-caret-position="379">
+              <caret line="254" column="29" lean-forward="false" selection-start-line="254" selection-start-column="29" selection-end-line="254" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DirtyDaoImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/DirtyDaoImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="322" column="5" lean-forward="true" selection-start-line="322" selection-start-column="5" selection-end-line="322" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CurriculumDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CurriculumDao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="680">
+              <caret line="43" column="18" lean-forward="false" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -185,6 +146,8 @@
       <find>liste</find>
       <find>onClickSa</find>
       <find>dele</find>
+      <find>getSubjectList</find>
+      <find>Sys</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -211,7 +174,6 @@
         <option value="$PROJECT_DIR$/src/main/resources/fxml/course_input.fxml" />
         <option value="$PROJECT_DIR$/src/main/resources/fxml/course_curriculum.fxml" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CourseDao.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CourseDaoImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/TeacherStage.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/TeacherWindowController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/EnrollmentController.java" />
@@ -222,8 +184,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/util/ConnectionHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/util/ResourceHelper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CurriculumDao.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CurriculumDaoImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/StudentListController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/StudentListStage.java" />
         <option value="$PROJECT_DIR$/src/main/resources/fxml/subject_list.fxml" />
@@ -235,20 +195,23 @@
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/StudentInputStage.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/StudentInputController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/StudentDaoImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CurriculumController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CurriculumStage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CourseController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CourseStage.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/SubjectInputStage.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/DirtyDaoImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/DirtyDao.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/SubjectDaoImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/AdminWindowController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectInputController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/SubjectListStage.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectListController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/LoginStage.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/LoginController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CourseStage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CurriculumDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CourseDaoImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CourseController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/AdminWindowController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CurriculumDaoImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CurriculumController.java" />
       </list>
     </option>
   </component>
@@ -268,7 +231,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-152" />
     <option name="y" value="107" />
     <option name="width" value="1380" />
@@ -290,9 +253,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -442,6 +402,9 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="RecentsManager">
@@ -601,7 +564,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-152" y="107" width="1380" height="788" extended-state="0" />
+    <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -611,13 +575,12 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.60229135" sideWeight="0.50911856" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13069908" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.8052373" sideWeight="0.49088147" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.8052373" sideWeight="0.49088147" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30605564" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2659091" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26519758" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -629,13 +592,14 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.50303954" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.60229135" sideWeight="0.50911856" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13069908" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -643,17 +607,17 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.60229135" sideWeight="0.4969605" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30605564" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27659574" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.8052373" sideWeight="0.49088147" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30605564" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26519758" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
@@ -758,17 +722,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CourseDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3774">
-          <caret line="234" column="34" lean-forward="false" selection-start-line="234" selection-start-column="34" selection-end-line="234" selection-end-column="34" />
-          <folding>
-            <element signature="e#10337#10338#0" expanded="false" />
-            <element signature="e#10399#10400#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/ConfigurationController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1599">
@@ -851,22 +804,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CourseDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="16" column="39" lean-forward="false" selection-start-line="16" selection-start-column="39" selection-end-line="16" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CurriculumDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="33" column="52" lean-forward="false" selection-start-line="33" selection-start-column="52" selection-end-line="33" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/ConfigurationStage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -907,16 +844,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CurriculumDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2754">
-          <caret line="171" column="9" lean-forward="false" selection-start-line="171" selection-start-column="9" selection-end-line="171" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/model/Course.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -947,14 +874,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/window/StudentInputWindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="11" lean-forward="false" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/window/StudentInputWindow.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/StudentDaoImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="709">
@@ -976,11 +896,11 @@
         <state relative-caret-position="424">
           <caret line="36" column="35" lean-forward="false" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1127#1128#0" expanded="true" />
-            <element signature="e#1160#1161#0" expanded="true" />
-            <element signature="e#1231#1232#0" expanded="true" />
-            <element signature="e#1285#1286#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#1127#1128#0" expanded="false" />
+            <element signature="e#1160#1161#0" expanded="false" />
+            <element signature="e#1231#1232#0" expanded="false" />
+            <element signature="e#1285#1286#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -995,53 +915,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CurriculumController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2465">
-          <caret line="208" column="29" lean-forward="false" selection-start-line="208" selection-start-column="29" selection-end-line="208" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CourseController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="76" column="46" lean-forward="false" selection-start-line="76" selection-start-column="46" selection-end-line="76" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2441#2442#0" expanded="true" />
-            <element signature="e#2495#2496#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CourseStage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1145#1146#0" expanded="true" />
-            <element signature="e#1183#1184#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/StudentInputStage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="15" column="44" lean-forward="false" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="44" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/DirtyDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="322" column="5" lean-forward="true" selection-start-line="322" selection-start-column="5" selection-end-line="322" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1063,26 +943,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/SubjectDaoImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="239" column="52" lean-forward="true" selection-start-line="239" selection-start-column="52" selection-end-line="239" selection-end-column="52" />
+        <state relative-caret-position="3859">
+          <caret line="239" column="52" lean-forward="false" selection-start-line="239" selection-start-column="52" selection-end-line="239" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/SubjectInputStage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1">
+        <state relative-caret-position="85">
           <caret line="5" column="28" lean-forward="false" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
           <folding>
-            <element signature="e#1119#1120#0" expanded="true" />
-            <element signature="e#1173#1174#0" expanded="true" />
+            <element signature="e#1119#1120#0" expanded="false" />
+            <element signature="e#1173#1174#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectInputController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
+        <state relative-caret-position="2635">
           <caret line="177" column="58" lean-forward="false" selection-start-line="177" selection-start-column="58" selection-end-line="177" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1093,19 +973,19 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/SubjectListStage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
-          <caret line="9" column="26" lean-forward="true" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
+          <caret line="9" column="26" lean-forward="false" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/SubjectListController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
+        <state relative-caret-position="204">
           <caret line="32" column="20" lean-forward="false" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1103#1104#0" expanded="true" />
-            <element signature="e#1130#1131#0" expanded="true" />
+            <element signature="e#1103#1104#0" expanded="false" />
+            <element signature="e#1130#1131#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1116,39 +996,114 @@
       </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1292">
-          <caret line="76" column="15" lean-forward="true" selection-start-line="76" selection-start-column="15" selection-end-line="76" selection-end-column="15" />
+          <caret line="76" column="15" lean-forward="false" selection-start-line="76" selection-start-column="15" selection-end-line="76" selection-end-column="15" />
           <folding>
             <marker date="1506493713213" expanded="true" signature="3912:3932" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/AdminWindowController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/LoginStage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
+        <state relative-caret-position="1071">
           <caret line="78" column="8" lean-forward="false" selection-start-line="78" selection-start-column="8" selection-end-line="78" selection-end-column="8" />
           <folding>
-            <element signature="e#2349#2350#0" expanded="true" />
-            <element signature="e#2403#2404#0" expanded="true" />
+            <element signature="e#2349#2350#0" expanded="false" />
+            <element signature="e#2403#2404#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/LoginController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="100" column="33" lean-forward="false" selection-start-line="100" selection-start-column="33" selection-end-line="100" selection-end-column="33" />
+        <state relative-caret-position="1309">
+          <caret line="99" column="85" lean-forward="true" selection-start-line="99" selection-start-column="85" selection-end-line="99" selection-end-column="85" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CourseDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="13" column="12" lean-forward="false" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CourseDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="254" column="29" lean-forward="false" selection-start-line="254" selection-start-column="29" selection-end-line="254" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/AdminWindowController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1416">
+          <caret line="155" column="45" lean-forward="true" selection-start-line="155" selection-start-column="45" selection-end-line="155" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/stage/CourseStage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="28" column="14" lean-forward="false" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="14" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1141#1142#0" expanded="true" />
+            <element signature="e#1174#1175#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/CurriculumDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="43" column="18" lean-forward="false" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/CurriculumDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="267" column="30" lean-forward="false" selection-start-line="267" selection-start-column="30" selection-end-line="267" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/dao/impl/DirtyDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="322" column="5" lean-forward="true" selection-start-line="322" selection-start-column="5" selection-end-line="322" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CourseController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="69" column="61" lean-forward="false" selection-start-line="69" selection-start-column="61" selection-end-line="69" selection-end-column="61" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2490#2491#0" expanded="true" />
+            <element signature="e#2544#2545#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/erm/project/ees/controller/CurriculumController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="450" column="39" lean-forward="false" selection-start-line="450" selection-start-column="39" selection-end-line="450" selection-end-column="39" />
+          <folding>
+            <element signature="e#2415#2416#0" expanded="true" />
+            <element signature="e#2442#2443#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

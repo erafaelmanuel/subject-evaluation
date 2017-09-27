@@ -244,14 +244,15 @@ public class CourseDaoImpl implements CourseDao {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _desc=?, _totalYear=?, _totalSemester=? WHERE id = ?;";
+                String sql = "UPDATE " + TABLE_NAME + " SET id=?, _name=?, _desc=?, _totalYear=?, _totalSemester=? WHERE id = ?;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setString(1, course.getName());
-                pst.setString(2, course.getDesc());
-                pst.setLong(3, course.getId());
+                pst.setLong(1, course.getId());
+                pst.setString(2, course.getName());
+                pst.setString(3, course.getDesc());
                 pst.setInt(4, course.getTotalYear());
                 pst.setInt(5, course.getTotalSemester());
+                pst.setLong(6, id);
                 pst.executeUpdate();
             }
             dbManager.getConnection().close();

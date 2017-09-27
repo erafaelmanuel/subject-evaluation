@@ -34,6 +34,10 @@ public class CourseStage extends Stage {
         }
     }
 
+    public CourseController getController() {
+        return controller;
+    }
+
     public CurriculumStage getCurriculumStage() {
         return curriculumStage;
     }

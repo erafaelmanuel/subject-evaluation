@@ -67,12 +67,14 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     private Subject sCurrent;
 
     private final ObservableList<com.erm.project.ees.model.recursive.Subject> SUBJECT_LIST = FXCollections.observableArrayList();
-
+    private final ObservableList<String> YR_SEM_LIST = FXCollections.observableArrayList();
     private final List<Curriculum> CURRICULUM_LIST = new ArrayList<>();
 
     private final Course COURSE = new Course();
+    private final Course TEMP_COURSE = new Course();
 
     private int totalUnit;
+    private boolean unitIsValid[];
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -121,11 +123,12 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     @FXML
     protected void onClickAdd() {
         if (sCurrent != null) {
-            final long curriculumId = CURRICULUM_LIST.get(cbYS.getSelectionModel().getSelectedIndex()).getId();
+            final int index = cbYS.getSelectionModel().getSelectedIndex();
+            final long curriculumId = CURRICULUM_LIST.get(index).getId();
             boolean isExist = false;
 
-            for(Curriculum curriculum : CURRICULUM_LIST) {
-                if(curriculumDao.isSubjectExist(curriculum.getId(), sCurrent.getId())) {
+            for (Curriculum curriculum : CURRICULUM_LIST) {
+                if (curriculumDao.isSubjectExist(curriculum.getId(), sCurrent.getId())) {
                     isExist = true;
                     break;
                 }
@@ -149,11 +152,14 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
                 lbStatus.setVisible(false);
 
                 lbUnit.setText(totalUnit + "");
-                if(totalUnit > 0 && totalUnit <= 30)
+                if (totalUnit > 0 && totalUnit <= 30) {
                     lbUnit.setStyle("-fx-text-fill:#16a085");
-                else
+                    unitIsValid[index] = true;
+                } else {
                     lbUnit.setStyle("-fx-text-fill:#c0392b");
-            }else {
+                    unitIsValid[index] = false;
+                }
+            } else {
                 lbStatus.setVisible(true);
                 lbStatus.setText("Subject already exist");
                 lbStatus.setStyle("-fx-text-fill:#c0392b");
@@ -166,7 +172,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     protected void onClickRemove() {
         final int index = tblSList.getSelectionModel().getSelectedIndex();
         final long curriculumId = CURRICULUM_LIST.get(cbYS.getSelectionModel().getSelectedIndex()).getId();
-        if(index >= 0) {
+        if (index >= 0) {
             com.erm.project.ees.model.recursive.Subject subject =
                     SUBJECT_LIST.get(tblSList.getSelectionModel().getSelectedIndex());
 
@@ -183,48 +189,59 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
             tblSList.setShowRoot(false);
 
             lbUnit.setText(totalUnit + "");
-            if(totalUnit > 0 && totalUnit <= 30)
+            if (totalUnit > 0 && totalUnit <= 30) {
                 lbUnit.setStyle("-fx-text-fill:#16a085");
-            else
+                unitIsValid[cbYS.getSelectionModel().getSelectedIndex()] = true;
+            } else {
                 lbUnit.setStyle("-fx-text-fill:#c0392b");
+                unitIsValid[cbYS.getSelectionModel().getSelectedIndex()] = false;
+            }
         }
     }
 
     @FXML
     protected void onClickSave(ActionEvent event) {
         boolean isValid = true;
-        for(Curriculum curriculum : CURRICULUM_LIST) {
-           isValid = curriculumDao.getSubjectList(curriculum.getId()).size() > 0;
-           if(!isValid)
-               break;
+        for (Curriculum curriculum : CURRICULUM_LIST) {
+            isValid = curriculumDao.getSubjectList(curriculum.getId()).size() > 0;
+            if (!isValid)
+                break;
         }
-        if(isValid) {
-            if(totalUnit > 30) {
+        if (isValid) {
+            for (boolean valid : unitIsValid) {
+                if (!valid)
+                    isValid = false;
+            }
+            if (!isValid) {
                 Platform.runLater(() -> new Thread(() -> JOptionPane.showMessageDialog(null,
-                        "The maximum units /curriculum is 30")).start());
+                        "The maximum units per curriculum is 30")).start());
                 return;
+            }
+            if (courseDao.getCourseById(COURSE.getId()) != null) {
+                courseDao.deleteCourseById(COURSE.getId());
+                courseDao.updateCourseById(TEMP_COURSE.getId(), COURSE);
             }
             dispose(State.SAVE);
             CurriculumStage stage = (CurriculumStage) ((Node) event.getSource()).getScene().getWindow();
             stage.callBack();
         } else {
-            Platform.runLater(()-> new Thread(()->JOptionPane.showMessageDialog(null,
-                    "Make sure add subject to a curriculum")).start());
+            Platform.runLater(() -> new Thread(() -> JOptionPane.showMessageDialog(null,
+                    "Make sure to add subject to a curriculum")).start());
         }
     }
 
     @FXML
     protected void onClickDiscard(ActionEvent event) {
-        dispose(State.DISCARD);
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+        new Thread(() -> dispose(State.DISCARD)).start();
     }
 
     @FXML
     protected void onChooseYS(ActionEvent event) {
-        if(cbYS.getSelectionModel().getSelectedIndex() > -1) {
-            final long curriculumId = CURRICULUM_LIST.get(cbYS.getSelectionModel().getSelectedIndex()).getId();
+        if (cbYS.getSelectionModel().getSelectedIndex() > -1) {
+            final int index = cbYS.getSelectionModel().getSelectedIndex();
+            final long curriculumId = CURRICULUM_LIST.get(index).getId();
             final List<com.erm.project.ees.model.recursive.Subject> subjectList = new ArrayList<>();
 
             totalUnit = 0;
@@ -232,17 +249,20 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
             for (Subject subject : curriculumDao.getSubjectList(curriculumId)) {
                 subjectList.add(new com.erm.project.ees.model.recursive.Subject(subject.getId(), subject.getName(),
                         subject.getDesc(), subject.getUnit()));
-                totalUnit+=subject.getUnit();
+                totalUnit += subject.getUnit();
             }
             Platform.runLater(() -> {
                 SUBJECT_LIST.clear();
                 SUBJECT_LIST.addAll(subjectList);
 
                 lbUnit.setText(totalUnit + "");
-                if(totalUnit > 0 && totalUnit <= 30)
+                if (totalUnit > 0 && totalUnit <= 30) {
                     lbUnit.setStyle("-fx-text-fill:#16a085");
-                else
+                    unitIsValid[index] = true;
+                } else {
                     lbUnit.setStyle("-fx-text-fill:#c0392b");
+                    unitIsValid[index] = false;
+                }
 
                 TreeItem<com.erm.project.ees.model.recursive.Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,
                         RecursiveTreeObject::getChildren);
@@ -258,36 +278,6 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
         lbStatus.setVisible(false);
         bnAdd.setDisable(true);
         sCurrent = null;
-    }
-
-    public void listener(Course course) {
-        Course c = courseDao.addCourse(course);
-        if (c != null) {
-            COURSE.setId(c.getId());
-            COURSE.setName(c.getName());
-            COURSE.setDesc(c.getDesc());
-            COURSE.setTotalYear(c.getTotalYear());
-            COURSE.setTotalSemester(c.getTotalSemester());
-
-            for (int i = 1; i <= course.getTotalYear(); i++) {
-                for (int sem = 1; sem <= course.getTotalSemester(); sem++) {
-                    Curriculum cur = curriculumDao.addCurriculum(new Curriculum(i, sem, course.getId()));
-                    CURRICULUM_LIST.add(cur);
-                }
-            }
-        }
-
-        Platform.runLater(() -> {
-            lbName.setText(course.getName());
-            lbDesc.setText(course.getDesc());
-
-            for (int i = 1; i <= course.getTotalYear(); i++) {
-                for (int sem = 1; sem <= course.getTotalSemester(); sem++) {
-                    cbYS.getItems().add(formatter(i) + " YEAR / " + formatter(sem) + " SEMESTER");
-                }
-            }
-            cbYS.getSelectionModel().select(0);
-        });
     }
 
     public String formatter(int num) {
@@ -337,11 +327,11 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     }
 
     public void dispose(State state) {
-        if(state.getState() == State.DISCARD.getState()) {
+        if (state.getState() == State.DISCARD.getState()) {
             for (Curriculum curriculum : CURRICULUM_LIST)
                 curriculumDao.deleteCurriculumById(curriculum.getId());
 
-            courseDao.deleteCourseById(COURSE.getId());
+            courseDao.deleteCourseById(TEMP_COURSE.getId());
         }
 
         Platform.runLater(() -> {
@@ -353,15 +343,13 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
             lbUnit.setText("0");
 
             cbYS.getItems().clear();
+            cbYS.getSelectionModel().clearSelection();
 
             bnAdd.setDisable(true);
 
             SUBJECT_LIST.clear();
 
             CURRICULUM_LIST.clear();
-
-            tblSList.setRoot(null);
-            tblSList.setShowRoot(false);
         });
     }
 
@@ -369,11 +357,12 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     public void onAdd(Subject item) {
         sCurrent = item;
         if (sCurrent != null) {
-            final long curriculumId = CURRICULUM_LIST.get(cbYS.getSelectionModel().getSelectedIndex()).getId();
+            final int index = cbYS.getSelectionModel().getSelectedIndex();
+            final long curriculumId = CURRICULUM_LIST.get(index).getId();
             boolean isExist = false;
 
-            for(Curriculum curriculum : CURRICULUM_LIST) {
-                if(curriculumDao.isSubjectExist(curriculum.getId(), sCurrent.getId())) {
+            for (Curriculum curriculum : CURRICULUM_LIST) {
+                if (curriculumDao.isSubjectExist(curriculum.getId(), sCurrent.getId())) {
                     isExist = true;
                     break;
                 }
@@ -397,15 +386,70 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
                 lbStatus.setVisible(false);
 
                 lbUnit.setText(totalUnit + "");
-                if(totalUnit > 0 && totalUnit <= 30)
+                if (totalUnit > 0 && totalUnit <= 30) {
                     lbUnit.setStyle("-fx-text-fill:#16a085");
-                else
+                    unitIsValid[index] = true;
+                } else {
                     lbUnit.setStyle("-fx-text-fill:#c0392b");
-            }else {
-                Platform.runLater(()->new Thread(()->JOptionPane.showMessageDialog(null,
+                    unitIsValid[index] = false;
+                }
+            } else {
+                Platform.runLater(() -> new Thread(() -> JOptionPane.showMessageDialog(null,
                         "The subject already exist")).start());
             }
         }
+    }
+
+    public void listener(Course course) {
+
+        boolean isExist = false;
+        COURSE.setId(course.getId());
+        COURSE.setName(course.getName());
+        COURSE.setDesc(course.getDesc());
+        COURSE.setTotalYear(course.getTotalYear());
+        COURSE.setTotalSemester(course.getTotalSemester());
+
+        if (courseDao.getCourseById(COURSE.getId()) != null)
+            isExist = true;
+        Course c = courseDao.addCourse(course);
+        if (c != null) {
+            TEMP_COURSE.setId(c.getId());
+            TEMP_COURSE.setName(c.getName());
+            TEMP_COURSE.setDesc(c.getDesc());
+            TEMP_COURSE.setTotalYear(c.getTotalYear());
+            TEMP_COURSE.setTotalSemester(c.getTotalSemester());
+
+            unitIsValid = new boolean[TEMP_COURSE.getTotalYear() * TEMP_COURSE.getTotalSemester()];
+            int counter = 0;
+            for (int year = 1; year <= TEMP_COURSE.getTotalYear(); year++) {
+                for (int sem = 1; sem <= TEMP_COURSE.getTotalSemester(); sem++) {
+                    Curriculum cur = curriculumDao.addCurriculum(new Curriculum(year, sem, course.getId()));
+                    if (isExist) {
+                        for (Subject subject : curriculumDao.getSubjectList(COURSE.getId(), year, sem)) {
+                            curriculumDao.addSubject(cur.getId(), subject.getId());
+                        }
+                        unitIsValid[counter] = true;
+                    }
+                    CURRICULUM_LIST.add(cur);
+                    counter ++;
+                }
+            }
+        }
+
+        Platform.runLater(() -> {
+            lbName.setText(TEMP_COURSE.getName());
+            lbDesc.setText(TEMP_COURSE.getDesc());
+
+            YR_SEM_LIST.clear();
+
+            for (int i = 1; i <= TEMP_COURSE.getTotalYear(); i++) {
+                for (int sem = 1; sem <= TEMP_COURSE.getTotalSemester(); sem++) {
+                    YR_SEM_LIST.add(formatter(i) + " YEAR / " + formatter(sem) + " SEMESTER");
+                }
+            }
+            cbYS.setItems(YR_SEM_LIST);
+            cbYS.getSelectionModel().select(0);
+        });
     }
 
     public enum State {

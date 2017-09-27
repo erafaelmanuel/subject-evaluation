@@ -30,6 +30,8 @@ public class CourseController implements Initializable {
 
     private CurriculumStage curriculumStage = new CurriculumStage();
 
+    private final Course COURSE = new Course();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cbYear.getItems().add("1 YEARS");
@@ -47,6 +49,7 @@ public class CourseController implements Initializable {
     @FXML
     protected void onClickCancel(ActionEvent event) {
         CourseStage stage = (CourseStage) ((Node) event.getSource()).getScene().getWindow();
+        dispose();
         stage.close();
     }
 
@@ -60,12 +63,12 @@ public class CourseController implements Initializable {
         new Thread(()->{
             Platform.runLater(()->curriculumStage.showAndWait());
 
-            Course course = new Course();
-            course.setName(txName.getText());
-            course.setDesc(txDesc.getText());
-            course.setTotalYear(cbYear.getSelectionModel().getSelectedIndex() + 1);
-            course.setTotalSemester(cbSemester.getSelectionModel().getSelectedIndex() + 2);
-            curriculumStage.getController().listener(course);
+            COURSE.setName(txName.getText());
+            COURSE.setDesc(txDesc.getText());
+            COURSE.setTotalYear(cbYear.getSelectionModel().getSelectedIndex() + 1);
+            COURSE.setTotalSemester(cbSemester.getSelectionModel().getSelectedIndex() + 2);
+            curriculumStage.getController().listener(COURSE);
+            dispose();
         }).start();
 
     }
@@ -79,5 +82,19 @@ public class CourseController implements Initializable {
 
     public void listen(CurriculumStage curriculumStage) {
         this.curriculumStage = curriculumStage;
+    }
+
+    public void listen(Course course) {
+        COURSE.setId(course.getId());
+        COURSE.setName(course.getName());
+        COURSE.setDesc(course.getDesc());
+        COURSE.setTotalYear(course.getTotalYear());
+        COURSE.setTotalSemester(course.getTotalSemester());
+
+        txName.setText(COURSE.getName());
+        txDesc.setText(COURSE.getDesc());
+
+        cbYear.getSelectionModel().select(COURSE.getTotalYear()-1);
+        cbSemester.getSelectionModel().select(COURSE.getTotalSemester()-2);
     }
 }

@@ -32,4 +32,14 @@ public interface CurriculumDao {
     boolean isSubjectExist(long curriculumId, long subjectId);
 
     List<Subject> getSubjectList(long curriculumId);
+
+    boolean updateCurriculumCourseId(long id, long courseId);
+
+    boolean deleteCurriculumByCourseId(long courseId);
+
+    List<Curriculum> getCurriculumListByCourseId(long courseId);
+
+    Curriculum getCurriculumListByCourseId(long courseId, int year, int semester);
+
+    List<Subject> getSubjectList(long courseId, int year, int semester);
 }

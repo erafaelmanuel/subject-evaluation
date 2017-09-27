@@ -173,6 +173,110 @@ public class CurriculumDaoImpl implements CurriculumDao {
     }
 
     @Override
+    public List<Curriculum> getCurriculumListByCourseId(long courseId) {
+        List<Curriculum> curriculumList = new ArrayList<>();
+        try {
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE course_id=?";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, courseId);
+                ResultSet rs = pst.executeQuery();
+
+                while (rs.next()) {
+                    Curriculum curriculum = new Curriculum();
+                    curriculum.setId(rs.getLong(1));
+                    curriculum.setYear(rs.getInt(2));
+                    curriculum.setSemester(rs.getInt(3));
+                    curriculum.setCourseId(rs.getLong(4));
+                    curriculumList.add(curriculum);
+                }
+                dbManager.close();
+                return curriculumList;
+            }
+            throw new NoResultFoundException("No result found on the user detail table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            LOGGER.info("Connection error");
+            dbManager.close();
+            return curriculumList;
+        } catch (NoResultFoundException e) {
+            LOGGER.info("NoResultFoundException");
+            dbManager.close();
+            return curriculumList;
+        }
+    }
+
+    @Override
+    public Curriculum getCurriculumListByCourseId(long courseId, int year, int semester) {
+        try {
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE course_id=? AND _year=? AND _semester LIMIT 1;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, courseId);
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    Curriculum curriculum = new Curriculum();
+                    curriculum.setId(rs.getLong(1));
+                    curriculum.setYear(rs.getInt(2));
+                    curriculum.setSemester(rs.getInt(3));
+                    curriculum.setCourseId(rs.getLong(4));
+
+                    dbManager.close();
+                    return curriculum;
+                }
+            }
+            throw new NoResultFoundException("No result found on the user detail table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            LOGGER.info("Connection error");
+            dbManager.close();
+            return null;
+        } catch (NoResultFoundException e) {
+            LOGGER.info("NoResultFoundException");
+            dbManager.close();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Subject> getSubjectList(long courseId, int year, int semester) {
+        List<Subject> subjectList = new ArrayList<>();
+        try {
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "SELECT TBL_SUB.id, TBL_SUB._name, TBL_SUB._desc, TBL_SUB._unit FROM tblcurriculumsubjectlist AS TBL_CCS JOIN tblsubject AS TBL_SUB ON TBL_CCS.subjectId = TBL_SUB.id JOIN tblcurriculum as TBL_C ON TBL_CCS.curriculumId = TBL_C.id WHERE TBL_C.course_id=? AND TBL_C._year=? AND TBL_C._semester=?;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, courseId);
+                pst.setInt(2, year);
+                pst.setInt(3, semester);
+                ResultSet rs = pst.executeQuery();
+
+                while(rs.next()) {
+                    Subject subject = new Subject();
+                    subject.setId(rs.getLong(1));
+                    subject.setName(rs.getString(2));
+                    subject.setDesc(rs.getString(3));
+                    subject.setUnit(rs.getInt(4));
+                    subjectList.add(subject);
+                }
+                dbManager.close();
+                return subjectList;
+            }
+            return new ArrayList<>();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbManager.close();
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
     public List<Curriculum> getCurriculumList(String query) {
         List<Curriculum> curriculumList = new ArrayList<>();
         try {
@@ -388,6 +492,48 @@ public class CurriculumDaoImpl implements CurriculumDao {
             e.printStackTrace();
             dbManager.close();
             return new ArrayList<>();
+        }
+    }
+
+
+    @Override
+    public boolean deleteCurriculumByCourseId(long courseId) {
+        try {
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+
+                String sql = "DELETE FROM " + TABLE_NAME + " WHERE course_id=?";
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, courseId);
+                pst.executeUpdate();
+            }
+            dbManager.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbManager.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateCurriculumCourseId(long id, long courseId) {
+        try {
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "UPDATE " + TABLE_NAME + " SET course_id=? WHERE id=?;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, courseId);
+                pst.setLong(2, id);
+                pst.executeUpdate();
+            }
+            dbManager.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbManager.close();
+            return false;
         }
     }
 
