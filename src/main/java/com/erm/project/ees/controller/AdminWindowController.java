@@ -9,10 +9,7 @@ import com.erm.project.ees.dao.impl.SubjectDaoImpl;
 import com.erm.project.ees.model.Course;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.Subject;
-import com.erm.project.ees.stage.CourseStage;
-import com.erm.project.ees.stage.CurriculumStage;
-import com.erm.project.ees.stage.StudentInputStage;
-import com.erm.project.ees.stage.SubjectInputStage;
+import com.erm.project.ees.stage.*;
 import com.erm.project.ees.stage.window.PopOnExitWindow;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -45,6 +42,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
     @FXML
     private Label lbTitle;
+
+    @FXML
+    private MenuItem miInputGrade;
 
 
     private static final ObservableList<Object> OBSERVABLE_LIST = FXCollections.observableArrayList();
@@ -102,12 +102,10 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     protected void onClickSubject() {
         mCurrent = TABLE_SUBJECT;
 
-        Stage stage = (Stage) menuBar.getScene().getWindow();
-
         clear();
-
         loadSubject();
 
+        miInputGrade.setVisible(false);
         lbTitle.setText("Subject List");
     }
 
@@ -161,35 +159,36 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         }
     }
 
+    @FXML
+    protected void onClickInputGrade() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            Student student = STUDENT_LIST.get(index);
+            StudentGradeInputStage studentGradeInputStage = new StudentGradeInputStage();
+            Platform.runLater(() -> studentGradeInputStage.showAndWait());
+            studentGradeInputStage.getController().listening(student);
+        }
+    }
+
 
     @FXML
     protected void onClickStudent() {
         mCurrent = TABLE_STUDENT;
 
-        //Get the stage of the node
-        Stage stage = (Stage) menuBar.getScene().getWindow();
-
-        //Clear the table column and items
         clear();
-
-        //Load the student list
         loadStudent();
 
+        miInputGrade.setVisible(true);
         lbTitle.setText("Student List");
     }
     @FXML
     protected void onClickCourse() {
         mCurrent = TABLE_COURSE;
 
-        //Get the stage of the node
-        Stage stage = (Stage) menuBar.getScene().getWindow();
-
-        //Clear the table column and items
         clear();
-
-        //Load the student list
         loadCourse();
 
+        miInputGrade.setVisible(false);
         lbTitle.setText("Course List");
     }
 

@@ -301,6 +301,30 @@ public class DirtyDaoImpl implements DirtyDao {
     }
 
     @Override
+    public boolean updateStudentRecord(long subjectId, long studentId, double midterm, double finalterm,
+                                              String mark) {
+        try {
+            if(dbManager.connect()) {
+                String sql = "UPDATE tblstudentsubjectlist SET _midterm=?, _finalterm=?, _mark=? WHERE subjectId=? AND studentId=?;";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setDouble(1, midterm);
+                pst.setDouble(2, finalterm);
+                pst.setString(3, mark);
+                pst.setLong(4, subjectId);
+                pst.setLong(5, studentId);
+                pst.executeUpdate();
+                dbManager.close();
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbManager.close();
+            return false;
+        }
+    }
+
+    @Override
     public boolean deletePrerequisite(long subjectId, long toSubjectId) {
         List<Subject> subjectList = new ArrayList<>();
         try {

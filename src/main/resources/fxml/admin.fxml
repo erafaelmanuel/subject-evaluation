@@ -41,6 +41,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
+                        <MenuItem fx:id="miInputGrade" mnemonicParsing="false" onAction="#onClickInputGrade" text="Input Grade" />
                       <MenuItem mnemonicParsing="false" onAction="#onClickUpdate" text="Update" />
                         <MenuItem mnemonicParsing="false" onAction="#onClickDelete" text="Delete" />
                     </items>

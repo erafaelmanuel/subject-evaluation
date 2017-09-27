@@ -1,12 +1,10 @@
 package com.erm.project.ees;
 
 import com.erm.project.ees.dao.conn.DBManager;
-import com.erm.project.ees.dao.impl.StudentDaoImpl;
 import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.stage.ConfigurationStage;
 import com.erm.project.ees.stage.LoginStage;
 import com.erm.project.ees.stage.TeacherStage;
-import com.erm.project.ees.util.AssessmentHelper;
 import com.erm.project.ees.util.ResourceHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
