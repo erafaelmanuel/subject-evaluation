@@ -9,6 +9,7 @@ import com.erm.project.ees.dao.impl.SubjectDaoImpl;
 import com.erm.project.ees.model.Course;
 import com.erm.project.ees.model.Curriculum;
 import com.erm.project.ees.model.Subject;
+import com.erm.project.ees.stage.CurriculumStage;
 import com.erm.project.ees.stage.SubjectListStage;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -204,8 +205,8 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
                 return;
             }
             dispose(State.SAVE);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.close();
+            CurriculumStage stage = (CurriculumStage) ((Node) event.getSource()).getScene().getWindow();
+            stage.callBack();
         } else {
             Platform.runLater(()-> new Thread(()->JOptionPane.showMessageDialog(null,
                     "Make sure add subject to a curriculum")).start());

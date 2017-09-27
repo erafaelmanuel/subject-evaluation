@@ -95,7 +95,10 @@ public class LoginController implements Initializable {
 			if(!isValid) {
 				Platform.runLater(loginFail());
 			}else {
-				Platform.runLater(()->{ loginStage.callBack(true, userDetail.getUserType()); });
+				new Thread(()->
+						Platform.runLater(()->
+								loginStage.callBack(true, userDetail.getUserType())))
+						.start();
 			}
 
 			Platform.runLater(()-> {

@@ -2,6 +2,7 @@ package com.erm.project.ees.stage;
 
 import com.erm.project.ees.controller.CurriculumController;
 import com.erm.project.ees.util.ResourceHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import java.io.IOException;
 public class CurriculumStage extends Stage {
 
     private CurriculumController controller;
+    private OnItemAddLister onItemAddLister;
 
     public CurriculumStage() {
         try {
@@ -30,5 +32,19 @@ public class CurriculumStage extends Stage {
 
     public CurriculumController getController() {
         return controller;
+    }
+
+    public void setOnItemAddLister(OnItemAddLister onItemAddLister) {
+        this.onItemAddLister = onItemAddLister;
+    }
+
+    public void callBack() {
+        onItemAddLister.onAddCourse();
+        Platform.runLater(()->close());
+    }
+
+    @FunctionalInterface
+    public interface OnItemAddLister {
+        void onAddCourse();
     }
 }

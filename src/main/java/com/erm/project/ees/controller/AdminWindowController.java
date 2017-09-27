@@ -1,28 +1,35 @@
 package com.erm.project.ees.controller;
 
+import com.erm.project.ees.dao.CourseDao;
+import com.erm.project.ees.dao.StudentDao;
+import com.erm.project.ees.dao.SubjectDao;
+import com.erm.project.ees.dao.impl.CourseDaoImpl;
 import com.erm.project.ees.dao.impl.StudentDaoImpl;
 import com.erm.project.ees.dao.impl.SubjectDaoImpl;
+import com.erm.project.ees.model.Course;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.Subject;
-import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.stage.CourseStage;
+import com.erm.project.ees.stage.CurriculumStage;
+import com.erm.project.ees.stage.StudentInputStage;
+import com.erm.project.ees.stage.SubjectInputStage;
 import com.erm.project.ees.stage.window.PopOnExitWindow;
-import com.erm.project.ees.stage.window.StudentInputWindow;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class AdminWindowController implements Initializable {
+public class AdminWindowController implements Initializable, StudentInputStage.OnItemAddLister,
+        CurriculumStage.OnItemAddLister, SubjectInputStage.OnItemAddLister {
 
     @FXML
     private Button bnAdd;
@@ -36,6 +43,10 @@ public class AdminWindowController implements Initializable {
     @FXML
     private TableView<Object> tblData;
 
+    @FXML
+    private Label lbTitle;
+
+
     private static final ObservableList<Object> OBSERVABLE_LIST = FXCollections.observableArrayList();
 
     private static final int NO_TABLE = 0;
@@ -43,13 +54,29 @@ public class AdminWindowController implements Initializable {
     private static final int TABLE_SUBJECT = 2;
     private static final int TABLE_COURSE = 3;
 
-    private int tblCurrent = TABLE_COURSE;
+    private int mCurrent = TABLE_STUDENT;
 
-    final CourseStage courseStage = new CourseStage();
+    private final CourseStage courseStage = new CourseStage();
+    private final StudentInputStage studentInputStage = new StudentInputStage();
+    private final SubjectInputStage subjectInputStage = new SubjectInputStage();
+
+    private final List<Student> STUDENT_LIST = new ArrayList<>();
+    private final List<Course> COURSE_LIST = new ArrayList<>();
+    private final List<Subject> SUBJECT_LIST = new ArrayList<>();
+
+    private final CourseDao courseDao = new CourseDaoImpl();
+    private final StudentDao studentDao = new StudentDaoImpl();
+    private final SubjectDao subjectDao = new SubjectDaoImpl();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tblData.setItems(OBSERVABLE_LIST);
+        loadStudent();
+        lbTitle.setText("Student List");
+
+        studentInputStage.setOnItemAddLister(this);
+        courseStage.getCurriculumStage().setOnItemAddLister(this);
+        subjectInputStage.setOnItemAddLister(this);
     }
 
     @FXML
@@ -61,27 +88,78 @@ public class AdminWindowController implements Initializable {
 
     @FXML
     protected void onClickAdd() {
-        if(tblCurrent == TABLE_STUDENT)
-            StudentInputWindow.display();
-        if(tblCurrent == TABLE_COURSE)
-            courseStage.showAndWait();
-
+        switch (mCurrent) {
+            case TABLE_STUDENT: studentInputStage.showAndWait(); break;
+            case TABLE_COURSE:
+                courseStage.showAndWait();
+                break;
+            case TABLE_SUBJECT: subjectInputStage.showAndWait(); break;
+            default: courseStage.showAndWait(); break;
+        }
     }
 
     @FXML
     protected void onClickSubject() {
-        tblCurrent = TABLE_SUBJECT;
+        mCurrent = TABLE_SUBJECT;
 
         Stage stage = (Stage) menuBar.getScene().getWindow();
 
         clear();
 
         loadSubject();
+
+        lbTitle.setText("Subject List");
     }
 
     @FXML
+    protected void onClickDelete() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            switch (mCurrent) {
+                case TABLE_STUDENT:
+                    studentDao.deleteStudentById(STUDENT_LIST.get(index).getId());
+                    clear();
+                    loadStudent();
+                    break;
+                case TABLE_COURSE:
+                    courseDao.deleteCourseById(COURSE_LIST.get(index).getId());
+                    clear();
+                    loadCourse();
+                    break;
+                case TABLE_SUBJECT:
+                    subjectDao.deleteSubjectById(SUBJECT_LIST.get(index).getId());
+                    clear();
+                    loadSubject();
+                    break;
+            }
+        }
+    }
+
+    @FXML
+    protected void onClickUpdate() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            switch (mCurrent) {
+                case TABLE_STUDENT:
+                    Student student = STUDENT_LIST.get(index);
+                    Platform.runLater(()-> studentInputStage.showAndWait());
+                    studentInputStage.getController().listen(student);
+                    break;
+                case TABLE_SUBJECT:
+                    new Thread(()-> {
+                        Subject subject = SUBJECT_LIST.get(index);
+                        Platform.runLater(() -> subjectInputStage.showAndWait());
+                        subjectInputStage.getController().listen(subject);
+                    }).start();
+                    break;
+            }
+        }
+    }
+
+
+    @FXML
     protected void onClickStudent() {
-        tblCurrent = TABLE_STUDENT;
+        mCurrent = TABLE_STUDENT;
 
         //Get the stage of the node
         Stage stage = (Stage) menuBar.getScene().getWindow();
@@ -91,6 +169,23 @@ public class AdminWindowController implements Initializable {
 
         //Load the student list
         loadStudent();
+
+        lbTitle.setText("Student List");
+    }
+    @FXML
+    protected void onClickCourse() {
+        mCurrent = TABLE_COURSE;
+
+        //Get the stage of the node
+        Stage stage = (Stage) menuBar.getScene().getWindow();
+
+        //Clear the table column and items
+        clear();
+
+        //Load the student list
+        loadCourse();
+
+        lbTitle.setText("Course List");
     }
 
     private void loadStudent() {
@@ -130,8 +225,10 @@ public class AdminWindowController implements Initializable {
         tblData.getColumns().add(stGender);
         tblData.getColumns().add(stContact);
 
-        for(Student student : new StudentDaoImpl().getStudentList()) {
+        STUDENT_LIST.clear();
+        for(Student student : studentDao.getStudentList()) {
             tblData.getItems().add(student);
+            STUDENT_LIST.add(student);
         }
     }
 
@@ -157,13 +254,68 @@ public class AdminWindowController implements Initializable {
         tblData.getColumns().add(suDesc);
         tblData.getColumns().add(suUnit);
 
-        for(Subject subject : new SubjectDaoImpl().getSubjectList()) {
+        SUBJECT_LIST.clear();
+        for(Subject subject : subjectDao.getSubjectList()) {
             tblData.getItems().add(subject);
+            SUBJECT_LIST.add(subject);
+        }
+    }
+
+    private void loadCourse() {
+        TableColumn<Object, String> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idCol.setPrefWidth(200);
+
+        TableColumn<Object, String> nameCol = new TableColumn<>("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameCol.setPrefWidth(200);
+
+        TableColumn<Object, String> descCol = new TableColumn<>("Description");
+        descCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        descCol.setPrefWidth(400);
+
+        TableColumn<Object, String> tYearCol = new TableColumn<>("Number of Year");
+        tYearCol.setCellValueFactory(new PropertyValueFactory<>("totalYear"));
+        tYearCol.setPrefWidth(200);
+
+        TableColumn<Object, String> tSemCol = new TableColumn<>("Number of Semester");
+        tSemCol.setCellValueFactory(new PropertyValueFactory<>("totalSemester"));
+        tSemCol.setPrefWidth(200);
+
+        tblData.getColumns().add(idCol);
+        tblData.getColumns().add(nameCol);
+        tblData.getColumns().add(descCol);
+        tblData.getColumns().add(tYearCol);
+        tblData.getColumns().add(tSemCol);
+
+        COURSE_LIST.clear();
+        for(Course course : courseDao.getCourseList()) {
+            tblData.getItems().add(course);
+            COURSE_LIST.add(course);
         }
     }
 
     private void clear() {
         tblData.getColumns().clear();
         tblData.getItems().clear();
+    }
+
+
+    @Override
+    public void onAddStudent() {
+        clear();
+        loadStudent();
+    }
+
+    @Override
+    public void onAddCourse() {
+        clear();
+        loadCourse();
+    }
+
+    @Override
+    public void onAddSubject() {
+        clear();
+        loadSubject();
     }
 }

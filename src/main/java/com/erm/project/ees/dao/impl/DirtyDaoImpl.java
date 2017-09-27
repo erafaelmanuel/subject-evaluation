@@ -277,4 +277,69 @@ public class DirtyDaoImpl implements DirtyDao {
             return false;
         }
     }
+
+    @Override
+    public boolean addPrerequisite(long subjectId, long toSubjectId) {
+        List<Subject> subjectList = new ArrayList<>();
+        try {
+            if(dbManager.connect()) {
+                String sql = "INSERT INTO tblsubjectprerequisite (subjectId, toSubjectId) VALUES (?, ?)";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, toSubjectId);
+                pst.executeUpdate();
+
+                dbManager.close();
+                return true;
+            }
+            throw new NoResultFoundException("No result found");
+        }catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            dbManager.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deletePrerequisite(long subjectId, long toSubjectId) {
+        List<Subject> subjectList = new ArrayList<>();
+        try {
+            if(dbManager.connect()) {
+                String sql = "DELETE FROM tblsubjectprerequisite WHERE subjectId=? AND toSubjectId=?";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, toSubjectId);
+                pst.executeUpdate();
+
+                dbManager.close();
+                return true;
+            }
+            throw new NoResultFoundException("No result found");
+        }catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            dbManager.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deletePrerequisite(long subjectId) {
+        List<Subject> subjectList = new ArrayList<>();
+        try {
+            if(dbManager.connect()) {
+                String sql = "DELETE FROM tblsubjectprerequisite WHERE subjectId=?;";
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.executeUpdate();
+
+                dbManager.close();
+                return true;
+            }
+            throw new NoResultFoundException("No result found");
+        }catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            dbManager.close();
+            return false;
+        }
+    }
 }

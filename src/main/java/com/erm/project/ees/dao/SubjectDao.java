@@ -10,7 +10,7 @@ public interface SubjectDao {
     Subject getSubject(String query);
     List<Subject> getSubjectList();
     List<Subject> getSubjectList(String query);
-    boolean addSubject(Subject subject);
+    Subject addSubject(Subject subject);
     boolean updateSubjectById(long id, Subject subject);
     boolean updateSubject(String query, Subject subject);
     boolean deleteSubjectById(long id);

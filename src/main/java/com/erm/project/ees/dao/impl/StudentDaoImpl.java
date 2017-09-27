@@ -299,10 +299,10 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setString(5, student.getGender());
                 pst.setInt(6, student.getContactNumber());
                 pst.setLong(7, student.getSectionId());
-                pst.setLong(8, id);
-                pst.setLong(9, student.getStudentNumber());
-                pst.setLong(10, student.getCourseId());
-                pst.setString(11, student.getStatus());
+                pst.setLong(8, student.getCourseId());
+                pst.setString(9, student.getStatus());
+                pst.setLong(10, id);
+                pst.setLong(11, student.getStudentNumber());
                 pst.executeUpdate();
             }
             dbManager.close();

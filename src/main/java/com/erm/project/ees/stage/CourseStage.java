@@ -12,6 +12,9 @@ import java.io.IOException;
 
 public class CourseStage extends Stage {
 
+    private CurriculumStage curriculumStage;
+    private CourseController controller;
+
     public CourseStage() {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/course_input.fxml"));
@@ -20,10 +23,18 @@ public class CourseStage extends Stage {
 
             initModality(Modality.APPLICATION_MODAL);
             setResizable(false);
-            setOnCloseRequest((e)->((CourseController) loader.getController()).dispose());
             setScene(scene);
+            setOnCloseRequest((e)->controller.dispose());
+
+            controller = loader.getController();
+            curriculumStage = new CurriculumStage();
+            controller.listen(curriculumStage);
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public CurriculumStage getCurriculumStage() {
+        return curriculumStage;
     }
 }

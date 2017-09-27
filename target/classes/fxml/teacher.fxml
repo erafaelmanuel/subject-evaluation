@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.erm.project.ees.controller.TeacherWindowController">
+	<bottom>
+		<VBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="590.0" style="-fx-background-color: #34495e;" BorderPane.alignment="CENTER">
+			<BorderPane.margin>
+				<Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+			</BorderPane.margin>
+			<children>
+				<Label text="Status : today is monday" textFill="WHITE">
+					<font>
+						<Font size="13.0" />
+					</font>
+				</Label>
+			</children>
+			<padding>
+				<Insets left="5.0" right="10.0" />
+			</padding>
+		</VBox>
+	</bottom>
+   <center>
+      <BorderPane fx:id="blSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #95a5a6;" BorderPane.alignment="CENTER">
+         <top>
+            <BorderPane prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <left>
+                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <BorderPane.margin>
+                        <Insets top="25.0" />
+                     </BorderPane.margin>
+                  </HBox>
+               </left>
+            </BorderPane>
+         </top>
+         <center>
+            <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane prefHeight="241.0" prefWidth="273.0" style="-fx-background-color: #ecf0f1;">
+                     <children>
+                        <VBox alignment="TOP_CENTER" layoutX="24.0" layoutY="1.0" prefHeight="256.0" prefWidth="226.0">
+                           <children>
+                              <VBox layoutX="10.0" layoutY="116.0" prefHeight="30.0" prefWidth="226.0" />
+                              <ImageView fx:id="imgvLogo" fitHeight="91.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </ImageView>
+                              <VBox prefHeight="22.0" prefWidth="226.0" />
+                              <JFXTextField fx:id="txStudentNumber" focusColor="#c35f0d" promptText="Student Number" />
+                              <VBox prefHeight="17.0" prefWidth="226.0" />
+                              <JFXButton buttonType="RAISED" onAction="#onClickEnter" prefHeight="29.0" prefWidth="226.0" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Enter" textFill="WHITE" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </FlowPane>
+         </center>
+      </BorderPane>
+   </center>
+   <top>
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Application">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Import" />
+                  <MenuItem mnemonicParsing="false" text="Sign out" />
+                  <MenuItem mnemonicParsing="false" text="Logs" />
+              <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Service">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#onClickEvaluate" text="Evaluate" />
+                  <MenuItem mnemonicParsing="false" text="Export report" />
+                  <MenuItem mnemonicParsing="false" text="Manage student" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="System">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Settings" />
+                  <MenuItem mnemonicParsing="false" text="Backup and restore" />
+                  <MenuItem mnemonicParsing="false" text="Show status" />
+                  <MenuItem mnemonicParsing="false" text="System reset" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" text="Contact admin" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

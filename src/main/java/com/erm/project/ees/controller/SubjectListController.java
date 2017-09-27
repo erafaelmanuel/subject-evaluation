@@ -36,15 +36,15 @@ public class SubjectListController implements Initializable {
     @FXML
     protected void onClickAdd(ActionEvent event) {
         final int index = tblSubject.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             SubjectListStage stage = (SubjectListStage) ((Node) event.getSource()).getScene().getWindow();
             final Subject subject = SUBJECT_LIST.get(index);
             stage.callback(new com.erm.project.ees.model.Subject(subject.getId(), subject.getName(), subject.getDesc(),
                     subject.getUnit()));
-        }else
-            Platform.runLater(()->new Thread(()-> JOptionPane.showMessageDialog(null,
-                    "Select a subject")).start());
-    }
+        } else
+            new Thread(()-> JOptionPane.showMessageDialog(null,
+                    "Select a subject")).start();
+        }
 
     @FXML
     protected void onClickCancel(ActionEvent event) {

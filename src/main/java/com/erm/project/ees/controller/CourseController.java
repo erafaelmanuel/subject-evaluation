@@ -28,7 +28,7 @@ public class CourseController implements Initializable {
     @FXML
     private JFXComboBox<String> cbSemester;
 
-    final CurriculumStage curriculumStage = new CurriculumStage();
+    private CurriculumStage curriculumStage = new CurriculumStage();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,5 +75,9 @@ public class CourseController implements Initializable {
         txDesc.setText("");
         cbYear.getSelectionModel().select(0);
         cbSemester.getSelectionModel().select(0);
+    }
+
+    public void listen(CurriculumStage curriculumStage) {
+        this.curriculumStage = curriculumStage;
     }
 }

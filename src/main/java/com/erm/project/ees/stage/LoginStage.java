@@ -76,7 +76,7 @@ public class LoginStage extends Stage {
     public void callBack(boolean status, UserType userType) {
         this.status = status;
         this.userType = userType;
-        Platform.runLater(() -> { this.close(); });
+        close();
         onLoginListener.onLogin(status, userType);
     }
 

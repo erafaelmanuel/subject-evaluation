@@ -26,4 +26,10 @@ public interface DirtyDao {
     boolean addStudentRecord(StudentSubjectRecord record, long subjectId, long studentId);
 
     boolean deleteStudentRecord(long studentId, String mark);
+
+    boolean deletePrerequisite(long subjectId, long toSubjectId);
+
+    boolean deletePrerequisite(long subjectId);
+
+    boolean addPrerequisite(long subjectId, long toSubjectId);
 }

@@ -202,25 +202,30 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public boolean addSubject(Subject subject) {
+    public Subject addSubject(Subject subject) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-
+                final long id = generate();
                 String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _desc, _unit) VALUES (?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setLong(1, subject.getId());
+                pst.setLong(1, id);
                 pst.setString(2, subject.getName());
                 pst.setString(3, subject.getDesc());
                 pst.setInt(4, subject.getUnit());
                 pst.executeUpdate();
+
+                dbManager.close();
+
+                subject.setId(id);
+
+                return subject;
             }
-            dbManager.close();
-            return true;
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             dbManager.close();
-            return false;
+            return null;
         }
     }
 
@@ -274,5 +279,9 @@ public class SubjectDaoImpl implements SubjectDao {
     @Override
     public boolean deleteSubject(String query) {
         return false;
+    }
+
+    public long generate() {
+        return (long) (Math.random() * Long.MAX_VALUE);
     }
 }
