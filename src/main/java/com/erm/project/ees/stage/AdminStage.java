@@ -1,7 +1,6 @@
 package com.erm.project.ees.stage;
 
-import com.erm.project.ees.controller.TeacherWindowController;
-import com.erm.project.ees.model.Student;
+import com.erm.project.ees.controller.AdminWindowController;
 import com.erm.project.ees.util.ResourceHelper;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,35 +9,30 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class TeacherStage extends Stage {
+public class AdminStage extends Stage{
 
-    TeacherWindowController controller;
+    AdminWindowController controller;
     OnSignOutListener listener;
 
-    public TeacherStage() {
+    public AdminStage() {
         try {
-            FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/teacher.fxml"));
+            FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/admin.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 0, 0);
             this.setScene(scene);
             this.setMaximized(true);
 
             controller = loader.getController();
-            controller.listening(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void callBack(Student student) {
-        controller.listening(student);
     }
 
     public void setListener(OnSignOutListener listener) {
         this.listener = listener;
     }
 
-    public TeacherWindowController getController() {
+    public AdminWindowController getController() {
         return controller;
     }
 

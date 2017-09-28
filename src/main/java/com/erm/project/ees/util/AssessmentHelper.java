@@ -256,7 +256,8 @@ public class AssessmentHelper {
                                 StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
                                 if(subRecord == null)
                                     isValid = false;
-                                else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                                //Remove from list if not pass
+                                else if(!subRecord.getMark().equalsIgnoreCase("PASSED"))
                                     isValid = false;
                             }
                         }
@@ -264,8 +265,9 @@ public class AssessmentHelper {
                             subjectList.add(subject);
                         continue;
                     }
-                    //
-                    if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                    //If passed and ongoing shoud'not add to the available list
+                    if(!subjectRecord.getMark().equalsIgnoreCase("PASSED") &&
+                            !subjectRecord.getMark().equalsIgnoreCase("ONGOING")) {
                         subjectList.add(subject);
                         continue;
                     }
@@ -359,7 +361,8 @@ public class AssessmentHelper {
                             StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
                             if(subRecord == null)
                                 isValid = false;
-                            else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                            //Remove from list if not pass
+                            else if(!subRecord.getMark().equalsIgnoreCase("PASSED"))
                                 isValid = false;
                         }
                     }
@@ -368,7 +371,8 @@ public class AssessmentHelper {
                     continue;
                 }
                 //
-                if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                if(!subjectRecord.getMark().equalsIgnoreCase("PASSED") &&
+                        !subjectRecord.getMark().equalsIgnoreCase("ONGOING")) {
                     subjectList.add(subject);
                     continue;
                 }

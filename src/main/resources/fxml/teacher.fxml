@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
@@ -50,28 +46,7 @@
             </BorderPane>
          </top>
          <center>
-            <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <AnchorPane prefHeight="241.0" prefWidth="273.0" style="-fx-background-color: #ecf0f1;">
-                     <children>
-                        <VBox alignment="TOP_CENTER" layoutX="24.0" layoutY="1.0" prefHeight="256.0" prefWidth="226.0">
-                           <children>
-                              <VBox layoutX="10.0" layoutY="116.0" prefHeight="30.0" prefWidth="226.0" />
-                              <ImageView fx:id="imgvLogo" fitHeight="91.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <VBox prefHeight="22.0" prefWidth="226.0" />
-                              <JFXTextField fx:id="txStudentNumber" focusColor="#c35f0d" promptText="Student Number" />
-                              <VBox prefHeight="17.0" prefWidth="226.0" />
-                              <JFXButton buttonType="RAISED" onAction="#onClickEnter" prefHeight="29.0" prefWidth="226.0" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Enter" textFill="WHITE" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </FlowPane>
+            <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>
@@ -81,14 +56,14 @@
           <Menu mnemonicParsing="false" text="Application">
             <items>
                   <MenuItem mnemonicParsing="false" text="Import" />
-                  <MenuItem mnemonicParsing="false" text="Sign out" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickSignout" text="Sign out" />
                   <MenuItem mnemonicParsing="false" text="Logs" />
               <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Service">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#onClickEvaluate" text="Evaluate" />
+                <MenuItem mnemonicParsing="false" onAction="#onClickAssess" text="Assess Student" />
                   <MenuItem mnemonicParsing="false" text="Export report" />
                   <MenuItem mnemonicParsing="false" text="Manage student" />
               </items>

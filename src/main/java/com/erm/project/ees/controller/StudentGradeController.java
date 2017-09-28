@@ -2,9 +2,12 @@ package com.erm.project.ees.controller;
 
 import com.erm.project.ees.dao.CourseDao;
 import com.erm.project.ees.dao.SectionDao;
+import com.erm.project.ees.dao.StudentDao;
 import com.erm.project.ees.dao.impl.CourseDaoImpl;
 import com.erm.project.ees.dao.impl.DirtyDaoImpl;
 import com.erm.project.ees.dao.impl.SectionDaoImpl;
+import com.erm.project.ees.dao.impl.StudentDaoImpl;
+import com.erm.project.ees.model.Course;
 import com.erm.project.ees.model.Section;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.StudentSubjectRecord;
@@ -25,6 +28,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class StudentGradeController implements Initializable {
@@ -51,15 +56,20 @@ public class StudentGradeController implements Initializable {
     private Label lbStatus;
 
     @FXML
+    private JFXComboBox<String> cbCourse;
+
+    @FXML
     private TableView<StudentSubjectRecord> tblRecord;
 
     private Student student;
 
     private ObservableList<String> OBSERVABLE_LIST_CURRICULUM = FXCollections.observableArrayList();
     private ObservableList<StudentSubjectRecord> OBSERVABLE_LIST_RECORD = FXCollections.observableArrayList();
+    private final List<Course> COURSE_LIST = new ArrayList<>();
 
     private final CourseDao courseDao = new CourseDaoImpl();
     private final SectionDao sectionDao = new SectionDaoImpl();
+    private final StudentDao studentDao = new StudentDaoImpl();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,6 +86,12 @@ public class StudentGradeController implements Initializable {
         cbYearSem.getItems().add("4th yr / 1st sem");
         cbYearSem.getItems().add("4th yr / 2nd sem");
         cbYearSem.getSelectionModel().select(0);
+
+        for(Course course : courseDao.getCourseList()) {
+            cbCourse.getItems().add(course.getName());
+            COURSE_LIST.add(course);
+        }
+        cbCourse.getSelectionModel().select(0);
 
         tblRecord.setItems(OBSERVABLE_LIST_RECORD);
     }
@@ -128,6 +144,14 @@ public class StudentGradeController implements Initializable {
         }).start();
     }
 
+    @FXML
+    protected void onClickShift() {
+        student.setCourseId(COURSE_LIST.get(cbCourse.getSelectionModel().getSelectedIndex()).getId());
+        studentDao.updateStudentById(student.getId(), student);
+        lbCourse.setText(COURSE_LIST.get(cbCourse.getSelectionModel().getSelectedIndex()).getName());
+        onChoose();
+    }
+
     private void loadStudent(Student student, int year, int semester) {
         TableColumn<StudentSubjectRecord, String> sName = new TableColumn<>("Subject");
         sName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
@@ -176,7 +200,19 @@ public class StudentGradeController implements Initializable {
         lbYS.setText(section.getYear() + "-" +section.getName().toUpperCase());
         lbStatus.setText(student.getStatus());
 
+        for(int i=0; i<COURSE_LIST.size(); i++) {
+            if(student.getCourseId() == COURSE_LIST.get(i).getId()) {
+                cbCourse.getSelectionModel().select(i);
+                break;
+            }
+        }
+
         clear();
         loadStudent(student ,1, 1);
+    }
+
+    @FXML
+    protected void onClickRefresh() {
+        onChoose();
     }
 }

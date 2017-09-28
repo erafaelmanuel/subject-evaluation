@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 public class StudentDaoImpl implements StudentDao {
@@ -261,8 +263,8 @@ public class StudentDaoImpl implements StudentDao {
                         "INSERT INTO " + TABLE_NAME + "(id, studentNumber, firstName, lastName, middleName, age, " +
                         "gender, contactNumber, sectionId, courseId, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
-                pst.setLong(1, student.getId());
-                pst.setLong(2, student.getStudentNumber());
+                pst.setLong(1, generate());
+                pst.setLong(2, generateStudentNumber());
                 pst.setString(3, student.getFirstName());
                 pst.setString(4, student.getLastName());
                 pst.setString(5, student.getMiddleName());
@@ -342,5 +344,17 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public boolean deleteStudent(String query) {
         return false;
+    }
+
+    public long generateStudentNumber() {
+        final int YEAR = Calendar.getInstance().get(Calendar.YEAR);
+        final int MAX = 9999999;
+
+        final long id = Long.parseLong(String.format(Locale.ENGLISH, "%d%07d", YEAR, (int) (Math.random() * MAX)));
+        return id;
+    }
+
+    public long generate() {
+        return (long) (Math.random() * Long.MAX_VALUE);
     }
 }

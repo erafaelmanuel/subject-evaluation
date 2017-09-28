@@ -2,6 +2,7 @@ package com.erm.project.ees;
 
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.model.UserType;
+import com.erm.project.ees.stage.AdminStage;
 import com.erm.project.ees.stage.ConfigurationStage;
 import com.erm.project.ees.stage.LoginStage;
 import com.erm.project.ees.stage.TeacherStage;
@@ -14,7 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application implements ConfigurationStage.OnFinishListener, LoginStage.OnLoginListener {
+public class Main extends Application implements ConfigurationStage.OnFinishListener, LoginStage.OnLoginListener,
+    TeacherStage.OnSignOutListener, AdminStage.OnSignOutListener {
 
     private Stage primaryStage;
 
@@ -63,19 +65,21 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
     }
 
     private void showAdminWindow() {
-        try {
-            Parent root = FXMLLoader.load(ResourceHelper.resourceWithBasePath("fxml/admin.fxml"));
-            Scene scene = new Scene(root, 0, 0);
-            primaryStage.setScene(scene);
-            primaryStage.setMaximized(true);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        AdminStage adminStage = new AdminStage();
+        adminStage.setListener(this);
+        adminStage.show();
     }
 
     private void showTeacherWindow() {
         TeacherStage teacherStage = new TeacherStage();
+        teacherStage.setListener(this);
         teacherStage.show();
+    }
+
+    @Override
+    public void onSignout() {
+        LoginStage loginStage = new LoginStage();
+        loginStage.setOnLoginListener(this);
+        loginStage.showAndWait();
     }
 }

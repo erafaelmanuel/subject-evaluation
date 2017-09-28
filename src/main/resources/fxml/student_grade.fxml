@@ -91,7 +91,12 @@
                </padding>
             </HBox>
             <VBox prefHeight="20.0" prefWidth="171.0" />
-            <JFXButton buttonType="RAISED" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Shift Course" textFill="WHITE">
+            <JFXComboBox fx:id="cbCourse" prefHeight="25.0" prefWidth="148.0" promptText="Select a course">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </JFXComboBox>
+            <JFXButton buttonType="RAISED" onAction="#onClickShift" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Shift Course" textFill="WHITE">
                <VBox.margin>
                   <Insets bottom="5.0" left="16.0" right="16.0" />
                </VBox.margin>
@@ -113,7 +118,7 @@
          <children>
             <BorderPane prefHeight="48.0" prefWidth="399.0">
                <right>
-                  <JFXButton prefHeight="32.0" prefWidth="79.0" style="-fx-background-color: #bdc3c7;" text="Refresh" BorderPane.alignment="CENTER">
+                  <JFXButton buttonType="RAISED" onAction="#onClickRefresh" prefHeight="32.0" prefWidth="79.0" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="Refresh" textFill="WHITE" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>
@@ -139,7 +144,7 @@
                   </HBox>
                </left>
             </BorderPane>
-            <TableView fx:id="tblRecord" fixedCellSize="0.0" prefHeight="344.0" prefWidth="499.0">
+            <TableView fx:id="tblRecord" fixedCellSize="0.0" prefHeight="316.0" prefWidth="884.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="Subject" />
                 <TableColumn prefWidth="75.0" text="Description" />
@@ -154,14 +159,14 @@
             </TableView>
             <BorderPane prefHeight="54.0" prefWidth="399.0">
                <right>
-                  <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="98.0" ripplerFill="WHITE" style="-fx-background-color: #2ecc71;" text="Assessment" onAction="#onClickAssessment" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <JFXButton buttonType="RAISED" onAction="#onClickAssessment" prefHeight="31.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Assessment" textFill="WHITE" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>
                   </JFXButton>
                </right>
                <left>
-                  <JFXButton buttonType="RAISED" prefHeight="42.0" prefWidth="135.0" ripplerFill="WHITE" style="-fx-background-color: #f39c12;" text="Check List" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <JFXButton buttonType="RAISED" prefHeight="29.0" prefWidth="109.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Check List" textFill="WHITE" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>

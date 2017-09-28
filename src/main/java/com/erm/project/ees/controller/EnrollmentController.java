@@ -1,13 +1,9 @@
 package com.erm.project.ees.controller;
 
-import com.erm.project.ees.dao.CourseDao;
-import com.erm.project.ees.dao.DirtyDao;
-import com.erm.project.ees.dao.SectionDao;
-import com.erm.project.ees.dao.impl.CourseDaoImpl;
-import com.erm.project.ees.dao.impl.DirtyDaoImpl;
-import com.erm.project.ees.dao.impl.SectionDaoImpl;
-import com.erm.project.ees.dao.impl.SubjectDaoImpl;
+import com.erm.project.ees.dao.*;
+import com.erm.project.ees.dao.impl.*;
 import com.erm.project.ees.model.Course;
+import com.erm.project.ees.model.Curriculum;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.StudentSubjectRecord;
 import com.erm.project.ees.model.recursive.Subject;
@@ -95,6 +91,8 @@ public class EnrollmentController implements Initializable {
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final CourseDao courseDao = new CourseDaoImpl();
     private final SectionDao sectionDao = new SectionDaoImpl();
+    private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
+    private final StudentDao studentDao = new StudentDaoImpl();
 
     private Student student;
     private Course course;
@@ -138,11 +136,15 @@ public class EnrollmentController implements Initializable {
                 record.setSemester(cbCurSemester.getSelectionModel().getSelectedIndex() + 1);
                 dirtyDao.addStudentRecord(record, s.getId(), student.getId());
             }
-        } else if (totalYeUnit < 1)
-            Platform.runLater(() -> JOptionPane.showMessageDialog(null, "Please add a subject to enroll."));
-        else
-            Platform.runLater(() -> JOptionPane.showMessageDialog(null, "The limit of unit is exceeded."));
-
+        } else if (totalYeUnit < 1) {
+            Platform.runLater(() ->
+                    JOptionPane.showMessageDialog(null, "Please add a subject to enroll."));
+            return;
+        } else {
+            Platform.runLater(() ->
+                    JOptionPane.showMessageDialog(null, "The limit of unit is exceeded."));
+            return;
+        }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
@@ -505,6 +507,27 @@ public class EnrollmentController implements Initializable {
             this.student = student;
             course = courseDao.getCourseById(student.getCourseId());
 
+            List<Curriculum> curriculumList = curriculumDao.getCurriculumListByCourseId(student.getCourseId());
+
+            student.setStatus("REGULAR");
+            studentDao.updateStudentById(student.getId(), student);
+
+            root:for(Curriculum curriculum : curriculumList) {
+                for(com.erm.project.ees.model.Subject subject : curriculumDao.getSubjectList(curriculum.getId())) {
+                    StudentSubjectRecord record = dirtyDao.getStudentSubjectRecordById(student.getId(), subject.getId());
+                    if(record == null)
+                        continue;
+                    else {
+                        if(record.getMark().equalsIgnoreCase("FAILED") ||
+                                record.getMark().equalsIgnoreCase("DROPPED")) {
+                            student.setStatus("IRREGULAR");
+                            studentDao.updateStudentById(student.getId(), student);
+                            break root;
+                        }
+                    }
+                }
+            }
+
             Platform.runLater(()-> {
                 lbStudentNo.setText(student.getStudentNumber() + "");
                 lbCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
@@ -728,6 +751,11 @@ public class EnrollmentController implements Initializable {
     }
 
     public void hideLoading() {
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Platform.runLater(()-> pnScreen.setVisible(false));
     }
 

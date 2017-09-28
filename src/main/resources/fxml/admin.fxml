@@ -93,7 +93,7 @@
           <Menu mnemonicParsing="false" text="Application">
             <items>
                   <MenuItem mnemonicParsing="false" text="Import" />
-                  <MenuItem mnemonicParsing="false" text="Sign out" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickSignout" text="Sign out" />
                   <MenuItem mnemonicParsing="false" text="Logs" />
               <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
             </items>
@@ -101,10 +101,11 @@
           <Menu mnemonicParsing="false" text="List">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#onClickCourse" text="Course" />
-                  <MenuItem mnemonicParsing="false" text="Employee" />
+                  <MenuItem mnemonicParsing="false" text="User" />
                   <MenuItem mnemonicParsing="false" text="Section" />
               <MenuItem mnemonicParsing="false" onAction="#onClickStudent" text="Student" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickSubject" text="Subject" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickSpecialClass" text="Special Class" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Service">

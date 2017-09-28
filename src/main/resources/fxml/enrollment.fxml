@@ -25,7 +25,7 @@
                   <VBox alignment="CENTER" prefHeight="82.0" prefWidth="159.0" BorderPane.alignment="TOP_LEFT">
                      <children>
                         <JFXComboBox fx:id="cbCurSemester" onAction="#onChooseSemester" prefHeight="25.0" prefWidth="134.0" promptText="Semester" />
-                        <JFXButton fx:id="btnSave" buttonType="RAISED" onAction="#onClickSave" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #e67e22;" text="Save" textFill="WHITE">
+                        <JFXButton fx:id="btnSave" buttonType="RAISED" onAction="#onClickSave" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE">
                            <VBox.margin>
                               <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                            </VBox.margin>
@@ -74,28 +74,9 @@
                <top>
                   <BorderPane prefHeight="78.0" prefWidth="700.0" style="-fx-background-color: #2980b9;" BorderPane.alignment="CENTER">
                      <center>
-                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                        <VBox prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #ecf0f1;" BorderPane.alignment="CENTER">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="48.0" prefWidth="680.0" style="-fx-background-color: #3498db;">
-                                 <children>
-                                    <Label text="COLLEGE OF COMPUTING STUDIES">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="16.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label text="ADVISING SLIP">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets bottom="5.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="36.0" prefWidth="900.0" style="-fx-background-color: #2980b9;" />
                            </children>
                         </VBox>
                      </center>
@@ -227,7 +208,7 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="+ Add" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="+ Add" textFill="WHITE">
                                  <FlowPane.margin>
                                     <Insets left="20.0" />
                                  </FlowPane.margin>
@@ -267,7 +248,7 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </JFXButton>
-                              <JFXButton buttonType="RAISED" onAction="#onClickUndo" ripplerFill="WHITE" style="-fx-background-color: #8e44ad;" text="Undo" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" onAction="#onClickUndo" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="Undo drop" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets left="5.0" />
                                  </HBox.margin>
