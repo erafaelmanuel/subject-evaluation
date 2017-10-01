@@ -1,0 +1,35 @@
+s#button-yes{
+	-fx-background-color:#2ecc71;
+	-fx-text-fill:#ffffff;
+}
+
+s#button-yes:hover{
+	-fx-background-color:#27ae60;
+}
+
+s#button-yes:pressed{
+	-fx-background-color:gray;
+}
+
+s#button-no{
+	-fx-background-color:#e74c3c;
+	-fx-text-fill:#ffffff;
+}
+
+s#button-no:hover{
+	-fx-background-color:#c0392b;
+}
+
+s#button-no:pressed{
+	-fx-background-color:gray;
+}
+
+.root{
+	-fx-background-color: #ecf0f1;
+	
+}
+
+.label{
+	-fx-font-size:13px;
+	-fx-font-family: tahoma;
+}

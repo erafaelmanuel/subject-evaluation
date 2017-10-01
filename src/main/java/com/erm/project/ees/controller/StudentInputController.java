@@ -237,13 +237,13 @@ public class StudentInputController implements Initializable {
             txCNumber.setPromptText("Enter only a numeric character");
             txCNumber.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(!(txCNumber.getText().trim().length() == 10 || txCNumber.getText().trim().length() == 11)) {
+        }else if(!(txCNumber.getText().trim().length() == 10 && txCNumber.getText().trim().length() == 11)) {
             new Thread(()-> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
             isValid = false;
-        }else if(txCNumber.getText().trim().length() == 10 &&  txCNumber.getText().charAt(0) == '9') {
+        } else if(txCNumber.getText().trim().length() == 10 && txCNumber.getText().charAt(0) == '9') {
             new Thread(()-> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
             isValid = false;
-        } else if(txCNumber.getText().trim().length() == 11 &&  txCNumber.getText().charAt(1) == '9') {
+        } else if(txCNumber.getText().trim().length() == 11 && txCNumber.getText().charAt(1) == '9') {
             new Thread(() -> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
             isValid = false;
         } else {

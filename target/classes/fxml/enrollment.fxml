@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.erm.project.ees.controller.EnrollmentController">
+   <children>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
+         <top>
+            <BorderPane prefHeight="71.0" prefWidth="600.0" style="-fx-background-color: #bdc3c7;" BorderPane.alignment="CENTER">
+               <right>
+                  <VBox alignment="CENTER" prefHeight="82.0" prefWidth="159.0" BorderPane.alignment="TOP_LEFT">
+                     <children>
+                        <JFXComboBox fx:id="cbCurSemester" onAction="#onChooseSemester" prefHeight="25.0" prefWidth="134.0" promptText="Semester" />
+                        <JFXButton buttonType="RAISED" onAction="#onClickEnroll" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #8e44ad;" text="Enroll" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                     </children>
+                  </VBox>
+               </right>
+               <left>
+                  <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="628.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets right="16.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <VBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="593.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="76.0" text="Student No. : " />
+                                    <Label fx:id="lbStudentNo" text="/-/">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="47.0" text="Course : " />
+                                    <Label fx:id="lbCourse" text="-/-">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </left>
+               <top>
+                  <BorderPane prefHeight="78.0" prefWidth="700.0" style="-fx-background-color: #2980b9;" BorderPane.alignment="CENTER">
+                     <center>
+                        <VBox prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #ecf0f1;" BorderPane.alignment="CENTER">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="36.0" prefWidth="900.0" style="-fx-background-color: #2980b9;" />
+                           </children>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </top>
+               <bottom>
+                  <BorderPane prefHeight="55.0" prefWidth="700.0" style="-fx-background-color: #ecf0f1;" BorderPane.alignment="CENTER">
+                     <top>
+                        <VBox prefHeight="47.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <HBox prefHeight="7.0" prefWidth="900.0">
+                                 <children>
+                                    <Label text="FULL NAME  :">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txFullName" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Name of student" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="16.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="YEAR  :           ">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txYear" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Year of student" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="16.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="STATUS :        ">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txStatus" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Status of student" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="16.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                           <BorderPane.margin>
+                              <Insets top="10.0" />
+                           </BorderPane.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="50.0" />
+                           </padding>
+                        </VBox>
+                     </top>
+                  </BorderPane>
+               </bottom>
+            </BorderPane>
+         </top>
+         <center>
+            <GridPane prefHeight="491.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="AVAILABLE SUBJECT :">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="420.0">
+                           <children>
+                              <Label layoutX="200.0" layoutY="10.0" prefHeight="25.0" prefWidth="40.0" text="Type : " />
+                              <JFXComboBox fx:id="cbClass" layoutX="257.0" layoutY="10.0" prefHeight="25.0" prefWidth="190.0" promptText="Class" />
+                              <Label prefHeight="25.0" prefWidth="57.0" text="Filter by :">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <JFXComboBox fx:id="cbAbSubject" onAction="#onChooseFilter" prefHeight="25.0" prefWidth="112.0" promptText="Year">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </JFXComboBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </HBox>
+                        <JFXTreeTableView fx:id="tblAbSubject" prefHeight="399.0" prefWidth="350.0" />
+                        <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="139.0" text="TOTAL UNITS : " />
+                              <Label fx:id="lbAbUnit" style="-fx-text-fill: #27ae60;" text="0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="+ Add" textFill="WHITE">
+                                 <FlowPane.margin>
+                                    <Insets left="20.0" />
+                                 </FlowPane.margin>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickAddAll" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="+ Add All" textFill="WHITE">
+                                 <FlowPane.margin>
+                                    <Insets left="5.0" />
+                                 </FlowPane.margin>
+                              </JFXButton>
+                           </children>
+                        </FlowPane>
+                     </children>
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                     <children>
+                        <Label text="YOUR ENROLLING :">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="25.0" prefWidth="34.0" text="Year : " />
+                              <JFXComboBox fx:id="cbMaxYear" onAction="#onChooseMaxYear" prefHeight="25.0" prefWidth="149.0" promptText="Year">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </HBox.margin>
+                              </JFXComboBox>
+                              <JFXButton buttonType="RAISED" onAction="#onClickRefresh" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Refresh" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" onAction="#onClickUndo" ripplerFill="WHITE" style="-fx-background-color: #7f8c8d;" text="Undo drop" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                        <JFXTreeTableView fx:id="tblYeSubject" prefWidth="350.0" />
+                        <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="lbexceed" prefHeight="22.0" prefWidth="125.0" style="-fx-text-fill: #c0392b;" text="(LIMIT IS EXCEEDED)">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="84.0" text="TOTAL UNITS :  " />
+                              <Label fx:id="lbYeUnit" style="-fx-text-fill: #c0392b;" text="0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <JFXButton buttonType="RAISED" onAction="#onClickRemove" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="- Remove" textFill="WHITE">
+                                 <FlowPane.margin>
+                                    <Insets left="20.0" />
+                                 </FlowPane.margin>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickRemoveAll" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="- Remove All" textFill="WHITE">
+                                 <FlowPane.margin>
+                                    <Insets left="5.0" />
+                                 </FlowPane.margin>
+                              </JFXButton>
+                           </children>
+                        </FlowPane>
+                     </children>
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </VBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+            </GridPane>
+         </center>
+         <bottom>
+            <BorderPane prefHeight="34.0" prefWidth="700.0" style="-fx-background-color: #34495e;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+            </BorderPane>
+         </bottom>
+      </BorderPane>
+      <VBox fx:id="pnScreen" alignment="CENTER" opacity="0.41" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #fff;" visible="false">
+         <children>
+            <ImageView fx:id="imgLoading" fitHeight="267.0" fitWidth="358.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </VBox>
+   </children>
+</StackPane>

@@ -10,6 +10,7 @@ import com.erm.project.ees.model.Course;
 import com.erm.project.ees.model.Curriculum;
 import com.erm.project.ees.model.Subject;
 import com.erm.project.ees.stage.CurriculumStage;
+import com.erm.project.ees.stage.SubjectInputStage;
 import com.erm.project.ees.stage.SubjectListStage;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -30,7 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class CurriculumController implements Initializable, SubjectListStage.OnAddItemListener {
+public class CurriculumController implements Initializable, SubjectListStage.OnAddItemListener ,
+    SubjectInputStage.OnItemAddLister {
 
 
     @FXML
@@ -118,6 +120,13 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
         SubjectListStage subjectListStage = new SubjectListStage();
         subjectListStage.setListener(this);
         subjectListStage.showAndWait();
+    }
+
+    @FXML
+    protected void onClickNew() {
+        SubjectInputStage subjectInputStage = new SubjectInputStage();
+        subjectInputStage.setOnItemAddLister(this);
+        subjectInputStage.showAndWait();
     }
 
     @FXML
@@ -450,6 +459,11 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
             cbYS.setItems(YR_SEM_LIST);
             cbYS.getSelectionModel().select(0);
         });
+    }
+
+    @Override
+    public void onAddSubject() {
+
     }
 
     public enum State {
