@@ -19,8 +19,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,8 @@ public class StudentInputController implements Initializable {
 
     @FXML
     private JFXComboBox<String> cbSection;
+
+    private String tempHolder = "+63 ";
 
     private static final ObservableList<String> OBSERVABLE_LIST_GENDER = FXCollections.observableArrayList();
     private static final ObservableList<String> OBSERVABLE_LIST_SECTION = FXCollections.observableArrayList();
@@ -85,6 +89,19 @@ public class StudentInputController implements Initializable {
         }
 
         cbSection.getSelectionModel().select(0);
+        txCNumber.focusedProperty().addListener((observableValue, focusOut, focusIn)->{
+            if(focusIn) {
+                if(txCNumber.getText().trim().length() <= 3) {
+                    txCNumber.setText("+63 ");
+                } else {
+
+                }
+            } else {
+                if(txCNumber.getText().trim().length() <= 3) {
+                    txCNumber.setText("");
+                }
+            }
+        });
     }
 
     @FXML
@@ -204,6 +221,12 @@ public class StudentInputController implements Initializable {
             txAge.setStyle("-fx-prompt-text-fill:#000");
         }
         //contact
+        txCNumber.setText(txCNumber.getText().replace("+63 ", "0"));
+        txCNumber.setText(txCNumber.getText().replace("+63", "0"));
+        txCNumber.setText(txCNumber.getText().replace("+6", "0"));
+        txCNumber.setText(txCNumber.getText().replace(" ", "0"));
+        txCNumber.setText(txCNumber.getText().replace("+", "0"));
+
         if(txCNumber.getText().trim().isEmpty()) {
             txCNumber.setText("");
             txCNumber.setPromptText("Please enter a contact number");
@@ -214,12 +237,33 @@ public class StudentInputController implements Initializable {
             txCNumber.setPromptText("Enter only a numeric character");
             txCNumber.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
+        } else if(!(txCNumber.getText().trim().length() == 10 || txCNumber.getText().trim().length() == 11)) {
+            new Thread(()-> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
+            isValid = false;
+        }else if(txCNumber.getText().trim().length() == 10 &&  txCNumber.getText().charAt(0) == '9') {
+            new Thread(()-> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
+            isValid = false;
+        } else if(txCNumber.getText().trim().length() == 11 &&  txCNumber.getText().charAt(1) == '9') {
+            new Thread(() -> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
+            isValid = false;
         } else {
             txCNumber.setPromptText("Contact Numner");
             txCNumber.setStyle("-fx-prompt-text-fill:#000");
         }
 
         return isValid;
+    }
+
+    @FXML
+    protected void onKeyCN(KeyEvent event) {
+        if(event.getText().equals("0") && (txCNumber.getText().length() == 4 || txCNumber.getText().length() == 0))
+            txCNumber.setText("");
+        else if((!event.getText().matches("^[0-9]$")) && (txCNumber.getText().length() == 3))
+            txCNumber.setText("");
+        else if(txCNumber.getText().trim().isEmpty())
+            txCNumber.setText("+63 ");
+
+        txCNumber.end();
     }
 
     public void dispose() {

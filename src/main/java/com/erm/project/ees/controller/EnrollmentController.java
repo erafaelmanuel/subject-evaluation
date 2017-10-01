@@ -9,6 +9,7 @@ import com.erm.project.ees.model.StudentSubjectRecord;
 import com.erm.project.ees.model.recursive.Subject;
 import com.erm.project.ees.util.AssessmentHelper;
 import com.erm.project.ees.util.ResourceHelper;
+import com.erm.project.ees.util.document.PDF;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
@@ -56,13 +57,13 @@ public class EnrollmentController implements Initializable {
     private Label lbCourse;
 
     @FXML
-    private Label lbYear;
+    private JFXTextField txYear;
 
     @FXML
-    private Label lbStatus;
+    private JFXTextField txStatus;
 
     @FXML
-    private Label lbfullName;
+    private JFXTextField txFullName;
 
     @FXML
     private JFXComboBox<String> cbCurSemester;
@@ -72,9 +73,6 @@ public class EnrollmentController implements Initializable {
 
     @FXML
     private Label lbYeUnit;
-
-    @FXML
-    private JFXButton btnSave;
 
     @FXML
     private Label lbexceed;
@@ -123,7 +121,7 @@ public class EnrollmentController implements Initializable {
     }
 
     @FXML
-    protected void onClickSave(ActionEvent event) {
+    protected void onClickEnroll(ActionEvent event) {
 
         //Delete the enrolled
         dirtyDao.deleteStudentRecord(student.getId(), "ONGOING");
@@ -147,6 +145,13 @@ public class EnrollmentController implements Initializable {
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+
+        new Thread(()->{
+            PDF pdf = new PDF();
+            pdf.setSubjectList(ENROLL_SUBJECT_LIST);
+            pdf.setStudent(student);
+            pdf.writeAndClose();
+        }).start();
     }
 
     @FXML
@@ -531,10 +536,10 @@ public class EnrollmentController implements Initializable {
             Platform.runLater(()-> {
                 lbStudentNo.setText(student.getStudentNumber() + "");
                 lbCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
-                lbfullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
+                txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
                         student.getMiddleName().substring(0, 1)).toUpperCase());
-                lbYear.setText(new SectionDaoImpl().getSectionById(student.getSectionId()).getYear() + "");
-                lbStatus.setText(student.getStatus());
+                txYear.setText(new SectionDaoImpl().getSectionById(student.getSectionId()).getYear() + "");
+                txStatus.setText(student.getStatus());
 
                 int totalYear = course.getTotalYear();
 

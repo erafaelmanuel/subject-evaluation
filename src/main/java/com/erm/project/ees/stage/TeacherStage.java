@@ -20,9 +20,10 @@ public class TeacherStage extends Stage {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/teacher.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 0, 0);
-            this.setScene(scene);
-            this.setMaximized(true);
-
+            setScene(scene);
+            setMaximized(true);
+            setMinWidth(1160);
+            setMinHeight(800);
             controller = loader.getController();
             controller.listening(this);
         } catch (IOException e) {

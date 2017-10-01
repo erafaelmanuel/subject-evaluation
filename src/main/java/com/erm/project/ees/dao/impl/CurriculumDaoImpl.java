@@ -213,10 +213,12 @@ public class CurriculumDaoImpl implements CurriculumDao {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE course_id=? AND _year=? AND _semester LIMIT 1;";
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE course_id=? AND _year=? AND _semester=? LIMIT 1;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, courseId);
+                pst.setInt(2, year);
+                pst.setInt(3, semester);
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {

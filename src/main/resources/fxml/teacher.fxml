@@ -55,17 +55,15 @@
         <menus>
           <Menu mnemonicParsing="false" text="Application">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Import" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickSignout" text="Sign out" />
-                  <MenuItem mnemonicParsing="false" text="Logs" />
               <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Service">
+            <Menu mnemonicParsing="false" text="Transaction">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#onClickAssess" text="Assess Student" />
-                  <MenuItem mnemonicParsing="false" text="Export report" />
-                  <MenuItem mnemonicParsing="false" text="Manage student" />
+                <MenuItem mnemonicParsing="false" onAction="#onClickAssess" text="Assesstment" />
+                  <MenuItem mnemonicParsing="false" text="Evalutaion" />
+                  <MenuItem mnemonicParsing="false" text="Grade" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="System">

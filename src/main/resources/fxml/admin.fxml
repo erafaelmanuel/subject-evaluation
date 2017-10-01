@@ -92,9 +92,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Application">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Import" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickSignout" text="Sign out" />
-                  <MenuItem mnemonicParsing="false" text="Logs" />
               <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
             </items>
           </Menu>

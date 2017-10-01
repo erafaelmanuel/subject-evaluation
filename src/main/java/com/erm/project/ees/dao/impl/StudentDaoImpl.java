@@ -84,10 +84,11 @@ public class StudentDaoImpl implements StudentDao {
             Student student = null;
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? OR studentNumber=? LIMIT 1;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, id);
+                pst.setLong(2, id);
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {
@@ -217,7 +218,7 @@ public class StudentDaoImpl implements StudentDao {
                 String sql = "SELECT * FROM "
                         .concat(TABLE_NAME)
                         .concat(" ")
-                        .concat(query.replace(";", " "));
+                        .concat(query);
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();

@@ -12,8 +12,10 @@ import com.erm.project.ees.model.Section;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.StudentSubjectRecord;
 import com.erm.project.ees.stage.EnrollmentStage;
+import com.erm.project.ees.stage.StudentResultStage;
 import com.erm.project.ees.util.ResourceHelper;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,12 +29,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class StudentGradeController implements Initializable {
+public class StudentGradeController implements Initializable, StudentResultStage.OnSelectStudentLister {
 
     @FXML
     private ImageView imgvLogo;
@@ -41,25 +47,28 @@ public class StudentGradeController implements Initializable {
     private JFXComboBox<String> cbYearSem;
 
     @FXML
-    private Label lbCourse;
+    private JFXTextField txCourse;
 
     @FXML
-    private Label lbSN;
+    private JFXTextField txSNumber;
 
     @FXML
     private Label lbStudent;
 
     @FXML
-    private Label lbYS;
+    private JFXTextField txYS;
 
     @FXML
-    private Label lbStatus;
+    private JFXTextField txStatus;
 
     @FXML
     private JFXComboBox<String> cbCourse;
 
     @FXML
     private TableView<StudentSubjectRecord> tblRecord;
+
+    @FXML
+    private JFXTextField txSearch;
 
     private Student student;
 
@@ -75,17 +84,6 @@ public class StudentGradeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Image image = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
         imgvLogo.setImage(image);
-
-        cbYearSem.setItems(OBSERVABLE_LIST_CURRICULUM);
-        cbYearSem.getItems().add("1st yr / 1st sem");
-        cbYearSem.getItems().add("1st yr / 2nd sem");
-        cbYearSem.getItems().add("2nd yr / 1st sem");
-        cbYearSem.getItems().add("2nd yr / 2nd sem");
-        cbYearSem.getItems().add("3rd yr / 1st sem");
-        cbYearSem.getItems().add("3rd yr / 2nd sem");
-        cbYearSem.getItems().add("4th yr / 1st sem");
-        cbYearSem.getItems().add("4th yr / 2nd sem");
-        cbYearSem.getSelectionModel().select(0);
 
         for(Course course : courseDao.getCourseList()) {
             cbCourse.getItems().add(course.getName());
@@ -136,7 +134,7 @@ public class StudentGradeController implements Initializable {
     }
 
     @FXML
-    protected void onClickAssessment(ActionEvent event) {
+    protected void onClickEvaluation(ActionEvent event) {
         final EnrollmentStage enrollmentStage = new EnrollmentStage();
         new Thread(()->{
             Platform.runLater(()->enrollmentStage.showAndWait());
@@ -148,30 +146,40 @@ public class StudentGradeController implements Initializable {
     protected void onClickShift() {
         student.setCourseId(COURSE_LIST.get(cbCourse.getSelectionModel().getSelectedIndex()).getId());
         studentDao.updateStudentById(student.getId(), student);
-        lbCourse.setText(COURSE_LIST.get(cbCourse.getSelectionModel().getSelectedIndex()).getName());
+        txCourse.setText(COURSE_LIST.get(cbCourse.getSelectionModel().getSelectedIndex()).getName());
         onChoose();
     }
 
     private void loadStudent(Student student, int year, int semester) {
         TableColumn<StudentSubjectRecord, String> sName = new TableColumn<>("Subject");
         sName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
+        sName.setResizable(false);
+        sName.setPrefWidth(200);
 
         TableColumn<StudentSubjectRecord, String> sDesc = new TableColumn<>("Description");
         sDesc.setCellValueFactory(new PropertyValueFactory<>("subjectDesc"));
         sDesc.setResizable(false);
-        sDesc.setPrefWidth(200);
+        sDesc.setPrefWidth(300);
 
         TableColumn<StudentSubjectRecord, String> date = new TableColumn<>("Date");
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        date.setResizable(false);
+        date.setPrefWidth(120);
 
         TableColumn<StudentSubjectRecord, String> midterm = new TableColumn<>("Midterm");
         midterm.setCellValueFactory(new PropertyValueFactory<>("midterm"));
+        midterm.setResizable(false);
+        midterm.setPrefWidth(80);
 
         TableColumn<StudentSubjectRecord, String> finalterm = new TableColumn<>("Finalterm");
         finalterm.setCellValueFactory(new PropertyValueFactory<>("finalterm"));
+        finalterm.setResizable(false);
+        finalterm.setPrefWidth(80);
 
-        TableColumn<StudentSubjectRecord, String> mark = new TableColumn<>("Mark");
+        TableColumn<StudentSubjectRecord, String> mark = new TableColumn<>("Remarks");
         mark.setCellValueFactory(new PropertyValueFactory<>("mark"));
+        mark.setResizable(false);
+        mark.setPrefWidth(80);
 
         tblRecord.getColumns().add(sName);
         tblRecord.getColumns().add(sDesc);
@@ -194,25 +202,180 @@ public class StudentGradeController implements Initializable {
     public void listener(Student student) {
         this.student = student;
         final Section section = sectionDao.getSectionById(student.getSectionId());
-        lbCourse.setText(courseDao.getCourseById(student.getCourseId()).getName());
-        lbSN.setText(student.getStudentNumber() + "");
+        txCourse.setText(courseDao.getCourseById(student.getCourseId()).getName());
+        txSNumber.setText(student.getStudentNumber() + "");
         lbStudent.setText(student.getFirstName() + " " + student.getLastName());
-        lbYS.setText(section.getYear() + "-" +section.getName().toUpperCase());
-        lbStatus.setText(student.getStatus());
+        txYS.setText(section.getYear() + "-" +section.getName().toUpperCase());
+        txStatus.setText(student.getStatus());
 
+        int index = 0;
         for(int i=0; i<COURSE_LIST.size(); i++) {
             if(student.getCourseId() == COURSE_LIST.get(i).getId()) {
                 cbCourse.getSelectionModel().select(i);
+                index = i;
                 break;
             }
         }
 
         clear();
         loadStudent(student ,1, 1);
+
+        cbYearSem.setItems(OBSERVABLE_LIST_CURRICULUM);
+        for(int year=1; year<=COURSE_LIST.get(index).getTotalYear(); year++) {
+            for(int sem=1; sem<=COURSE_LIST.get(index).getTotalSemester(); sem++) {
+                cbYearSem.getItems().add(format(year) + " YEAR / " + format(sem) + " SEMESTER");
+            }
+        }
+        cbYearSem.getSelectionModel().select(0);
     }
 
     @FXML
     protected void onClickRefresh() {
         onChoose();
+    }
+
+    @FXML
+    protected void onClickSearch() {
+        if(!txSearch.getText().trim().isEmpty()) {
+            if (txSearch.getText().trim().matches("^[0-9a-zA-Z]+$")) {
+                List<Student> studentList = new ArrayList<>();
+                if(isNumber(txSearch.getText().trim())) {
+                    Student student = studentDao.getStudentById(Long.parseLong(txSearch.getText().trim()));
+                    if(student == null) {
+                        new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
+                                .start();
+                        return;
+                    }
+                    studentList.add(student);
+                }else {
+                    studentList.addAll(studentDao
+                            .getStudentList("WHERE firstName='" +txSearch.getText().trim()+ "' " +
+                                    "OR lastName='"+txSearch.getText().trim()+"' " +
+                                    "OR middleName='"+txSearch.getText().trim()+"'"));
+                    if(studentList.size() < 1) {
+                        new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
+                                .start();
+                        return;
+                    }
+                }
+                if(studentList.size() > 1) {
+                    StudentResultStage studentResultStage = new StudentResultStage();
+                    studentResultStage.setOnSelectStudentLister(this);
+                    Platform.runLater(()->studentResultStage.showAndWait());
+                    studentResultStage.getController().listener(studentList);
+                } else {
+                    onSelect(studentList.get(0));
+
+                }
+                cbYearSem.getSelectionModel().select(0);
+                txSearch.setPromptText("Enter a student name, number");
+                txSearch.setStyle("-fx-prompt-text-fill:#000000");
+            } else {
+                txSearch.setText("");
+                txSearch.setPromptText("Invalid input");
+                txSearch.setStyle("-fx-prompt-text-fill:#d35400");
+            }
+        }
+    }
+
+    @FXML
+    protected void onActionSearch() {
+        if(!txSearch.getText().trim().isEmpty()) {
+            if (txSearch.getText().trim().matches("^[0-9a-zA-Z]+$")) {
+                List<Student> studentList = new ArrayList<>();
+                if(isNumber(txSearch.getText().trim())) {
+                    Student student = studentDao.getStudentById(Long.parseLong(txSearch.getText().trim()));
+                    if(student == null) {
+                        new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
+                                .start();
+                        return;
+                    }
+                    studentList.add(student);
+                }else {
+                    studentList.addAll(studentDao
+                            .getStudentList("WHERE firstName='" +txSearch.getText().trim()+ "' " +
+                                    "OR lastName='"+txSearch.getText().trim()+"' " +
+                                    "OR middleName='"+txSearch.getText().trim()+"'"));
+                    if(studentList.size() < 1) {
+                        new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
+                                .start();
+                        return;
+                    }
+                }
+                if(studentList.size() > 1) {
+                    StudentResultStage studentResultStage = new StudentResultStage();
+                    studentResultStage.setOnSelectStudentLister(this);
+                    Platform.runLater(()->studentResultStage.showAndWait());
+                    studentResultStage.getController().listener(studentList);
+                } else {
+                    onSelect(studentList.get(0));
+
+                }
+                cbYearSem.getSelectionModel().select(0);
+                txSearch.setPromptText("Enter a student name, number");
+                txSearch.setStyle("-fx-prompt-text-fill:#000000");
+            } else {
+                txSearch.setText("");
+                txSearch.setPromptText("Invalid input");
+                txSearch.setStyle("-fx-prompt-text-fill:#d35400");
+            }
+        }
+    }
+
+    public String format(int num) {
+        switch (num) {
+            case 1: return "1ST";
+            case 2: return "2ND";
+            case 3: return "3RD";
+            default: return num + "TH";
+        }
+    }
+
+    @FXML
+    private void onClickAS() {
+        try {
+            Desktop.getDesktop().open(new File(ResourceHelper.dir() + "/sample3.pdf"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isNumber(String string) {
+        try {
+            Long.parseLong(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void onSelect(Student student) {
+        this.student = student;
+        final Section section = sectionDao.getSectionById(student.getSectionId());
+        txCourse.setText(courseDao.getCourseById(student.getCourseId()).getName());
+        txSNumber.setText(student.getStudentNumber() + "");
+        lbStudent.setText(student.getFirstName() + " " + student.getLastName());
+        txYS.setText(section.getYear() + "-" + section.getName().toUpperCase());
+        txStatus.setText(student.getStatus());
+
+        int index = 0;
+        for (int i = 0; i < COURSE_LIST.size(); i++) {
+            if (student.getCourseId() == COURSE_LIST.get(i).getId()) {
+                cbCourse.getSelectionModel().select(i);
+                index = i;
+                break;
+            }
+        }
+
+        clear();
+        loadStudent(student, 1, 1);
+
+        cbYearSem.setItems(OBSERVABLE_LIST_CURRICULUM);
+        for (int year = 1; year <= COURSE_LIST.get(index).getTotalYear(); year++) {
+            for (int sem = 1; sem <= COURSE_LIST.get(index).getTotalSemester(); sem++) {
+                cbYearSem.getItems().add(format(year) + " YEAR / " + format(sem) + " SEMESTER");
+            }
+        }
     }
 }

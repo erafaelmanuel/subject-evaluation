@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -20,12 +21,12 @@
    <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
          <top>
-            <BorderPane prefHeight="71.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="71.0" prefWidth="600.0" style="-fx-background-color: #bdc3c7;" BorderPane.alignment="CENTER">
                <right>
                   <VBox alignment="CENTER" prefHeight="82.0" prefWidth="159.0" BorderPane.alignment="TOP_LEFT">
                      <children>
                         <JFXComboBox fx:id="cbCurSemester" onAction="#onChooseSemester" prefHeight="25.0" prefWidth="134.0" promptText="Semester" />
-                        <JFXButton fx:id="btnSave" buttonType="RAISED" onAction="#onClickSave" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE">
+                        <JFXButton buttonType="RAISED" onAction="#onClickEnroll" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #8e44ad;" text="Enroll" textFill="WHITE">
                            <VBox.margin>
                               <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                            </VBox.margin>
@@ -83,7 +84,7 @@
                   </BorderPane>
                </top>
                <bottom>
-                  <BorderPane prefHeight="55.0" prefWidth="700.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+                  <BorderPane prefHeight="55.0" prefWidth="700.0" style="-fx-background-color: #ecf0f1;" BorderPane.alignment="CENTER">
                      <top>
                         <VBox prefHeight="47.0" prefWidth="700.0" BorderPane.alignment="CENTER">
                            <children>
@@ -94,14 +95,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Label fx:id="lbfullName" text="-/-">
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </HBox.margin>
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
+                                    <JFXTextField fx:id="txFullName" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Name of student" />
                                  </children>
                                  <VBox.margin>
                                     <Insets left="16.0" />
@@ -109,19 +103,12 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="YEAR  :">
+                                    <Label text="YEAR  :           ">
                                        <HBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Label fx:id="lbYear" text="-/-">
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </HBox.margin>
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
+                                    <JFXTextField fx:id="txYear" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Year of student" />
                                  </children>
                                  <VBox.margin>
                                     <Insets left="16.0" />
@@ -129,19 +116,12 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="STATUS :">
+                                    <Label text="STATUS :        ">
                                        <HBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Label fx:id="lbStatus" text="-/-">
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </HBox.margin>
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
+                                    <JFXTextField fx:id="txStatus" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Status of student" />
                                  </children>
                                  <VBox.margin>
                                     <Insets left="16.0" />
@@ -151,6 +131,9 @@
                            <BorderPane.margin>
                               <Insets top="10.0" />
                            </BorderPane.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="50.0" />
+                           </padding>
                         </VBox>
                      </top>
                   </BorderPane>
@@ -208,12 +191,12 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="+ Add" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="+ Add" textFill="WHITE">
                                  <FlowPane.margin>
                                     <Insets left="20.0" />
                                  </FlowPane.margin>
                               </JFXButton>
-                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickAddAll" ripplerFill="WHITE" style="-fx-background-color: #3498db;" text="+ Add All" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickAddAll" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="+ Add All" textFill="WHITE">
                                  <FlowPane.margin>
                                     <Insets left="5.0" />
                                  </FlowPane.margin>
@@ -248,7 +231,7 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </JFXButton>
-                              <JFXButton buttonType="RAISED" onAction="#onClickUndo" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="Undo drop" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" onAction="#onClickUndo" ripplerFill="WHITE" style="-fx-background-color: #7f8c8d;" text="Undo drop" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets left="5.0" />
                                  </HBox.margin>
@@ -269,12 +252,12 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <JFXButton buttonType="RAISED" onAction="#onClickRemove" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="- Remove" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" onAction="#onClickRemove" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="- Remove" textFill="WHITE">
                                  <FlowPane.margin>
                                     <Insets left="20.0" />
                                  </FlowPane.margin>
                               </JFXButton>
-                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickRemoveAll" ripplerFill="WHITE" style="-fx-background-color: #3498db;" text="- Remove All" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickRemoveAll" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="- Remove All" textFill="WHITE">
                                  <FlowPane.margin>
                                     <Insets left="5.0" />
                                  </FlowPane.margin>

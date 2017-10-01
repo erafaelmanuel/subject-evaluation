@@ -27,7 +27,7 @@
                   <Label layoutX="38.0" layoutY="306.0" text="Section :" />
                   <JFXTextField fx:id="txAge" layoutX="132.0" layoutY="132.0" prefHeight="25.0" prefWidth="202.0" />
                   <JFXComboBox fx:id="cbGender" layoutX="136.0" layoutY="173.0" prefHeight="25.0" prefWidth="200.0" promptText="Gender" />
-                  <JFXTextField fx:id="txCNumber" layoutX="134.0" layoutY="215.0" prefHeight="25.0" prefWidth="198.0" promptText="Contact Number" />
+                  <JFXTextField fx:id="txCNumber" layoutX="134.0" layoutY="215.0" onKeyPressed="#onKeyCN" onKeyReleased="#onKeyCN" prefHeight="25.0" prefWidth="198.0" promptText="Contact Number" />
                   <JFXComboBox fx:id="cbCourse" layoutX="134.0" layoutY="260.0" prefHeight="25.0" prefWidth="198.0" />
                   <JFXComboBox fx:id="cbSection" layoutX="132.0" layoutY="302.0" prefHeight="25.0" prefWidth="201.0" />
                   <JFXButton buttonType="RAISED" layoutX="494.0" layoutY="362.0" onAction="#onClickCancel" prefHeight="13.0" prefWidth="80.0" ripplerFill="WHITE" style="-fx-background-color: #c0392b;" text="Cancel" textFill="WHITE" />
