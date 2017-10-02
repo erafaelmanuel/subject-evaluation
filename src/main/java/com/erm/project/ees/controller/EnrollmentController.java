@@ -7,6 +7,7 @@ import com.erm.project.ees.model.Curriculum;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.StudentSubjectRecord;
 import com.erm.project.ees.model.recursive.Subject;
+import com.erm.project.ees.stage.AdvisingFormStage;
 import com.erm.project.ees.util.AssessmentHelper;
 import com.erm.project.ees.util.ResourceHelper;
 import com.erm.project.ees.util.document.PDF;
@@ -123,7 +124,7 @@ public class EnrollmentController implements Initializable {
     @FXML
     protected void onClickEnroll(ActionEvent event) {
 
-        //Delete the enrolled
+        //Delete the enrolled subject
         dirtyDao.deleteStudentRecord(student.getId(), "ONGOING");
 
         if (totalYeUnit >= 1 && totalYeUnit <= 30) {
@@ -152,6 +153,12 @@ public class EnrollmentController implements Initializable {
             pdf.setStudent(student);
             pdf.writeAndClose();
         }).start();
+
+        new Thread(()->Platform.runLater(()->{
+            AdvisingFormStage advisingFormStage = new AdvisingFormStage();
+            Platform.runLater(()->advisingFormStage.showAndWait());
+            advisingFormStage.getController().listener(student, ENROLL_SUBJECT_LIST);
+        })).start();
     }
 
     @FXML

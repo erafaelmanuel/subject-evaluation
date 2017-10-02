@@ -112,6 +112,7 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
             }
             SubjectInputStage stage = (SubjectInputStage) ((Node) event.getSource()).getScene().getWindow();
             stage.callBack();
+            SUBJECT.setId(0);
         }
     }
 

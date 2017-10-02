@@ -281,7 +281,12 @@ public class SubjectDaoImpl implements SubjectDao {
         return false;
     }
 
-    public long generate() {
+    public long generate2() {
         return (long) (Math.random() * Long.MAX_VALUE);
+    }
+
+    public long generate() {
+        String string = String.format("2017%05d",(short) (Math.random() * Short.MAX_VALUE));
+        return  Long.parseLong(string);
     }
 }

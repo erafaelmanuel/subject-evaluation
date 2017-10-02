@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.erm.project.ees.controller.CurriculumController">
    <center>
@@ -91,7 +92,17 @@
    <top>
       <VBox prefHeight="111.0" prefWidth="700.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="99.0" prefWidth="700.0" style="-fx-background-color: #2980b9;" />
+            <HBox alignment="BOTTOM_LEFT" prefHeight="99.0" prefWidth="700.0" style="-fx-background-color: #2980b9;">
+               <children>
+                  <Label text="Add Curriculum" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children></HBox>
             <HBox prefHeight="83.0" prefWidth="700.0" style="-fx-background-color: #FFFFFF;">
                <children>
                   <VBox prefHeight="34.0" prefWidth="86.0">
