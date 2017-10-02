@@ -6,14 +6,8 @@ import com.erm.project.ees.stage.AdminStage;
 import com.erm.project.ees.stage.ConfigurationStage;
 import com.erm.project.ees.stage.LoginStage;
 import com.erm.project.ees.stage.TeacherStage;
-import com.erm.project.ees.util.ResourceHelper;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class Main extends Application implements ConfigurationStage.OnFinishListener, LoginStage.OnLoginListener,
     TeacherStage.OnSignOutListener, AdminStage.OnSignOutListener {
