@@ -227,7 +227,7 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
-                String sql = "INSERT INTO " + TABLE_NAME + "(id, _year, _semester, course_id, _name, _year) VALUES (?, ?, ?, ?, ?, ?);";
+                String sql = "INSERT INTO " + TABLE_NAME + "(id, _year, _semester, course_id, _name, _type) VALUES (?, ?, ?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, curriculum.getId());
                 pst.setInt(2, curriculum.getYear());

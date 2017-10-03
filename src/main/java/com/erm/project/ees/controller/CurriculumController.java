@@ -12,6 +12,7 @@ import com.erm.project.ees.model.Subject;
 import com.erm.project.ees.stage.CurriculumStage;
 import com.erm.project.ees.stage.SubjectInputStage;
 import com.erm.project.ees.stage.SubjectListStage;
+import com.erm.project.ees.util.ResourceHelper;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
@@ -23,6 +24,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -60,6 +64,12 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     private Label lbUnit;
 
     @FXML
+    private ImageView imgLoading;
+
+    @FXML
+    private VBox pnScreen;
+
+    @FXML
     private JFXTreeTableView<com.erm.project.ees.model.recursive.Subject> tblSList;
 
     private final SubjectDao subjectDao = new SubjectDaoImpl();
@@ -77,10 +87,14 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
 
     private int totalUnit;
     private boolean unitIsValid[];
+    private volatile boolean stop;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initTable();
+
+        Image logoLoading = new Image(ResourceHelper.resourceWithBasePath("image/loading.gif").toString());
+        imgLoading.setImage(logoLoading);
     }
 
     @FXML
@@ -335,33 +349,6 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
         tblSList.setShowRoot(false);
     }
 
-    public void dispose(State state) {
-        if (state.getState() == State.DISCARD.getState()) {
-            for (Curriculum curriculum : CURRICULUM_LIST)
-                curriculumDao.deleteCurriculumById(curriculum.getId());
-
-            courseDao.deleteCourseById(TEMP_COURSE.getId());
-        }
-
-        Platform.runLater(() -> {
-
-            lbName.setText("");
-            lbDesc.setText("");
-            lbStatus.setText("");
-            txCode.setText("");
-            lbUnit.setText("0");
-
-            cbYS.getItems().clear();
-            cbYS.getSelectionModel().clearSelection();
-
-            bnAdd.setDisable(true);
-
-            SUBJECT_LIST.clear();
-
-            CURRICULUM_LIST.clear();
-        });
-    }
-
     @Override
     public void onAdd(Subject item) {
         sCurrent = item;
@@ -409,56 +396,108 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
         }
     }
 
-    public void listener(Course course) {
-
-        boolean isExist = false;
-        COURSE.setId(course.getId());
-        COURSE.setName(course.getName());
-        COURSE.setDesc(course.getDesc());
-        COURSE.setTotalYear(course.getTotalYear());
-        COURSE.setTotalSemester(course.getTotalSemester());
-
-        if (courseDao.getCourseById(COURSE.getId()) != null)
-            isExist = true;
-        Course c = courseDao.addCourse(course);
-        if (c != null) {
-            TEMP_COURSE.setId(c.getId());
-            TEMP_COURSE.setName(c.getName());
-            TEMP_COURSE.setDesc(c.getDesc());
-            TEMP_COURSE.setTotalYear(c.getTotalYear());
-            TEMP_COURSE.setTotalSemester(c.getTotalSemester());
-
-            unitIsValid = new boolean[TEMP_COURSE.getTotalYear() * TEMP_COURSE.getTotalSemester()];
-            int counter = 0;
-            for (int year = 1; year <= TEMP_COURSE.getTotalYear(); year++) {
-                for (int sem = 1; sem <= TEMP_COURSE.getTotalSemester(); sem++) {
-                    Curriculum cur = curriculumDao.addCurriculum(new Curriculum(year, sem, course.getId()));
-                    if (isExist) {
-                        for (Subject subject : curriculumDao.getSubjectList(COURSE.getId(), year, sem)) {
-                            curriculumDao.addSubject(cur.getId(), subject.getId());
-                        }
-                        unitIsValid[counter] = true;
-                    }
-                    CURRICULUM_LIST.add(cur);
-                    counter ++;
+    public void dispose(State state) {
+        if (state.getState() == State.DISCARD.getState()) {
+            new Thread(()-> {
+                stop = true;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            }
+                for (Curriculum curriculum : CURRICULUM_LIST)
+                    curriculumDao.deleteCurriculumById(curriculum.getId());
+                courseDao.deleteCourseById(TEMP_COURSE.getId());
+            }).start();
         }
 
         Platform.runLater(() -> {
-            lbName.setText(TEMP_COURSE.getName());
-            lbDesc.setText(TEMP_COURSE.getDesc());
 
-            YR_SEM_LIST.clear();
+            lbName.setText("");
+            lbDesc.setText("");
+            lbStatus.setText("");
+            txCode.setText("");
+            lbUnit.setText("0");
 
-            for (int i = 1; i <= TEMP_COURSE.getTotalYear(); i++) {
-                for (int sem = 1; sem <= TEMP_COURSE.getTotalSemester(); sem++) {
-                    YR_SEM_LIST.add(formatter(i) + " YEAR / " + formatter(sem) + " SEMESTER");
+            bnAdd.setDisable(true);
+
+            SUBJECT_LIST.clear();
+            CURRICULUM_LIST.clear();
+        });
+    }
+
+    public void listener(Course course) {
+        showLoading();
+        new Thread(()->{
+            stop = false;
+            boolean isExist = false;
+            COURSE.setId(course.getId());
+            COURSE.setName(course.getName());
+            COURSE.setDesc(course.getDesc());
+            COURSE.setTotalYear(course.getTotalYear());
+            COURSE.setTotalSemester(course.getTotalSemester());
+
+            if (courseDao.getCourseById(COURSE.getId()) != null)
+                isExist = true;
+            Course c = courseDao.addCourse(course);
+            if (c != null) {
+                TEMP_COURSE.setId(c.getId());
+                TEMP_COURSE.setName(c.getName());
+                TEMP_COURSE.setDesc(c.getDesc());
+                TEMP_COURSE.setTotalYear(c.getTotalYear());
+                TEMP_COURSE.setTotalSemester(c.getTotalSemester());
+
+                unitIsValid = new boolean[TEMP_COURSE.getTotalYear() * TEMP_COURSE.getTotalSemester()];
+                int counter = 0;
+                for (int year = 1; year <= TEMP_COURSE.getTotalYear(); year++) {
+                    for (int sem = 1; sem <= TEMP_COURSE.getTotalSemester(); sem++) {
+
+                        if(stop) {
+                            break;
+                        }
+
+                        Curriculum cur = curriculumDao.addCurriculum(new Curriculum(year, sem, course.getId()));
+                        if (isExist) {
+                            for (Subject subject : curriculumDao.getSubjectList(COURSE.getId(), year, sem)) {
+                                curriculumDao.addSubject(cur.getId(), subject.getId());
+                            }
+                            unitIsValid[counter] = true;
+                        }
+                        CURRICULUM_LIST.add(cur);
+                        counter ++;
+                    }
                 }
             }
-            cbYS.setItems(YR_SEM_LIST);
-            cbYS.getSelectionModel().select(0);
-        });
+
+            Platform.runLater(() -> {
+                lbName.setText(TEMP_COURSE.getName());
+                lbDesc.setText(TEMP_COURSE.getDesc());
+
+                YR_SEM_LIST.clear();
+                cbYS.setItems(YR_SEM_LIST);
+                for (int i = 1; i <= TEMP_COURSE.getTotalYear(); i++) {
+                    for (int sem = 1; sem <= TEMP_COURSE.getTotalSemester(); sem++) {
+                        cbYS.getItems().add(formatter(i) + " YEAR / " + formatter(sem) + " SEMESTER");
+                    }
+                }
+                cbYS.getSelectionModel().select(0);
+            });
+
+            hideLoading();
+        }).start();
+    }
+
+    public void showLoading() {
+        Platform.runLater(()-> pnScreen.setVisible(true));
+    }
+
+    public void hideLoading() {
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()-> pnScreen.setVisible(false));
     }
 
     @Override

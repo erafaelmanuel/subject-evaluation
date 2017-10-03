@@ -74,10 +74,12 @@ public class CourseController implements Initializable {
     }
 
     public void dispose() {
-        txName.setText("");
-        txDesc.setText("");
-        cbYear.getSelectionModel().select(0);
-        cbSemester.getSelectionModel().select(0);
+        Platform.runLater(()->{
+            txName.setText("");
+            txDesc.setText("");
+            cbYear.getSelectionModel().select(0);
+            cbSemester.getSelectionModel().select(0);
+        });
     }
 
     public void listen(CurriculumStage curriculumStage) {

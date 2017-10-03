@@ -12,7 +12,6 @@ import com.erm.project.ees.model.Student;
 import com.erm.project.ees.stage.StudentInputStage;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

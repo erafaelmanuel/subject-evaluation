@@ -2,21 +2,24 @@ package com.erm.project.ees.controller;
 
 import com.erm.project.ees.dao.CourseDao;
 import com.erm.project.ees.dao.CurriculumDao;
+import com.erm.project.ees.dao.SpecialCurriculumDao;
 import com.erm.project.ees.dao.impl.CourseDaoImpl;
 import com.erm.project.ees.dao.impl.CurriculumDaoImpl;
+import com.erm.project.ees.dao.impl.SpecialCurriculumDaoImpl;
 import com.erm.project.ees.model.Course;
 import com.erm.project.ees.model.Curriculum;
+import com.erm.project.ees.model.SpecialCurriculum;
 import com.erm.project.ees.model.recursive.Subject;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.net.URL;
@@ -42,8 +45,12 @@ public class SpecialCurriculumController implements Initializable {
     @FXML
     private JFXTreeTableView<Subject> tblTo;
 
+    @FXML
+    private JFXTextField txName;
+
     private final CourseDao courseDao = new CourseDaoImpl();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
+    private final SpecialCurriculumDao specialCurriculumDao = new SpecialCurriculumDaoImpl();
 
     private final List<Course> COURSE_LIST = new ArrayList<>();
 
@@ -62,8 +69,8 @@ public class SpecialCurriculumController implements Initializable {
         initTable2();
 
         cbCourse.getSelectionModel().select(0);
-        cbType.getItems().add("SATURDAY CLASS");
-        cbType.getItems().add("SUMMER CLASS");
+        cbType.getItems().add("SATURDAY_CLASS");
+        cbType.getItems().add("SUMMER_CLASS");
         cbType.getSelectionModel().select(0);
 
         final int index = cbCourse.getSelectionModel().getSelectedIndex();
@@ -106,9 +113,34 @@ public class SpecialCurriculumController implements Initializable {
     }
 
     @FXML
+    protected void onClickCancel(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+
+    }
+
+    @FXML
+    protected void onClickSave(ActionEvent event) {
+        if(SUBJECT_LIST_TO.size() > 0) {
+            final int index = cbYS.getSelectionModel().getSelectedIndex();
+            SpecialCurriculum curriculum = new SpecialCurriculum();
+            curriculum.setYear(getYearByIndex(index));
+            curriculum.setSemester(index);
+            curriculum.setCourseId(COURSE_LIST.get(cbCourse.getSelectionModel().getSelectedIndex()).getId());
+            curriculum.setType(cbType.getSelectionModel().getSelectedItem());
+            curriculum.setName(txName.getText());
+            specialCurriculumDao.addCurriculum(curriculum);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+        }
+    }
+
+    @FXML
     private void onChooseYS() {
         final int index = cbCourse.getSelectionModel().getSelectedIndex();
         SUBJECT_LIST.clear();
+        SUBJECT_LIST_TO.clear();
         Curriculum c = getCurriculumByYearAndSem(COURSE_LIST.get(index).getId(), cbYS.getSelectionModel().getSelectedIndex());
         for (com.erm.project.ees.model.Subject subject : curriculumDao.getSubjectList(c.getId())) {
             SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
@@ -116,6 +148,10 @@ public class SpecialCurriculumController implements Initializable {
         TreeItem<Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST, RecursiveTreeObject::getChildren);
         tblFrom.setRoot(root);
         tblFrom.setShowRoot(false);
+
+        tblTo.setRoot(null);
+        tblTo.setShowRoot(false);
+
     }
 
     @FXML
@@ -162,11 +198,6 @@ public class SpecialCurriculumController implements Initializable {
         nameCol.setPrefWidth(130);
         nameCol.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
 
-//        JFXTreeTableColumn<com.erm.project.ees.model.recursive.Subject, String> descCol = new JFXTreeTableColumn<>("Description");
-//        descCol.setResizable(false);
-//        descCol.setPrefWidth(210);
-//        descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
-
         JFXTreeTableColumn<com.erm.project.ees.model.recursive.Subject, Integer> unitCol = new JFXTreeTableColumn<>("Unit");
         unitCol.setResizable(false);
         unitCol.setPrefWidth(80);
@@ -174,7 +205,6 @@ public class SpecialCurriculumController implements Initializable {
 
         tblFrom.getColumns().add(idCol);
         tblFrom.getColumns().add(nameCol);
-        //tblFrom.getColumns().add(descCol);
         tblFrom.getColumns().add(unitCol);
 
         tblFrom.setRoot(root);
@@ -194,11 +224,6 @@ public class SpecialCurriculumController implements Initializable {
         nameCol.setPrefWidth(130);
         nameCol.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
 
-//        JFXTreeTableColumn<com.erm.project.ees.model.recursive.Subject, String> descCol = new JFXTreeTableColumn<>("Description");
-//        descCol.setResizable(false);
-//        descCol.setPrefWidth(210);
-//        descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
-
         JFXTreeTableColumn<com.erm.project.ees.model.recursive.Subject, Integer> unitCol = new JFXTreeTableColumn<>("Unit");
         unitCol.setResizable(false);
         unitCol.setPrefWidth(80);
@@ -206,7 +231,6 @@ public class SpecialCurriculumController implements Initializable {
 
         tblTo.getColumns().add(idCol);
         tblTo.getColumns().add(nameCol);
-        //tblFrom.getColumns().add(descCol);
         tblTo.getColumns().add(unitCol);
 
         tblTo.setRoot(root);
@@ -246,5 +270,23 @@ public class SpecialCurriculumController implements Initializable {
                 return curriculumDao.getCurriculumListByCourseId(courseId, 8, 2);
         }
         return new Curriculum();
+    }
+
+    public void courseProperty(Course course) {
+        for(int i=0; i<COURSE_LIST.size(); i++) {
+            if(COURSE_LIST.get(i).getId() == course.getId()) {
+                cbCourse.getSelectionModel().select(i);
+                break;
+            }
+        }
+
+    }
+
+    public int getYearByIndex(int index) {
+        return (index+2)/2;
+    }
+
+    public int getSemByIndex(int index) {
+        return 2*(index/2)==index ? 1:2;
     }
 }

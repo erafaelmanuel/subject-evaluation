@@ -41,6 +41,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
+                        <MenuItem fx:id="miSpecial" mnemonicParsing="false" onAction="#onClickSpecial" text="Add special curriculum" />
                         <MenuItem fx:id="miInputGrade" mnemonicParsing="false" onAction="#onClickInputGrade" text="Input Grade" />
                       <MenuItem mnemonicParsing="false" onAction="#onClickUpdate" text="Update" />
                         <MenuItem mnemonicParsing="false" onAction="#onClickDelete" text="Delete" />
@@ -103,24 +104,15 @@
                   <MenuItem mnemonicParsing="false" text="Section" />
               <MenuItem mnemonicParsing="false" onAction="#onClickStudent" text="Student" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickSubject" text="Subject" />
-                  <MenuItem mnemonicParsing="false" onAction="#onClickSpecialClass" text="Special Class" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Service">
+            <Menu mnemonicParsing="false" text="Transaction">
               <items>
                   <MenuItem mnemonicParsing="false" text="Enroll student" />
                 <MenuItem mnemonicParsing="false" text="Evaluate" />
                   <MenuItem mnemonicParsing="false" text="Export report" />
                   <MenuItem mnemonicParsing="false" text="Manage your user" />
               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="System">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Settings" />
-                  <MenuItem mnemonicParsing="false" text="Backup and restore" />
-                  <MenuItem mnemonicParsing="false" text="Show status" />
-                  <MenuItem mnemonicParsing="false" text="System reset" />
-               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>

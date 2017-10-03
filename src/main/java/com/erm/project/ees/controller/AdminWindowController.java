@@ -46,6 +46,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @FXML
     private MenuItem miInputGrade;
 
+    @FXML
+    private MenuItem miSpecial;
+
 
     private static final ObservableList<Object> OBSERVABLE_LIST = FXCollections.observableArrayList();
 
@@ -53,8 +56,6 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private static final int TABLE_STUDENT = 1;
     private static final int TABLE_SUBJECT = 2;
     private static final int TABLE_COURSE = 3;
-    private static final int TABLE_SPECIAL_CURRICULUM = 4;
-
 
     private int mCurrent = TABLE_STUDENT;
 
@@ -97,9 +98,18 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                 courseStage.showAndWait();
                 break;
             case TABLE_SUBJECT: subjectInputStage.showAndWait(); break;
-            case TABLE_SPECIAL_CURRICULUM: specialCurriculumStage.showAndWait(); break;
             default: courseStage.showAndWait(); break;
         }
+    }
+
+    @FXML
+    protected void onClickSpecial() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            Platform.runLater(() -> specialCurriculumStage.showAndWait());
+            specialCurriculumStage.getController().courseProperty(COURSE_LIST.get(index));
+        }
+
     }
 
     @FXML
@@ -110,12 +120,8 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         loadSubject();
 
         miInputGrade.setVisible(false);
+        miSpecial.setVisible(false);
         lbTitle.setText("Subject List");
-    }
-
-    @FXML
-    protected void onClickSpecialClass() {
-        mCurrent = TABLE_SPECIAL_CURRICULUM;
     }
 
     @FXML
@@ -188,6 +194,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         loadStudent();
 
         miInputGrade.setVisible(true);
+        miSpecial.setVisible(false);
         lbTitle.setText("Student List");
     }
     @FXML
@@ -198,6 +205,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         loadCourse();
 
         miInputGrade.setVisible(false);
+        miSpecial.setVisible(true);
         lbTitle.setText("Course List");
     }
 
@@ -277,40 +285,6 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         for(Subject subject : subjectDao.getSubjectList()) {
             tblData.getItems().add(subject);
             SUBJECT_LIST.add(subject);
-        }
-    }
-
-    private void loadSpecialCurriculum() {
-        TableColumn<Object, String> idCol = new TableColumn<>("ID");
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idCol.setPrefWidth(200);
-
-        TableColumn<Object, String> nameCol = new TableColumn<>("Name");
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        nameCol.setPrefWidth(200);
-
-        TableColumn<Object, String> descCol = new TableColumn<>("Description");
-        descCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
-        descCol.setPrefWidth(400);
-
-        TableColumn<Object, String> tYearCol = new TableColumn<>("Number of Year");
-        tYearCol.setCellValueFactory(new PropertyValueFactory<>("totalYear"));
-        tYearCol.setPrefWidth(200);
-
-        TableColumn<Object, String> tSemCol = new TableColumn<>("Number of Semester");
-        tSemCol.setCellValueFactory(new PropertyValueFactory<>("totalSemester"));
-        tSemCol.setPrefWidth(200);
-
-        tblData.getColumns().add(idCol);
-        tblData.getColumns().add(nameCol);
-        tblData.getColumns().add(descCol);
-        tblData.getColumns().add(tYearCol);
-        tblData.getColumns().add(tSemCol);
-
-        COURSE_LIST.clear();
-        for(Course course : courseDao.getCourseList()) {
-            tblData.getItems().add(course);
-            COURSE_LIST.add(course);
         }
     }
 
