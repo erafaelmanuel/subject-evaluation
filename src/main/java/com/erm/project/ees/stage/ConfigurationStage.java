@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-public class ConfigurationStage extends Stage{
+public class ConfigurationStage extends Stage {
 
     private Logger logger = Logger.getLogger(ConfigurationStage.class.getSimpleName());
 
@@ -31,7 +31,7 @@ public class ConfigurationStage extends Stage{
             this.setTitle("UserLibrary configuration");
             this.setResizable(false);
             this.setScene(scene);
-            this.setOnCloseRequest((e)->{
+            this.setOnCloseRequest((e) -> {
                 onFinishListener.onFinish(dbManager, status);
             });
         } catch (IOException e) {
@@ -50,7 +50,7 @@ public class ConfigurationStage extends Stage{
             this.setTitle("UserLibrary configuration");
             this.setResizable(false);
             this.setScene(scene);
-            this.setOnCloseRequest((e)->{
+            this.setOnCloseRequest((e) -> {
                 onFinishListener.onFinish(dbManager, status);
             });
         } catch (IOException e) {
@@ -69,7 +69,9 @@ public class ConfigurationStage extends Stage{
     public void callBack(DBManager dbManager, boolean status) {
         this.dbManager = dbManager;
         this.status = status;
-        Platform.runLater(()->{ this.close(); });
+        Platform.runLater(() -> {
+            this.close();
+        });
         onFinishListener.onFinish(dbManager, status);
     }
 

@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class CurriculumController implements Initializable, SubjectListStage.OnAddItemListener ,
-    SubjectInputStage.OnItemAddLister {
+public class CurriculumController implements Initializable, SubjectListStage.OnAddItemListener,
+        SubjectInputStage.OnItemAddLister {
 
 
     @FXML
@@ -398,7 +398,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
 
     public void dispose(State state) {
         if (state.getState() == State.DISCARD.getState()) {
-            new Thread(()-> {
+            new Thread(() -> {
                 stop = true;
                 try {
                     Thread.sleep(1000);
@@ -428,7 +428,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
 
     public void listener(Course course) {
         showLoading();
-        new Thread(()->{
+        new Thread(() -> {
             stop = false;
             boolean isExist = false;
             COURSE.setId(course.getId());
@@ -452,7 +452,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
                 for (int year = 1; year <= TEMP_COURSE.getTotalYear(); year++) {
                     for (int sem = 1; sem <= TEMP_COURSE.getTotalSemester(); sem++) {
 
-                        if(stop) {
+                        if (stop) {
                             break;
                         }
 
@@ -464,7 +464,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
                             unitIsValid[counter] = true;
                         }
                         CURRICULUM_LIST.add(cur);
-                        counter ++;
+                        counter++;
                     }
                 }
             }
@@ -488,7 +488,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     }
 
     public void showLoading() {
-        Platform.runLater(()-> pnScreen.setVisible(true));
+        Platform.runLater(() -> pnScreen.setVisible(true));
     }
 
     public void hideLoading() {
@@ -497,7 +497,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Platform.runLater(()-> pnScreen.setVisible(false));
+        Platform.runLater(() -> pnScreen.setVisible(false));
     }
 
     @Override

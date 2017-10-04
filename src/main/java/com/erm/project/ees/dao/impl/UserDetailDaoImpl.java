@@ -39,7 +39,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
     private void init() {
         String sql = null;
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 sql = "CREATE TABLE IF NOT EXISTS "
                         .concat(TABLE_NAME)
                         .concat("(")
@@ -55,7 +55,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
 
                 dbManager.close();
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             LOGGER.info(sql);
             LOGGER.warning("SQLException");
             dbManager.close();
@@ -67,7 +67,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
         String sql = null;
         try {
             UserDetail userDetail = null;
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
 
@@ -75,7 +75,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 pst.setLong(1, id);
 
                 ResultSet rs = pst.executeQuery();
-                if(rs.next()) {
+                if (rs.next()) {
                     userDetail = new UserDetail();
                     userDetail.setId(rs.getLong(1));
                     userDetail.setUsername(rs.getString(2));
@@ -89,7 +89,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             LOGGER.info(sql);
             LOGGER.warning("Unable to connect");
             dbManager.close();
@@ -106,7 +106,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
     public UserDetail getUserDetail(String query) {
         try {
             UserDetail userDetail = null;
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM "
                         .concat(TABLE_NAME)
@@ -116,7 +116,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 PreparedStatement pst = connection.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
-                if(rs.next()) {
+                if (rs.next()) {
                     userDetail = new UserDetail();
                     userDetail.setId(rs.getLong(1));
                     userDetail.setUsername(rs.getString(2));
@@ -130,7 +130,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             LOGGER.warning("Connection error");
             dbManager.close();
             return null;
@@ -145,14 +145,14 @@ public class UserDetailDaoImpl implements UserDetailDao {
     public List<UserDetail> getUserDetailList() {
         List<UserDetail> userDetailList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + ";";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
-                while(rs.next()) {
+                while (rs.next()) {
                     UserDetail userDetail = new UserDetail();
                     userDetail.setId(rs.getLong(1));
                     userDetail.setUsername(rs.getString(2));
@@ -166,7 +166,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 return userDetailList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
             dbManager.close();
@@ -182,7 +182,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
     public List<UserDetail> getUserDetailList(String query) {
         List<UserDetail> userDetailList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM "
                         .concat(TABLE_NAME)
@@ -192,7 +192,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 PreparedStatement pst = connection.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
-                while(rs.next()) {
+                while (rs.next()) {
                     UserDetail userDetail = new UserDetail();
                     userDetail.setId(rs.getLong(1));
                     userDetail.setUsername(rs.getString(2));
@@ -206,7 +206,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
                 return userDetailList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             LOGGER.info("Connection error");
             dbManager.close();
             return userDetailList;
@@ -220,7 +220,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
     @Override
     public boolean addUserDetail(UserDetail userDetail) {
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
                 String sql = "INSERT INTO " + TABLE_NAME + "(id, username, password, userType, isActivated, " +
@@ -246,7 +246,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
     @Override
     public boolean updateUserDetailById(long id, UserDetail userDetail) {
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
                 String sql = "UPDATE " + TABLE_NAME + " SET username=?, password=?, userType=? WHERE id = ?";
@@ -276,7 +276,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
     @Override
     public boolean deleteUserDetailById(long id) {
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
                 String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";

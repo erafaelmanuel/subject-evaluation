@@ -1,7 +1,6 @@
 package com.erm.project.ees.stage;
 
 import com.erm.project.ees.controller.StudentResultController;
-import com.erm.project.ees.controller.SubjectInputController;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.util.ResourceHelper;
 import javafx.application.Platform;
@@ -42,7 +41,7 @@ public class StudentResultStage extends Stage {
 
     public void callBack(Student student) {
         onSelectStudentLister.onSelect(student);
-        Platform.runLater(()->close());
+        Platform.runLater(() -> close());
     }
 
     @FunctionalInterface

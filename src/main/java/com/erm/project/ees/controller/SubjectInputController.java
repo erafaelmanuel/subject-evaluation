@@ -65,8 +65,8 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
 
     @FXML
     protected void onClickAdd() {
-        new Thread(()->{
-            Platform.runLater(()-> {
+        new Thread(() -> {
+            Platform.runLater(() -> {
                 SubjectListStage subjectListStage = new SubjectListStage();
                 subjectListStage.setListener(this);
                 subjectListStage.showAndWait();
@@ -77,14 +77,14 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
     @FXML
     protected void onClickRemove() {
         final int index = tblSubject.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             Subject subject = SUBJECT_LIST.get(index);
             SUBJECT_LIST.remove(subject);
 
             TreeItem<Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,
                     RecursiveTreeObject::getChildren);
 
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 tblSubject.setRoot(root);
                 tblSubject.setShowRoot(false);
             });
@@ -93,20 +93,20 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
 
     @FXML
     protected void onClickSave(ActionEvent event) {
-        if(isValid()) {
+        if (isValid()) {
             SUBJECT.setName(txName.getText().trim());
             SUBJECT.setDesc(txDesc.getText().trim());
             SUBJECT.setUnit(cbUnit.getSelectionModel().getSelectedIndex() + 1);
 
-            if(subjectDao.getSubjectById(SUBJECT.getId()) == null)
+            if (subjectDao.getSubjectById(SUBJECT.getId()) == null)
                 SUBJECT.setId(subjectDao.addSubject(SUBJECT).getId());
             else {
                 subjectDao.updateSubjectById(SUBJECT.getId(), SUBJECT);
                 dirtyDao.deletePrerequisite(SUBJECT.getId());
             }
 
-            for(Subject s : SUBJECT_LIST) {
-                if(SUBJECT.getId() == s.getId())
+            for (Subject s : SUBJECT_LIST) {
+                if (SUBJECT.getId() == s.getId())
                     continue;
                 dirtyDao.addPrerequisite(SUBJECT.getId(), s.getId());
             }
@@ -168,7 +168,7 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
                 new Thread(() ->
                         JOptionPane.showMessageDialog(null,
                                 "You can't add subject to itself"))
-                .start();
+                        .start();
                 return;
             }
         }
@@ -178,7 +178,7 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
                 new Thread(() ->
                         JOptionPane.showMessageDialog(null,
                                 "You can't add subject twice"))
-                .start();
+                        .start();
                 return;
             }
         }
@@ -196,14 +196,14 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
 
     protected boolean isValid() {
         boolean isValid = true;
-        if(txName.getText().trim().isEmpty()) {
+        if (txName.getText().trim().isEmpty()) {
             isValid = false;
             lbNError.setVisible(true);
         } else {
             lbNError.setVisible(false);
         }
 
-        if(txDesc.getText().trim().isEmpty()) {
+        if (txDesc.getText().trim().isEmpty()) {
             isValid = false;
             lbDError.setVisible(true);
         } else {
@@ -220,16 +220,16 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
 
         txName.setText(SUBJECT.getName());
         txDesc.setText(SUBJECT.getDesc());
-        cbUnit.getSelectionModel().select(SUBJECT.getUnit()-1);
+        cbUnit.getSelectionModel().select(SUBJECT.getUnit() - 1);
 
         SUBJECT_LIST.clear();
-        for(com.erm.project.ees.model.Subject item : new DirtyDaoImpl().getPrerequisiteBySujectId(SUBJECT.getId())) {
+        for (com.erm.project.ees.model.Subject item : new DirtyDaoImpl().getPrerequisiteBySujectId(SUBJECT.getId())) {
             SUBJECT_LIST.add(new Subject(item.getId(), item.getName(), item.getDesc(), item.getUnit()));
         }
 
         TreeItem<Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST, RecursiveTreeObject::getChildren);
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             tblSubject.setRoot(root);
             tblSubject.setShowRoot(false);
         });

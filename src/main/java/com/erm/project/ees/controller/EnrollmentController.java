@@ -29,7 +29,10 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class EnrollmentController implements Initializable {
 
@@ -147,16 +150,16 @@ public class EnrollmentController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
 
-        new Thread(()->{
+        new Thread(() -> {
             PDF pdf = new PDF();
             pdf.setSubjectList(ENROLL_SUBJECT_LIST);
             pdf.setStudent(student);
             pdf.writeAndClose();
         }).start();
 
-        new Thread(()->Platform.runLater(()->{
+        new Thread(() -> Platform.runLater(() -> {
             AdvisingFormStage advisingFormStage = new AdvisingFormStage();
-            Platform.runLater(()->advisingFormStage.showAndWait());
+            Platform.runLater(() -> advisingFormStage.showAndWait());
             advisingFormStage.getController().listener(student, ENROLL_SUBJECT_LIST);
         })).start();
     }
@@ -164,7 +167,7 @@ public class EnrollmentController implements Initializable {
     @FXML
     protected void onClickUndo() {
         showLoading();
-        new Thread(()->{
+        new Thread(() -> {
             while (ENROLL_SUBJECT_LIST.size() > 0)
                 ENROLL_SUBJECT_LIST.remove(0);
 
@@ -173,7 +176,7 @@ public class EnrollmentController implements Initializable {
 
             for (com.erm.project.ees.model.Subject subject : ENROLLED_LIST) {
                 ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
-                Platform.runLater(()-> {
+                Platform.runLater(() -> {
                     totalYeUnit += subject.getUnit();
                     lbYeUnit.setText(totalYeUnit + "");
                     if (totalYeUnit < 1 || totalYeUnit > 30) {
@@ -187,14 +190,14 @@ public class EnrollmentController implements Initializable {
                 });
             }
             TreeItem<Subject> root = new RecursiveTreeItem<>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 tblYeSubject.setRoot(root);
                 tblYeSubject.setShowRoot(false);
             });
 
-            Platform.runLater(()->cbAbSubject.getSelectionModel().select("DROP"));
-            if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-                new Thread(()->{
+            Platform.runLater(() -> cbAbSubject.getSelectionModel().select("DROP"));
+            if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+                new Thread(() -> {
                     List<com.erm.project.ees.model.Subject> list = new ArrayList<>();
                     loadAbItem(list);
                 }).start();
@@ -211,8 +214,8 @@ public class EnrollmentController implements Initializable {
     @FXML
     protected void onChooseFilter() {
         showLoading();
-        if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-            new Thread(()->{
+        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = new ArrayList<>();
 
                 //Remove list
@@ -222,7 +225,7 @@ public class EnrollmentController implements Initializable {
                 hideLoading();
             }).start();
         } else if (cbAbSubject.getSelectionModel().getSelectedIndex() == 0) {
-            new Thread(()->{
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
                         cbCurSemester.getSelectionModel().getSelectedIndex() + 1, cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
                 if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
@@ -231,8 +234,8 @@ public class EnrollmentController implements Initializable {
                 loadAbItem(list);
                 hideLoading();
             }).start();
-        } else if(cbAbSubject.getSelectionModel().getSelectedIndex() <= course.getTotalYear()) {
-            new Thread(()->{
+        } else if (cbAbSubject.getSelectionModel().getSelectedIndex() <= course.getTotalYear()) {
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
                         cbAbSubject.getSelectionModel().getSelectedIndex(), cbCurSemester.getSelectionModel().getSelectedIndex() + 1,
                         cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
@@ -270,7 +273,7 @@ public class EnrollmentController implements Initializable {
                 hideLoading();
             }).start();
         }
-        if(ENROLLED_LIST.size() < 1) {
+        if (ENROLLED_LIST.size() < 1) {
             removeAllYeSubject();
         }
     }
@@ -278,8 +281,8 @@ public class EnrollmentController implements Initializable {
     @FXML
     private void onChooseMaxYear() {
         showLoading();
-        if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-            new Thread(()->{
+        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = new ArrayList<>();
 
                 //Remove list
@@ -289,7 +292,7 @@ public class EnrollmentController implements Initializable {
                 hideLoading();
             }).start();
         } else if (cbAbSubject.getSelectionModel().getSelectedIndex() == 0) {
-            new Thread(()->{
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
                         cbCurSemester.getSelectionModel().getSelectedIndex() + 1, cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
                 if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
@@ -298,8 +301,8 @@ public class EnrollmentController implements Initializable {
                 loadAbItem(list);
                 hideLoading();
             }).start();
-        } else if(cbAbSubject.getSelectionModel().getSelectedIndex() <= course.getTotalYear()) {
-            new Thread(()->{
+        } else if (cbAbSubject.getSelectionModel().getSelectedIndex() <= course.getTotalYear()) {
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
                         cbAbSubject.getSelectionModel().getSelectedIndex(), cbCurSemester.getSelectionModel().getSelectedIndex() + 1,
                         cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
@@ -321,14 +324,14 @@ public class EnrollmentController implements Initializable {
             addYeSubject(subject);
 
             //remove to drop subject list
-            if(ENROLLED_LIST.size() > 0)
+            if (ENROLLED_LIST.size() > 0)
                 removeToRemoveList(subject);
         }
     }
 
     @FXML
     protected void onClickAddAll() {
-        if(AVAILABLE_SUBJECT_LIST.size() > 0)
+        if (AVAILABLE_SUBJECT_LIST.size() > 0)
             addYeSubjectAll();
     }
 
@@ -341,7 +344,7 @@ public class EnrollmentController implements Initializable {
 
     @FXML
     protected void onClickRemoveAll() {
-        if(ENROLL_SUBJECT_LIST.size() > 0)
+        if (ENROLL_SUBJECT_LIST.size() > 0)
             removeAllYeSubject();
     }
 
@@ -349,7 +352,7 @@ public class EnrollmentController implements Initializable {
     private void loadYeSubject(List<com.erm.project.ees.model.Subject> subjectList) {
         for (com.erm.project.ees.model.Subject subject : subjectList) {
             ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
-            Platform.runLater(()-> {
+            Platform.runLater(() -> {
                 totalYeUnit += subject.getUnit();
                 lbYeUnit.setText(totalYeUnit + "");
                 if (totalYeUnit < 1 || totalYeUnit > 30) {
@@ -363,7 +366,7 @@ public class EnrollmentController implements Initializable {
             });
         }
         TreeItem<Subject> root = new RecursiveTreeItem<>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
-        Platform.runLater(()-> {
+        Platform.runLater(() -> {
             JFXTreeTableColumn<Subject, Long> idCol = new JFXTreeTableColumn<>("ID");
             idCol.setResizable(false);
             idCol.setPrefWidth(80);
@@ -400,7 +403,7 @@ public class EnrollmentController implements Initializable {
                 return;
         }
         ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             TreeItem<Subject> root = new RecursiveTreeItem<>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
 
             totalYeUnit += subject.getUnit();
@@ -448,7 +451,7 @@ public class EnrollmentController implements Initializable {
         tblYeSubject.setShowRoot(false);
 
         //Remove from the table
-        if(ENROLLED_LIST.size() > 0)
+        if (ENROLLED_LIST.size() > 0)
             removeToRemoveList(ENROLL_SUBJECT_LIST);
     }
 
@@ -472,7 +475,7 @@ public class EnrollmentController implements Initializable {
         tblYeSubject.setRoot(root);
         tblYeSubject.setShowRoot(false);
 
-        if(ENROLLED_LIST.size() > 0)
+        if (ENROLLED_LIST.size() > 0)
             addToRemoveList(subject);
     }
 
@@ -495,7 +498,7 @@ public class EnrollmentController implements Initializable {
         tblYeSubject.setRoot(root);
         tblYeSubject.setShowRoot(false);
 
-        if(ENROLLED_LIST.size() > 0)
+        if (ENROLLED_LIST.size() > 0)
             addToRemoveList(templist);
     }
 
@@ -515,7 +518,7 @@ public class EnrollmentController implements Initializable {
     }
 
     public void listener(Student student) {
-        new Thread(()->{
+        new Thread(() -> {
             this.student = student;
             course = courseDao.getCourseById(student.getCourseId());
 
@@ -524,13 +527,14 @@ public class EnrollmentController implements Initializable {
             student.setStatus("REGULAR");
             studentDao.updateStudentById(student.getId(), student);
 
-            root:for(Curriculum curriculum : curriculumList) {
-                for(com.erm.project.ees.model.Subject subject : curriculumDao.getSubjectList(curriculum.getId())) {
+            root:
+            for (Curriculum curriculum : curriculumList) {
+                for (com.erm.project.ees.model.Subject subject : curriculumDao.getSubjectList(curriculum.getId())) {
                     StudentSubjectRecord record = dirtyDao.getStudentSubjectRecordById(student.getId(), subject.getId());
-                    if(record == null)
+                    if (record == null)
                         continue;
                     else {
-                        if(record.getMark().equalsIgnoreCase("FAILED") ||
+                        if (record.getMark().equalsIgnoreCase("FAILED") ||
                                 record.getMark().equalsIgnoreCase("DROPPED")) {
                             student.setStatus("IRREGULAR");
                             studentDao.updateStudentById(student.getId(), student);
@@ -540,7 +544,7 @@ public class EnrollmentController implements Initializable {
                 }
             }
 
-            Platform.runLater(()-> {
+            Platform.runLater(() -> {
                 lbStudentNo.setText(student.getStudentNumber() + "");
                 lbCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
                 txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
@@ -621,8 +625,8 @@ public class EnrollmentController implements Initializable {
                 subjectList.add(subject);
             }
 
-            if(subjectList.size() > 0) {
-                Platform.runLater(()-> {
+            if (subjectList.size() > 0) {
+                Platform.runLater(() -> {
                     cbAbSubject.getItems().add("DROP");
 
                     cbCurSemester.getSelectionModel().select(dirtyDao.getStudentSubjectRecordSemester(student.getId(), "ONGOING") - 1);
@@ -641,7 +645,7 @@ public class EnrollmentController implements Initializable {
         final List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
 
         for (StudentSubjectRecord record : recordList) {
-            if(subject.getId() == record.getSubjectId()) {
+            if (subject.getId() == record.getSubjectId()) {
                 ENROLLED_LIST_REMOVE.add(new com.erm.project.ees.model.Subject(subject.getId(), subject.getName(),
                         subject.getDesc(), subject.getUnit()));
                 break;
@@ -649,9 +653,9 @@ public class EnrollmentController implements Initializable {
         }
 
         showLoading();
-        Platform.runLater(()->cbAbSubject.getSelectionModel().select("DROP"));
-        if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-            new Thread(()->{
+        Platform.runLater(() -> cbAbSubject.getSelectionModel().select("DROP"));
+        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = new ArrayList<>();
 
                 //Remove list
@@ -666,7 +670,7 @@ public class EnrollmentController implements Initializable {
     public void addToRemoveList(List<Subject> subjects) {
         final List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
 
-        for(Subject subject : subjects) {
+        for (Subject subject : subjects) {
             child:
             for (StudentSubjectRecord record : recordList) {
                 if (subject.getId() == record.getSubjectId()) {
@@ -678,9 +682,9 @@ public class EnrollmentController implements Initializable {
         }
 
         showLoading();
-        Platform.runLater(()->cbAbSubject.getSelectionModel().select("DROP"));
-        if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-            new Thread(()->{
+        Platform.runLater(() -> cbAbSubject.getSelectionModel().select("DROP"));
+        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = new ArrayList<>();
 
                 //Remove list
@@ -697,9 +701,10 @@ public class EnrollmentController implements Initializable {
         final List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
 
         for (StudentSubjectRecord record : recordList) {
-            if(subject.getId() == record.getSubjectId()) {
-                inner:for(com.erm.project.ees.model.Subject s : ENROLLED_LIST_REMOVE) {
-                    if(s.getId() == subject.getId()) {
+            if (subject.getId() == record.getSubjectId()) {
+                inner:
+                for (com.erm.project.ees.model.Subject s : ENROLLED_LIST_REMOVE) {
+                    if (s.getId() == subject.getId()) {
                         ENROLLED_LIST_REMOVE.remove(s);
                         break inner;
                     }
@@ -708,9 +713,9 @@ public class EnrollmentController implements Initializable {
             }
         }
 
-        if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
             showLoading();
-            new Thread(()->{
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = new ArrayList<>();
 
                 //Remove list
@@ -726,10 +731,12 @@ public class EnrollmentController implements Initializable {
         final List<com.erm.project.ees.model.Subject> subjectList = new ArrayList<>();
         final List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
 
-        for(Subject subject : subjects) {
-            child1:for (StudentSubjectRecord record : recordList) {
+        for (Subject subject : subjects) {
+            child1:
+            for (StudentSubjectRecord record : recordList) {
                 if (subject.getId() == record.getSubjectId()) {
-                    child2:for (com.erm.project.ees.model.Subject s : ENROLLED_LIST_REMOVE) {
+                    child2:
+                    for (com.erm.project.ees.model.Subject s : ENROLLED_LIST_REMOVE) {
                         if (s.getId() == subject.getId()) {
                             ENROLLED_LIST_REMOVE.remove(s);
                             break child2;
@@ -740,9 +747,9 @@ public class EnrollmentController implements Initializable {
             }
         }
 
-        if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
             showLoading();
-            new Thread(()->{
+            new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = new ArrayList<>();
 
                 //Remove list
@@ -759,7 +766,7 @@ public class EnrollmentController implements Initializable {
     }
 
     public void showLoading() {
-        Platform.runLater(()-> pnScreen.setVisible(true));
+        Platform.runLater(() -> pnScreen.setVisible(true));
     }
 
     public void hideLoading() {
@@ -768,7 +775,7 @@ public class EnrollmentController implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Platform.runLater(()-> pnScreen.setVisible(false));
+        Platform.runLater(() -> pnScreen.setVisible(false));
     }
 
     private void loadAbItem(List<com.erm.project.ees.model.Subject> subjectList) {

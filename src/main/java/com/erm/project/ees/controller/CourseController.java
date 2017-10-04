@@ -55,13 +55,13 @@ public class CourseController implements Initializable {
 
     @FXML
     protected void onClickNext(ActionEvent event) {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             CourseStage stage = (CourseStage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
         });
 
-        new Thread(()->{
-            Platform.runLater(()->curriculumStage.showAndWait());
+        new Thread(() -> {
+            Platform.runLater(() -> curriculumStage.showAndWait());
 
             COURSE.setName(txName.getText());
             COURSE.setDesc(txDesc.getText());
@@ -74,7 +74,7 @@ public class CourseController implements Initializable {
     }
 
     public void dispose() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             txName.setText("");
             txDesc.setText("");
             cbYear.getSelectionModel().select(0);
@@ -96,7 +96,7 @@ public class CourseController implements Initializable {
         txName.setText(COURSE.getName());
         txDesc.setText(COURSE.getDesc());
 
-        cbYear.getSelectionModel().select(COURSE.getTotalYear()-1);
-        cbSemester.getSelectionModel().select(COURSE.getTotalSemester()-2);
+        cbYear.getSelectionModel().select(COURSE.getTotalYear() - 1);
+        cbSemester.getSelectionModel().select(COURSE.getTotalSemester() - 2);
     }
 }

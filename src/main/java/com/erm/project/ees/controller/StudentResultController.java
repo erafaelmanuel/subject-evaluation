@@ -8,7 +8,6 @@ import com.erm.project.ees.dao.impl.SectionDaoImpl;
 import com.erm.project.ees.dao.impl.StudentDaoImpl;
 import com.erm.project.ees.model.Section;
 import com.erm.project.ees.model.recursive.Student;
-import com.erm.project.ees.model.recursive.Subject;
 import com.erm.project.ees.stage.StudentResultStage;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -48,7 +47,7 @@ public class StudentResultController implements Initializable {
 
     @FXML
     protected void onClickItem() {
-        if(tblResult.getSelectionModel().getSelectedIndex() > -1)
+        if (tblResult.getSelectionModel().getSelectedIndex() > -1)
             btnConfirm.setDisable(false);
         else
             btnConfirm.setDisable(true);
@@ -66,7 +65,7 @@ public class StudentResultController implements Initializable {
     }
 
     private void loadResult(List<com.erm.project.ees.model.Student> studentList) {
-        for(com.erm.project.ees.model.Student s : studentList) {
+        for (com.erm.project.ees.model.Student s : studentList) {
             final Section _section = sectionDao.getSectionById(s.getSectionId());
             String fname = String.format("%s, %s %s.",
                     s.getLastName(), s.getFirstName(), s.getMiddleName().substring(0, 1).toUpperCase());

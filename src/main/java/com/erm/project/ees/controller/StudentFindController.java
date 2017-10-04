@@ -3,22 +3,23 @@ package com.erm.project.ees.controller;
 import com.erm.project.ees.dao.StudentDao;
 import com.erm.project.ees.dao.impl.StudentDaoImpl;
 import com.erm.project.ees.model.Student;
+import com.erm.project.ees.stage.StudentResultStage;
 import com.erm.project.ees.stage.TeacherStage;
 import com.erm.project.ees.util.ResourceHelper;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class StudentFindController implements Initializable {
+public class StudentFindController implements Initializable, StudentResultStage.OnSelectStudentLister{
 
     @FXML
     private ImageView imgvLogo;
@@ -28,31 +29,49 @@ public class StudentFindController implements Initializable {
 
     private TeacherStage teacherStage;
 
+    private final StudentDao studentDao = new StudentDaoImpl();
+
     @FXML
-    protected void onClickEnter(ActionEvent event) {
-        try {
-            if(isSNvalid()) {
-                long sn = Long.parseLong(txStudentNumber.getText());
-                final StudentDao studentDao = new StudentDaoImpl();
-                Student student = null;
-                for(Student stu : studentDao.getStudentList()) {
-                    if(stu.getStudentNumber() == sn) {
-                        student = stu;
-                        break;
+    protected void onClickEnter() {
+        if(!txStudentNumber.getText().trim().isEmpty()) {
+            if (txStudentNumber.getText().trim().matches("^[0-9a-zA-Z]+$")) {
+                List<Student> studentList = new ArrayList<>();
+                if(isNumber(txStudentNumber.getText().trim())) {
+                    Student student = studentDao.getStudentById(Long.parseLong(txStudentNumber.getText().trim()));
+                    if(student == null) {
+                        new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
+                                .start();
+                        return;
+                    }
+                    studentList.add(student);
+                }else {
+                    studentList.addAll(studentDao
+                            .getStudentList("WHERE firstName='" +txStudentNumber.getText().trim()+ "' " +
+                                    "OR lastName='"+txStudentNumber.getText().trim()+"' " +
+                                    "OR middleName='"+txStudentNumber.getText().trim()+"'"));
+                    if(studentList.size() < 1) {
+                        new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
+                                .start();
+                        return;
                     }
                 }
-
-                if(student != null) {
-                    teacherStage.callBack(student);
+                if(studentList.size() > 1) {
+                    StudentResultStage studentResultStage = new StudentResultStage();
+                    studentResultStage.setOnSelectStudentLister(this);
+                    Platform.runLater(()->studentResultStage.showAndWait());
+                    studentResultStage.getController().listener(studentList);
                 } else {
-                    Platform.runLater(()-> JOptionPane.showMessageDialog(null,"No student found"));
-                }
-            } else
-                Platform.runLater(()->JOptionPane.showMessageDialog(null,"No student found"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    onSelect(studentList.get(0));
 
+                }
+                txStudentNumber.setPromptText("Enter a student name, number");
+                txStudentNumber.setStyle("-fx-prompt-text-fill:#000000");
+            } else {
+                txStudentNumber.setText("");
+                txStudentNumber.setPromptText("Invalid input");
+                txStudentNumber.setStyle("-fx-prompt-text-fill:#d35400");
+            }
+        }
     }
 
     @Override
@@ -67,5 +86,19 @@ public class StudentFindController implements Initializable {
 
     public void listening(TeacherStage teacherStage) {
         this.teacherStage = teacherStage;
+    }
+
+    public boolean isNumber(String string) {
+        try {
+            Long.parseLong(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void onSelect(Student student) {
+        teacherStage.getController().listening(student);
     }
 }

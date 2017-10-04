@@ -67,9 +67,9 @@ public class UserDetail {
     }
 
     public void setUserType(String userType) {
-        if(userType.equals(UserType.TEACHER.getType()))
+        if (userType.equals(UserType.TEACHER.getType()))
             this.userType = UserType.TEACHER;
-        else if(userType.equals(UserType.ADMIN.getType()))
+        else if (userType.equals(UserType.ADMIN.getType()))
             this.userType = UserType.ADMIN;
     }
 

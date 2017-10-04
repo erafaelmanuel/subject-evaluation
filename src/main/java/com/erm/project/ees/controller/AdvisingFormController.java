@@ -76,7 +76,7 @@ public class AdvisingFormController implements Initializable {
     private void initTable() {
         final SubjectDao subjectDao = new SubjectDaoImpl();
 
-        for(com.erm.project.ees.model.Subject s : subjectDao.getSubjectList())
+        for (com.erm.project.ees.model.Subject s : subjectDao.getSubjectList())
             SUBJECT_LIST.add(new Subject(s.getId(), s.getName(), s.getDesc(), s.getUnit()));
 
         TreeItem<Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,
@@ -123,7 +123,7 @@ public class AdvisingFormController implements Initializable {
                 student.getMiddleName().substring(0, 1).toUpperCase(),
                 student.getLastName().toUpperCase()));
         int tUnit = 0;
-        for(Subject s : subjectList)
+        for (Subject s : subjectList)
             tUnit += s.getUnit();
 
         Calendar calendar = Calendar.getInstance();

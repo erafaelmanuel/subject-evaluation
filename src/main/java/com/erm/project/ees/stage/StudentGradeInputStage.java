@@ -24,7 +24,7 @@ public class StudentGradeInputStage extends Stage {
             setScene(scene);
 
             controller = loader.getController();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

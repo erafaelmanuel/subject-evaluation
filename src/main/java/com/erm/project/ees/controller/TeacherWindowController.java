@@ -1,7 +1,6 @@
 package com.erm.project.ees.controller;
 
 import com.erm.project.ees.model.Student;
-import com.erm.project.ees.stage.LoginStage;
 import com.erm.project.ees.stage.TeacherStage;
 import com.erm.project.ees.stage.window.PopOnExitWindow;
 import com.erm.project.ees.util.ResourceHelper;
@@ -31,7 +30,7 @@ public class TeacherWindowController implements Initializable {
     @FXML
     protected void onClickExit() {
         Stage stage = (Stage) menuBar.getScene().getWindow();
-        if(PopOnExitWindow.display("Are you sure you want to exit?"))
+        if (PopOnExitWindow.display("Are you sure you want to exit?"))
             stage.close();
     }
 
@@ -66,11 +65,12 @@ public class TeacherWindowController implements Initializable {
 
     public void listening(Student student) {
         try {
-        FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/student_grade.fxml"));
-        Parent root = loader.load();Platform.runLater(()->blSpace.setCenter(root));
+            FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/student_grade.fxml"));
+            Parent root = loader.load();
+            Platform.runLater(() -> blSpace.setCenter(root));
 
-        StudentGradeController controller = loader.getController();
-        controller.listener(student);
+            StudentGradeController controller = loader.getController();
+            controller.listener(student);
 
         } catch (IOException e) {
             e.printStackTrace();

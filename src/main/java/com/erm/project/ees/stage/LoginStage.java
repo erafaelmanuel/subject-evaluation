@@ -3,7 +3,6 @@ package com.erm.project.ees.stage;
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.util.ResourceHelper;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

@@ -12,7 +12,7 @@ public class ResourceHelper {
     }
 
     public static URL resource(final String path) {
-        if(path != null) {
+        if (path != null) {
             URL url = ResourceHelper.class.getClass().getResource(path);
             return url;
         }
@@ -20,7 +20,7 @@ public class ResourceHelper {
     }
 
     public static URL resourceWithBasePath(final String path) {
-        if(path != null) {
+        if (path != null) {
             URL url = ResourceHelper.class.getClass().getResource(BASE_PATH + path);
             return url;
         }
@@ -28,7 +28,7 @@ public class ResourceHelper {
     }
 
     public static InputStream resourceAsStream(final String path) {
-        if(path != null) {
+        if (path != null) {
             InputStream inputStream = ResourceHelper.class.getClass().getResourceAsStream(path);
             return inputStream;
         }
@@ -36,7 +36,7 @@ public class ResourceHelper {
     }
 
     public static InputStream resourceAsStreamWithBasePath(final String path) {
-        if(path != null) {
+        if (path != null) {
             InputStream inputStream = ResourceHelper.class.getClass().getResourceAsStream(BASE_PATH + path);
             return inputStream;
         }

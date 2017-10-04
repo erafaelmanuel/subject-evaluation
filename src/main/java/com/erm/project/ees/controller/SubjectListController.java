@@ -42,9 +42,9 @@ public class SubjectListController implements Initializable {
             stage.callback(new com.erm.project.ees.model.Subject(subject.getId(), subject.getName(), subject.getDesc(),
                     subject.getUnit()));
         } else
-            new Thread(()-> JOptionPane.showMessageDialog(null,
+            new Thread(() -> JOptionPane.showMessageDialog(null,
                     "Select a subject")).start();
-        }
+    }
 
     @FXML
     protected void onClickCancel(ActionEvent event) {
@@ -55,7 +55,7 @@ public class SubjectListController implements Initializable {
     private void initTable() {
         final SubjectDao subjectDao = new SubjectDaoImpl();
 
-        for(com.erm.project.ees.model.Subject s : subjectDao.getSubjectList())
+        for (com.erm.project.ees.model.Subject s : subjectDao.getSubjectList())
             SUBJECT_LIST.add(new Subject(s.getId(), s.getName(), s.getDesc(), s.getUnit()));
 
         TreeItem<com.erm.project.ees.model.recursive.Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,

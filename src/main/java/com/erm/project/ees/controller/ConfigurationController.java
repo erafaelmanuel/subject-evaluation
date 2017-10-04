@@ -56,7 +56,7 @@ public class ConfigurationController extends Stage implements Initializable {
     @FXML
     private void onConnectClick(ActionEvent event) {
         dbManager =
-                ((ConfigurationStage) ((Stage) ((Node)event.getSource()).getScene().getWindow())).getDbManager();
+                ((ConfigurationStage) ((Stage) ((Node) event.getSource()).getScene().getWindow())).getDbManager();
         UserLibrary userLibrary = ConnectionHelper.getUserLibrary();
 
         userLibrary.setHost(txHost.getText());
@@ -65,7 +65,7 @@ public class ConfigurationController extends Stage implements Initializable {
         userLibrary.setPassword(txPassword.getText());
         userLibrary.setCatalog(txCatalog.getText());
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             lbLoading.setVisible(true);
             bnConnect.setDisable(true);
 
@@ -76,9 +76,9 @@ public class ConfigurationController extends Stage implements Initializable {
             txCatalog.setDisable(true);
         });
 
-        new Thread(()->{
+        new Thread(() -> {
             if (!dbManager.connect(userLibrary)) {
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     plMessage.setStyle("-fx-background-color:#e74c3c");
                     lbMessage.setText("ERROR : Bad connection. Please try again");
 
@@ -92,7 +92,7 @@ public class ConfigurationController extends Stage implements Initializable {
                     txCatalog.setDisable(false);
                 });
             } else {
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     plMessage.setStyle("-fx-background-color:#2ecc71");
                     lbMessage.setText("SUCCESS : Database connected.");
 
@@ -112,7 +112,7 @@ public class ConfigurationController extends Stage implements Initializable {
 
     @FXML
     private void onClickSave(ActionEvent event) {
-        ConfigurationStage configurationStage = (ConfigurationStage)((Node) event.getSource()).getScene().getWindow();
+        ConfigurationStage configurationStage = (ConfigurationStage) ((Node) event.getSource()).getScene().getWindow();
         ConnectionHelper.setUserLibrary(dbManager.getUserLibrary());
         configurationStage.callBack(dbManager, true);
     }

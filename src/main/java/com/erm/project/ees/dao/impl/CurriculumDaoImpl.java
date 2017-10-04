@@ -259,7 +259,7 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setInt(3, semester);
                 ResultSet rs = pst.executeQuery();
 
-                while(rs.next()) {
+                while (rs.next()) {
                     Subject subject = new Subject();
                     subject.setId(rs.getLong(1));
                     subject.setName(rs.getString(2));
@@ -450,8 +450,8 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setLong(2, subjectId);
                 ResultSet rs = pst.executeQuery();
 
-                while(rs.next()) {
-                    count ++;
+                while (rs.next()) {
+                    count++;
                 }
                 dbManager.close();
             }
@@ -478,7 +478,7 @@ public class CurriculumDaoImpl implements CurriculumDao {
                 pst.setLong(1, curriculumId);
                 ResultSet rs = pst.executeQuery();
 
-                while(rs.next()) {
+                while (rs.next()) {
                     Subject subject = new Subject();
                     subject.setId(rs.getLong(1));
                     subject.setName(rs.getString(2));

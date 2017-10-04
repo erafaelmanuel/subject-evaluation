@@ -39,7 +39,7 @@ public class StudentFindStage extends Stage {
 
     public void callBack() {
         onItemAddLister.onAddCourse();
-        Platform.runLater(()->close());
+        Platform.runLater(() -> close());
     }
 
     @FunctionalInterface

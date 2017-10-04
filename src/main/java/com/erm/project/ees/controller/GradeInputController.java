@@ -6,7 +6,6 @@ import com.erm.project.ees.model.recursive.Mark;
 import com.erm.project.ees.stage.GradeInputStage;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -58,8 +57,8 @@ public class GradeInputController implements Initializable {
         rbFailed.setDisable(true);
         rbIncomplete.setDisable(true);
 
-        txMidterm.focusedProperty().addListener((obj, oldPropertu, newProperty)->{
-            if(newProperty) {
+        txMidterm.focusedProperty().addListener((obj, oldPropertu, newProperty) -> {
+            if (newProperty) {
                 txMidterm.setText("");
 
                 rbPassed.setDisable(false);
@@ -72,8 +71,8 @@ public class GradeInputController implements Initializable {
             }
         });
 
-        txFinalterm.focusedProperty().addListener((obj, oldPropertu, newProperty)->{
-            if(newProperty) {
+        txFinalterm.focusedProperty().addListener((obj, oldPropertu, newProperty) -> {
+            if (newProperty) {
                 txFinalterm.setText("");
                 rbPassed.setDisable(false);
                 rbFailed.setDisable(false);
@@ -102,18 +101,18 @@ public class GradeInputController implements Initializable {
 
     @FXML
     protected void onClickSave(ActionEvent event) {
-        if(!txMidterm.getText().trim().matches("^[0-9]+([.][0-9])?$"))
+        if (!txMidterm.getText().trim().matches("^[0-9]+([.][0-9])?$"))
             isValid = false;
-        if(!txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
+        if (!txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
             isValid = false;
         }
-        if(txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
+        if (txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
             final double grade = Double.parseDouble(txFinalterm.getText().trim());
-            if(!(grade <= 5 && grade >= 0))
+            if (!(grade <= 5 && grade >= 0))
                 isValid = false;
         }
 
-        if(isValid) {
+        if (isValid) {
             GradeInputStage stage = (GradeInputStage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
 
@@ -126,23 +125,23 @@ public class GradeInputController implements Initializable {
             isValid = true;
             new Thread(() ->
                     JOptionPane.showMessageDialog(null, "Please enter a valid grade"))
-            .start();
+                    .start();
         }
     }
 
     @FXML
     private void onKeyReleased() {
-        if(txMidterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
+        if (txMidterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
             lbMError.setVisible(false);
-        }else {
+        } else {
             lbMError.setVisible(true);
         }
-        if(txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
+        if (txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
             lbFError.setVisible(false);
             final double grade = Double.parseDouble(txFinalterm.getText().trim());
 
-            if(grade <= 5 && grade >= 0) {
-                status = (grade >= 1 && grade <= 3 ? "PASSED" : grade > 3 && grade <=5 ? "FAILED" : "INCOMPLETE");
+            if (grade <= 5 && grade >= 0) {
+                status = (grade >= 1 && grade <= 3 ? "PASSED" : grade > 3 && grade <= 5 ? "FAILED" : "INCOMPLETE");
                 selectStatus(status);
             } else {
                 lbFError.setVisible(true);

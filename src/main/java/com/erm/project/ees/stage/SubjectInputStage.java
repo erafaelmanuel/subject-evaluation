@@ -39,7 +39,7 @@ public class SubjectInputStage extends Stage {
 
     public void callBack() {
         onItemAddLister.onAddSubject();
-        Platform.runLater(()->close());
+        Platform.runLater(() -> close());
     }
 
     @FunctionalInterface

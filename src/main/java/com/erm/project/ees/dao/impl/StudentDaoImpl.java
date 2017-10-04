@@ -262,7 +262,7 @@ public class StudentDaoImpl implements StudentDao {
 
                 String sql =
                         "INSERT INTO " + TABLE_NAME + "(id, studentNumber, firstName, lastName, middleName, age, " +
-                        "gender, contactNumber, sectionId, courseId, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                                "gender, contactNumber, sectionId, courseId, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, generate());
                 pst.setLong(2, generateStudentNumber());

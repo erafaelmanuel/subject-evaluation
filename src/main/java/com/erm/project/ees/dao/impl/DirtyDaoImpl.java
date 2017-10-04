@@ -30,7 +30,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public StudentSubjectRecord getStudentSubjectRecordById(long studentId, long subjectId) {
         List<StudentSubjectRecord> recordList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "SELECT * FROM tblstudentsubjectlist WHERE studentId = ? AND subjectId = ?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, studentId);
@@ -59,7 +59,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public List<StudentSubjectRecord> getStudentSubjectRecordByMark(long studentId, String mark) {
         List<StudentSubjectRecord> recordList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "SELECT * FROM tblstudentsubjectlist WHERE studentId=? AND _mark=?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, studentId);
@@ -90,7 +90,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public int getStudentSubjectRecordSemester(long studentId, String mark) {
         List<StudentSubjectRecord> recordList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "SELECT DISTINCT semester FROM tblstudentsubjectlist WHERE studentId=? AND _mark=?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, studentId);
@@ -114,7 +114,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public List<StudentSubjectRecord> getStudentSubjectRecords(long courseId, long studentId, int year, int semester) {
         List<StudentSubjectRecord> recordList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "SELECt S._name, S._desc, SL._date, SL._midterm, SL._finalterm, SL._mark from tblcourse as C JOIN tblcurriculum as CU ON C.id = CU.course_id JOIN tblcurriculumsubjectlist as CSL ON CSL.curriculumId = CU.id JOIN tblsubject as S ON S.id = CSL.subjectId JOIN tblstudentsubjectlist as SL ON SL.subjectId = S.id JOIN tblstudent as ST ON ST.id = SL.studentId WHERE CU._year = ? AND CU._semester = ? AND C.id = ? AND ST.id = ?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setInt(1, year);
@@ -148,7 +148,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public List<Subject> getCurriculumSubjectList(long courseId, int year, int semester) {
         List<Subject> subjectList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "SELECT S.id, S._name, S._desc, S._unit from tblcourse as C JOIN tblcurriculum as CU ON C.id = CU.course_id JOIN tblcurriculumsubjectlist as CSL ON CSL.curriculumId = CU.id JOIN tblsubject as S ON S.id = CSL.subjectId WHERE CU._year = ? AND CU._semester = ? AND C.id = ?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setInt(1, year);
@@ -167,7 +167,7 @@ public class DirtyDaoImpl implements DirtyDao {
                 return subjectList;
             }
             throw new NoResultFoundException("No result found");
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             dbManager.close();
             return subjectList;
@@ -178,7 +178,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public List<Subject> getSpecialCurriculumSubjectList(long courseId, int year, int semester, String type) {
         List<Subject> subjectList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "SELECT S.id, S._name, S._desc, S._unit from tblcourse as C JOIN tblspecialcurriculum as SCU ON C.id = SCU.course_id JOIN tblspecialcurriculumsubjectlist as SCSL ON SCSL.curriculumId = SCU.id JOIN tblsubject as S ON S.id = SCSL.subjectId WHERE SCU._year = ? AND SCU._semester = ? AND C.id = ? AND SCU._type = ?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setInt(1, year);
@@ -198,7 +198,7 @@ public class DirtyDaoImpl implements DirtyDao {
                 return subjectList;
             }
             throw new NoResultFoundException("No result found");
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             dbManager.close();
             return subjectList;
@@ -209,7 +209,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public List<Subject> getPrerequisiteBySujectId(long subjectId) {
         List<Subject> subjectList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "SELECT toSubjectId FROM tblsubjectprerequisite WHERE subjectId = ?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, subjectId);
@@ -222,7 +222,7 @@ public class DirtyDaoImpl implements DirtyDao {
                 return subjectList;
             }
             throw new NoResultFoundException("No result found");
-        }catch (SQLException | NoResultFoundException e) {
+        } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
             dbManager.close();
             return subjectList;
@@ -237,7 +237,7 @@ public class DirtyDaoImpl implements DirtyDao {
     @Override
     public boolean addStudentRecord(StudentSubjectRecord record, long subjectId, long studentId) {
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "INSERT INTO tblstudentsubjectlist (_midterm, _finalterm, _date, _mark, subjectId, studentId, semester) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
@@ -262,7 +262,7 @@ public class DirtyDaoImpl implements DirtyDao {
     @Override
     public boolean deleteStudentRecord(long studentId, String mark) {
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "DELETE FROM tblstudentsubjectlist WHERE studentId=? AND _mark=?;";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, studentId);
@@ -282,7 +282,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public boolean addPrerequisite(long subjectId, long toSubjectId) {
         List<Subject> subjectList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "INSERT INTO tblsubjectprerequisite (subjectId, toSubjectId) VALUES (?, ?)";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, subjectId);
@@ -293,7 +293,7 @@ public class DirtyDaoImpl implements DirtyDao {
                 return true;
             }
             throw new NoResultFoundException("No result found");
-        }catch (SQLException | NoResultFoundException e) {
+        } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
             dbManager.close();
             return false;
@@ -302,9 +302,9 @@ public class DirtyDaoImpl implements DirtyDao {
 
     @Override
     public boolean updateStudentRecord(long subjectId, long studentId, double midterm, double finalterm,
-                                              String mark) {
+                                       String mark) {
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "UPDATE tblstudentsubjectlist SET _midterm=?, _finalterm=?, _mark=? WHERE subjectId=? AND studentId=?;";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setDouble(1, midterm);
@@ -328,7 +328,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public boolean deletePrerequisite(long subjectId, long toSubjectId) {
         List<Subject> subjectList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "DELETE FROM tblsubjectprerequisite WHERE subjectId=? AND toSubjectId=?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, subjectId);
@@ -339,7 +339,7 @@ public class DirtyDaoImpl implements DirtyDao {
                 return true;
             }
             throw new NoResultFoundException("No result found");
-        }catch (SQLException | NoResultFoundException e) {
+        } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
             dbManager.close();
             return false;
@@ -350,7 +350,7 @@ public class DirtyDaoImpl implements DirtyDao {
     public boolean deletePrerequisite(long subjectId) {
         List<Subject> subjectList = new ArrayList<>();
         try {
-            if(dbManager.connect()) {
+            if (dbManager.connect()) {
                 String sql = "DELETE FROM tblsubjectprerequisite WHERE subjectId=?;";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, subjectId);
@@ -360,7 +360,7 @@ public class DirtyDaoImpl implements DirtyDao {
                 return true;
             }
             throw new NoResultFoundException("No result found");
-        }catch (SQLException | NoResultFoundException e) {
+        } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
             dbManager.close();
             return false;

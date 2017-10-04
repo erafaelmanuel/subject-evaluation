@@ -101,14 +101,14 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
 
     @FXML
     protected void onChooseMark() {
-        if(cbMark.getSelectionModel().getSelectedIndex() > -1) {
+        if (cbMark.getSelectionModel().getSelectedIndex() > -1) {
             totalUnit = 0;
             List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(STUDENT.getId(),
                     cbMark.getSelectionModel().getSelectedItem());
 
             MARK_LIST.clear();
 
-            for(StudentSubjectRecord record : recordList) {
+            for (StudentSubjectRecord record : recordList) {
                 Subject subject = subjectDao.getSubjectById(record.getSubjectId());
                 Mark mark = new Mark(subject.getId(), subject.getName(), subject.getDesc(), record.getMidterm(),
                         record.getFinalterm(), record.getMark());
@@ -117,7 +117,7 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
             }
 
             lbUnit.setText(totalUnit + "");
-            if(totalUnit == 0)
+            if (totalUnit == 0)
                 lbUnit.setStyle("-fx-text-fill:#c0392b");
             else
                 lbUnit.setStyle("-fx-text-fill:#16a085");
@@ -131,9 +131,9 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
     @FXML
     protected void onClickInput() {
         final int index = tblMark.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             Mark mark = MARK_LIST.get(index);
-            Platform.runLater(()->gradeInputStage.showAndWait());
+            Platform.runLater(() -> gradeInputStage.showAndWait());
             gradeInputStage.getController().listening(mark, STUDENT.getId());
         }
     }
@@ -141,7 +141,7 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
     @FXML
     protected void onClickDrop() {
         final int index = tblMark.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             dirtyDao.updateStudentRecord(MARK_LIST.get(index).getSubjectId(),
                     STUDENT.getId(), 0, 0, "DROPPED");
 
@@ -217,13 +217,13 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
 
         lbSName.setText(String.format("%s, %s %s", STUDENT.getLastName(), STUDENT.getFirstName(),
                 STUDENT.getMiddleName()));
-        lbSNumber.setText(STUDENT.getStudentNumber() +"");
+        lbSNumber.setText(STUDENT.getStudentNumber() + "");
         lbCourse.setText(courseDao.getCourseById(STUDENT.getCourseId()).getDesc());
 
         List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(STUDENT.getId(),
                 "ONGOING");
         MARK_LIST.clear();
-        for(StudentSubjectRecord record : recordList) {
+        for (StudentSubjectRecord record : recordList) {
             Subject subject = subjectDao.getSubjectById(record.getSubjectId());
             Mark mark = new Mark(subject.getId(), subject.getName(), subject.getDesc(), record.getMidterm(),
                     record.getFinalterm(), record.getMark());
@@ -232,7 +232,7 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
         }
 
         lbUnit.setText(totalUnit + "");
-        if(totalUnit == 0)
+        if (totalUnit == 0)
             lbUnit.setStyle("-fx-text-fill:#c0392b");
         else
             lbUnit.setStyle("-fx-text-fill:#16a085");
@@ -244,7 +244,7 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
 
     @Override
     public void onAddMark() {
-        new Thread(()-> {
+        new Thread(() -> {
             showLoading();
             totalUnit = 0;
             List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(STUDENT.getId(),
@@ -266,9 +266,9 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
                 e.printStackTrace();
             }
             TreeItem<Mark> root = new RecursiveTreeItem<>(MARK_LIST, RecursiveTreeObject::getChildren);
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 lbUnit.setText(totalUnit + "");
-                if(totalUnit == 0)
+                if (totalUnit == 0)
                     lbUnit.setStyle("-fx-text-fill:#c0392b");
                 else
                     lbUnit.setStyle("-fx-text-fill:#16a085");
@@ -281,10 +281,10 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
     }
 
     public void showLoading() {
-        Platform.runLater(()-> pnScreen.setVisible(true));
+        Platform.runLater(() -> pnScreen.setVisible(true));
     }
 
     public void hideLoading() {
-        Platform.runLater(()-> pnScreen.setVisible(false));
+        Platform.runLater(() -> pnScreen.setVisible(false));
     }
 }

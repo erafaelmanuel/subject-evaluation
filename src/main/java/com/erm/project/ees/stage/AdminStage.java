@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class AdminStage extends Stage{
+public class AdminStage extends Stage {
 
     AdminWindowController controller;
     OnSignOutListener listener;

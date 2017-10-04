@@ -24,12 +24,12 @@ public class CourseStage extends Stage {
             initModality(Modality.APPLICATION_MODAL);
             setResizable(false);
             setScene(scene);
-            setOnCloseRequest((e)->controller.dispose());
+            setOnCloseRequest((e) -> controller.dispose());
 
             controller = loader.getController();
             curriculumStage = new CurriculumStage();
             controller.listen(curriculumStage);
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -60,7 +60,7 @@ public class SpecialCurriculumController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        for(Course course : courseDao.getCourseList()) {
+        for (Course course : courseDao.getCourseList()) {
             cbCourse.getItems().add(course.getName());
             COURSE_LIST.add(course);
         }
@@ -75,8 +75,8 @@ public class SpecialCurriculumController implements Initializable {
 
         final int index = cbCourse.getSelectionModel().getSelectedIndex();
         cbYS.setItems(FXCollections.observableArrayList());
-        for(int year=1; year<=COURSE_LIST.get(index).getTotalYear(); year++) {
-            for(int sem=1; sem<=COURSE_LIST.get(index).getTotalSemester(); sem++) {
+        for (int year = 1; year <= COURSE_LIST.get(index).getTotalYear(); year++) {
+            for (int sem = 1; sem <= COURSE_LIST.get(index).getTotalSemester(); sem++) {
                 cbYS.getItems().add(format(year) + " YEAR / " + format(sem) + " SEMESTER");
             }
         }
@@ -91,12 +91,13 @@ public class SpecialCurriculumController implements Initializable {
         tblFrom.setRoot(root);
         tblFrom.setShowRoot(false);
     }
+
     @FXML
     private void onChooseCourse() {
         final int index = cbCourse.getSelectionModel().getSelectedIndex();
         cbYS.setItems(FXCollections.observableArrayList());
-        for(int year=1; year<=COURSE_LIST.get(index).getTotalYear(); year++) {
-            for(int sem=1; sem<=COURSE_LIST.get(index).getTotalSemester(); sem++) {
+        for (int year = 1; year <= COURSE_LIST.get(index).getTotalYear(); year++) {
+            for (int sem = 1; sem <= COURSE_LIST.get(index).getTotalSemester(); sem++) {
                 cbYS.getItems().add(format(year) + " YEAR / " + format(sem) + " SEMESTER");
             }
         }
@@ -121,7 +122,7 @@ public class SpecialCurriculumController implements Initializable {
 
     @FXML
     protected void onClickSave(ActionEvent event) {
-        if(SUBJECT_LIST_TO.size() > 0) {
+        if (SUBJECT_LIST_TO.size() > 0) {
             final int index = cbYS.getSelectionModel().getSelectedIndex();
             SpecialCurriculum curriculum = new SpecialCurriculum();
             curriculum.setYear(getYearByIndex(index));
@@ -157,11 +158,11 @@ public class SpecialCurriculumController implements Initializable {
     @FXML
     private void onClickAdd() {
         final int index = tblFrom.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             Subject subject = SUBJECT_LIST.get(index);
-            for(Subject s : SUBJECT_LIST_TO) {
-                if(s.getId() == subject.getId()) {
-                    new Thread(()-> JOptionPane.showMessageDialog(null, "Already exist")).start();
+            for (Subject s : SUBJECT_LIST_TO) {
+                if (s.getId() == subject.getId()) {
+                    new Thread(() -> JOptionPane.showMessageDialog(null, "Already exist")).start();
                     return;
                 }
             }
@@ -175,7 +176,7 @@ public class SpecialCurriculumController implements Initializable {
     @FXML
     private void onClickRemove() {
         final int index = tblTo.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             Subject subject = SUBJECT_LIST_TO.get(index);
             SUBJECT_LIST_TO.remove(subject);
             TreeItem<Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST_TO, RecursiveTreeObject::getChildren);
@@ -239,10 +240,14 @@ public class SpecialCurriculumController implements Initializable {
 
     public String format(int num) {
         switch (num) {
-            case 1: return "1ST";
-            case 2: return "2ND";
-            case 3: return "3RD";
-            default: return num + "TH";
+            case 1:
+                return "1ST";
+            case 2:
+                return "2ND";
+            case 3:
+                return "3RD";
+            default:
+                return num + "TH";
         }
     }
 
@@ -273,8 +278,8 @@ public class SpecialCurriculumController implements Initializable {
     }
 
     public void courseProperty(Course course) {
-        for(int i=0; i<COURSE_LIST.size(); i++) {
-            if(COURSE_LIST.get(i).getId() == course.getId()) {
+        for (int i = 0; i < COURSE_LIST.size(); i++) {
+            if (COURSE_LIST.get(i).getId() == course.getId()) {
                 cbCourse.getSelectionModel().select(i);
                 break;
             }
@@ -283,10 +288,10 @@ public class SpecialCurriculumController implements Initializable {
     }
 
     public int getYearByIndex(int index) {
-        return (index+2)/2;
+        return (index + 2) / 2;
     }
 
     public int getSemByIndex(int index) {
-        return 2*(index/2)==index ? 1:2;
+        return 2 * (index / 2) == index ? 1 : 2;
     }
 }

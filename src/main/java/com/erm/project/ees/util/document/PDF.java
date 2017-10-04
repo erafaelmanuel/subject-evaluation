@@ -42,9 +42,9 @@ public class PDF {
             Font small = new Font(Font.FontFamily.HELVETICA, 9);
             Font regular1 = new Font(Font.FontFamily.HELVETICA, 10);
             Font regular = new Font(Font.FontFamily.HELVETICA, 11);
-            Font small_bold =  new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD);
-            Font bold =  new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
-            Font bbold =  new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+            Font small_bold = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD);
+            Font bold = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
+            Font bbold = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
 
 
             Paragraph line1 = new Paragraph("Republic of the Philippine", small);
@@ -101,10 +101,10 @@ public class PDF {
         this.student = student;
     }
 
-    public void writeAndClose(){
+    public void writeAndClose() {
 
         Document document = new Document();
-        try{
+        try {
             File file = new File(ResourceHelper.dir() + "/sample3.pdf");
             System.out.println(file.exists());
 
@@ -113,9 +113,9 @@ public class PDF {
             Font small = new Font(Font.FontFamily.HELVETICA, 9);
             Font regular1 = new Font(Font.FontFamily.HELVETICA, 10);
             Font regular = new Font(Font.FontFamily.HELVETICA, 11);
-            Font small_bold =  new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD);
-            Font bold =  new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
-            Font bbold =  new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+            Font small_bold = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD);
+            Font bold = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
+            Font bbold = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
 
 
             Paragraph line1 = new Paragraph("Republic of the Philippine", small);
@@ -157,7 +157,7 @@ public class PDF {
             PdfPTable table = new PdfPTable(4);
             table.setWidthPercentage(102);
             table.setHorizontalAlignment(Element.ALIGN_MIDDLE);
-            table.setWidths(new float[] { 20, 52, 15, 15 });
+            table.setWidths(new float[]{20, 52, 15, 15});
             table.getDefaultCell().setUseAscender(true);
             table.getDefaultCell().setUseDescender(true);
             table.addCell("Codse");
@@ -167,8 +167,8 @@ public class PDF {
 
 
             final int size = subjectList.size();
-            for(int i=0; i<14; i++) {
-                if(size > i) {
+            for (int i = 0; i < 14; i++) {
+                if (size > i) {
                     Subject subject = subjectList.get(i);
                     PdfPCell codeCell = new PdfPCell();
                     codeCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -206,7 +206,7 @@ public class PDF {
             Paragraph StudentProfile = new Paragraph("STUDENT'S PROFILE", bbold);
             StudentProfile.setAlignment(Element.ALIGN_CENTER);
 
-            Paragraph studentDetails = new Paragraph("Name :",regular1);
+            Paragraph studentDetails = new Paragraph("Name :", regular1);
             studentDetails.setAlignment(Element.ALIGN_LEFT);
 
             studentDetails.add("______________________ \t \t ");
@@ -261,7 +261,7 @@ public class PDF {
             document.add(studentDetails);
 
             document.close();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -271,11 +271,11 @@ public class PDF {
         int length = name.toCharArray().length;
         char c[] = name.toCharArray();
         String result = "  ";
-        for(int i=0; i<25; i++) {
-           if(length > i) {
-               result += c[i];
-           } else
-               result += " ";
+        for (int i = 0; i < 25; i++) {
+            if (length > i) {
+                result += c[i];
+            } else
+                result += " ";
         }
 
         Chunk sigUnderline = new Chunk(result);

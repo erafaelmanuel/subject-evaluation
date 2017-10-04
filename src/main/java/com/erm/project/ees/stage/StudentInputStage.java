@@ -27,7 +27,7 @@ public class StudentInputStage extends Stage {
             initModality(Modality.APPLICATION_MODAL);
             setResizable(false);
             setScene(scene);
-            setOnCloseRequest(e->controller.dispose());
+            setOnCloseRequest(e -> controller.dispose());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class StudentInputStage extends Stage {
 
     public void callBack() {
         onItemAddLister.onAddStudent();
-        Platform.runLater(()->close());
+        Platform.runLater(() -> close());
     }
 
     public StudentInputController getController() {

@@ -75,28 +75,28 @@ public class StudentInputController implements Initializable {
         cbGender.getItems().add("Male");
         cbGender.getSelectionModel().select(0);
 
-        for(Course c : courseDao.getCourseList()) {
+        for (Course c : courseDao.getCourseList()) {
             cbCourse.getItems().add(c.getName());
             COURSE_LIST.add(c);
         }
 
         cbCourse.getSelectionModel().select(0);
 
-        for(Section s : sectionDao.getSectionList()) {
+        for (Section s : sectionDao.getSectionList()) {
             cbSection.getItems().add(s.getYear() + "-" + s.getName());
             SECTION_LIST.add(s);
         }
 
         cbSection.getSelectionModel().select(0);
-        txCNumber.focusedProperty().addListener((observableValue, focusOut, focusIn)->{
-            if(focusIn) {
-                if(txCNumber.getText().trim().length() <= 3) {
+        txCNumber.focusedProperty().addListener((observableValue, focusOut, focusIn) -> {
+            if (focusIn) {
+                if (txCNumber.getText().trim().length() <= 3) {
                     txCNumber.setText("+63 ");
                 } else {
 
                 }
             } else {
-                if(txCNumber.getText().trim().length() <= 3) {
+                if (txCNumber.getText().trim().length() <= 3) {
                     txCNumber.setText("");
                 }
             }
@@ -113,7 +113,7 @@ public class StudentInputController implements Initializable {
 
     @FXML
     protected void onClickSave(ActionEvent event) {
-        if(isInputValid()) {
+        if (isInputValid()) {
             STUDENT.setFirstName(txFName.getText());
             STUDENT.setLastName(txLName.getText());
             STUDENT.setMiddleName(txMName.getText());
@@ -125,7 +125,7 @@ public class StudentInputController implements Initializable {
             STUDENT.setStatus("REGULAR");
 
             System.out.println(STUDENT);
-            if(studentDao.getStudentById(STUDENT.getId()) == null)
+            if (studentDao.getStudentById(STUDENT.getId()) == null)
                 studentDao.addStudent(STUDENT);
             else
                 studentDao.updateStudentById(STUDENT.getId(), STUDENT);
@@ -140,17 +140,17 @@ public class StudentInputController implements Initializable {
     private boolean isInputValid() {
         boolean isValid = true;
         //First name
-        if(txFName.getText().trim().isEmpty()) {
+        if (txFName.getText().trim().isEmpty()) {
             txFName.setText("");
             txFName.setPromptText("Please enter a name");
             txFName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(!txFName.getText().trim().matches("^[a-zA-Z]+$")) {
+        } else if (!txFName.getText().trim().matches("^[a-zA-Z]+$")) {
             txFName.setText("");
             txFName.setPromptText("Please Enter a valid name");
             txFName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(txFName.getText().trim().toCharArray().length < 3) {
+        } else if (txFName.getText().trim().toCharArray().length < 3) {
             txFName.setText("");
             txFName.setPromptText("The name is too short");
             txFName.setStyle("-fx-prompt-text-fill:#c0392b");
@@ -160,17 +160,17 @@ public class StudentInputController implements Initializable {
             txFName.setStyle("-fx-prompt-text-fill:#000");
         }
         //Last name
-        if(txLName.getText().trim().isEmpty()) {
+        if (txLName.getText().trim().isEmpty()) {
             txLName.setText("");
             txLName.setPromptText("Please enter a name");
             txLName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(!txLName.getText().trim().matches("^[a-zA-Z]+$")) {
+        } else if (!txLName.getText().trim().matches("^[a-zA-Z]+$")) {
             txLName.setText("");
             txLName.setPromptText("Please Enter a valid name");
             txLName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(txLName.getText().trim().toCharArray().length < 3) {
+        } else if (txLName.getText().trim().toCharArray().length < 3) {
             txLName.setText("");
             txLName.setPromptText("The name is too short");
             txLName.setStyle("-fx-prompt-text-fill:#c0392b");
@@ -180,17 +180,17 @@ public class StudentInputController implements Initializable {
             txLName.setStyle("-fx-prompt-text-fill:#000");
         }
         //Middle name
-        if(txMName.getText().trim().isEmpty()) {
+        if (txMName.getText().trim().isEmpty()) {
             txMName.setText("");
             txMName.setPromptText("Please enter a name");
             txMName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(!txMName.getText().trim().matches("^[a-zA-Z]+$")) {
+        } else if (!txMName.getText().trim().matches("^[a-zA-Z]+$")) {
             txMName.setText("");
             txMName.setPromptText("Please Enter a valid name");
             txMName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(txMName.getText().trim().toCharArray().length < 3) {
+        } else if (txMName.getText().trim().toCharArray().length < 3) {
             txMName.setText("");
             txMName.setPromptText("The name is too short");
             txMName.setStyle("-fx-prompt-text-fill:#c0392b");
@@ -200,22 +200,22 @@ public class StudentInputController implements Initializable {
             txMName.setStyle("-fx-prompt-text-fill:#000");
         }
         //age
-        if(txAge.getText().trim().isEmpty()) {
+        if (txAge.getText().trim().isEmpty()) {
             txAge.setText("");
             txAge.setPromptText("Please enter an age");
             txAge.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(!txAge.getText().trim().matches("^[0-9]+$")) {
+        } else if (!txAge.getText().trim().matches("^[0-9]+$")) {
             txAge.setText("");
             txAge.setPromptText("Enter only a numeric character");
             txAge.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if(Integer.parseInt(txAge.getText().trim()) < 10 && Integer.parseInt(txAge.getText().trim()) > 75) {
+        } else if (Integer.parseInt(txAge.getText().trim()) < 10 && Integer.parseInt(txAge.getText().trim()) > 75) {
             txAge.setText("");
             txAge.setPromptText("Please enter a valid age");
             txAge.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        }else {
+        } else {
             txAge.setPromptText("Age");
             txAge.setStyle("-fx-prompt-text-fill:#000");
         }
@@ -226,20 +226,20 @@ public class StudentInputController implements Initializable {
         txCNumber.setText(txCNumber.getText().replace(" ", "0"));
         txCNumber.setText(txCNumber.getText().replace("+", "0"));
 
-        if(txCNumber.getText().trim().isEmpty()) {
+        if (txCNumber.getText().trim().isEmpty()) {
             txCNumber.setText("");
             txCNumber.setPromptText("Please enter a contact number");
             txCNumber.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        }else if(!txCNumber.getText().trim().matches("^[0-9]+$")) {
+        } else if (!txCNumber.getText().trim().matches("^[0-9]+$")) {
             txCNumber.setText("");
             txCNumber.setPromptText("Enter only a numeric character");
             txCNumber.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        }else if(txCNumber.getText().trim().length() != 11) {
-            new Thread(()-> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
+        } else if (txCNumber.getText().trim().length() != 11) {
+            new Thread(() -> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
             isValid = false;
-        } else if(!(txCNumber.getText().trim().length() == 11 && txCNumber.getText().charAt(1) == '9')) {
+        } else if (!(txCNumber.getText().trim().length() == 11 && txCNumber.getText().charAt(1) == '9')) {
             new Thread(() -> JOptionPane.showMessageDialog(null, "Invalid contact number")).start();
             isValid = false;
         } else {
@@ -252,11 +252,11 @@ public class StudentInputController implements Initializable {
 
     @FXML
     protected void onKeyCN(KeyEvent event) {
-        if(event.getText().equals("0") && (txCNumber.getText().length() == 4 || txCNumber.getText().length() == 0))
+        if (event.getText().equals("0") && (txCNumber.getText().length() == 4 || txCNumber.getText().length() == 0))
             txCNumber.setText("");
-        else if((!event.getText().matches("^[0-9]$")) && (txCNumber.getText().length() == 3))
+        else if ((!event.getText().matches("^[0-9]$")) && (txCNumber.getText().length() == 3))
             txCNumber.setText("");
-        else if(txCNumber.getText().trim().isEmpty())
+        else if (txCNumber.getText().trim().isEmpty())
             txCNumber.setText("+63 ");
 
         txCNumber.end();
@@ -276,40 +276,40 @@ public class StudentInputController implements Initializable {
     }
 
     public void listen(Student student) {
-                STUDENT.setId(student.getId());
-                STUDENT.setStudentNumber(student.getStudentNumber());
-                STUDENT.setFirstName(student.getFirstName());
-                STUDENT.setLastName(student.getLastName());
-                STUDENT.setMiddleName(student.getMiddleName());
-                STUDENT.setAge(student.getAge());
-                STUDENT.setGender(student.getGender());
-                STUDENT.setContactNumber(student.getContactNumber());
-                STUDENT.setCourseId(student.getCourseId());
-                STUDENT.setSectionId(student.getSectionId());
-                STUDENT.setStatus(student.getStatus());
+        STUDENT.setId(student.getId());
+        STUDENT.setStudentNumber(student.getStudentNumber());
+        STUDENT.setFirstName(student.getFirstName());
+        STUDENT.setLastName(student.getLastName());
+        STUDENT.setMiddleName(student.getMiddleName());
+        STUDENT.setAge(student.getAge());
+        STUDENT.setGender(student.getGender());
+        STUDENT.setContactNumber(student.getContactNumber());
+        STUDENT.setCourseId(student.getCourseId());
+        STUDENT.setSectionId(student.getSectionId());
+        STUDENT.setStatus(student.getStatus());
 
-                txFName.setText(STUDENT.getFirstName());
-                txLName.setText(STUDENT.getLastName());
-                txMName.setText(STUDENT.getMiddleName());
-                txAge.setText(STUDENT.getAge() + "");
-                txCNumber.setText(STUDENT.getContactNumber() + "");
+        txFName.setText(STUDENT.getFirstName());
+        txLName.setText(STUDENT.getLastName());
+        txMName.setText(STUDENT.getMiddleName());
+        txAge.setText(STUDENT.getAge() + "");
+        txCNumber.setText(STUDENT.getContactNumber() + "");
 
-                for(int i=0; i<COURSE_LIST.size(); i++ ) {
-                    if(COURSE_LIST.get(i).getId() == STUDENT.getCourseId()) {
-                        cbCourse.getSelectionModel().select(i);
-                        break;
-                    }
-                }
+        for (int i = 0; i < COURSE_LIST.size(); i++) {
+            if (COURSE_LIST.get(i).getId() == STUDENT.getCourseId()) {
+                cbCourse.getSelectionModel().select(i);
+                break;
+            }
+        }
 
-                for(int i=0; i<SECTION_LIST.size(); i++ ) {
-                    if(SECTION_LIST.get(i).getId() == STUDENT.getSectionId()) {
-                        cbCourse.getSelectionModel().select(i);
-                        break;
-                    }
-                }
-                if(STUDENT.getGender().equalsIgnoreCase("MALE"))
-                    cbGender.getSelectionModel().select(1);
-                else
-                    cbGender.getSelectionModel().select(0);
+        for (int i = 0; i < SECTION_LIST.size(); i++) {
+            if (SECTION_LIST.get(i).getId() == STUDENT.getSectionId()) {
+                cbCourse.getSelectionModel().select(i);
+                break;
+            }
+        }
+        if (STUDENT.getGender().equalsIgnoreCase("MALE"))
+            cbGender.getSelectionModel().select(1);
+        else
+            cbGender.getSelectionModel().select(0);
     }
 }

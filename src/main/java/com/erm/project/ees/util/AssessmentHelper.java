@@ -22,15 +22,15 @@ public class AssessmentHelper {
             Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
-            for(int year=1; year<=section.getYear() + 1; year++){
-                for(int sem=1; sem<=course.getTotalSemester(); sem++) {
+            for (int year = 1; year <= section.getYear() + 1; year++) {
+                for (int sem = 1; sem <= course.getTotalSemester(); sem++) {
 
                     List<Subject> currSubList = dirtyDao.getCurriculumSubjectList(course.getId(), year, sem);
-                    for(Subject subject : currSubList) {
+                    for (Subject subject : currSubList) {
                         StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                                 subject.getId());
                         //Not
-                        if(subjectRecord == null) {
+                        if (subjectRecord == null) {
                             //Prerequizite
                             List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -38,22 +38,22 @@ public class AssessmentHelper {
                             boolean isValid = true;
 
                             //
-                            if(subjectPrerequisite.size() > 0) {
+                            if (subjectPrerequisite.size() > 0) {
                                 //Iterate the subjects list of prerequisite
-                                for(Subject s : subjectPrerequisite) {
+                                for (Subject s : subjectPrerequisite) {
                                     StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                                    if(subRecord == null)
+                                    if (subRecord == null)
                                         isValid = false;
-                                    else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                                    else if (subRecord.getMark().equalsIgnoreCase("FAILED"))
                                         isValid = false;
                                 }
                             }
-                            if(isValid)
+                            if (isValid)
                                 subjectList.add(subject);
                             continue;
                         }
                         //
-                        if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                        if (subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
                             subjectList.add(subject);
                             continue;
                         }
@@ -77,13 +77,13 @@ public class AssessmentHelper {
             Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
-            for(int year=1; year<=course.getTotalYear(); year++){
+            for (int year = 1; year <= course.getTotalYear(); year++) {
                 List<Subject> currSubList = dirtyDao.getSpecialCurriculumSubjectList(course.getId(), year, 1, type);
-                for(Subject subject : currSubList) {
+                for (Subject subject : currSubList) {
                     StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                             subject.getId());
                     //Not
-                    if(subjectRecord == null) {
+                    if (subjectRecord == null) {
                         //Prerequizite
                         List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -91,22 +91,22 @@ public class AssessmentHelper {
                         boolean isValid = true;
 
                         //
-                        if(subjectPrerequisite.size() > 0) {
+                        if (subjectPrerequisite.size() > 0) {
                             //Iterate the subjects list of prerequisite
-                            for(Subject s : subjectPrerequisite) {
+                            for (Subject s : subjectPrerequisite) {
                                 StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                                if(subRecord == null)
+                                if (subRecord == null)
                                     isValid = false;
-                                else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                                else if (subRecord.getMark().equalsIgnoreCase("FAILED"))
                                     isValid = false;
                             }
                         }
-                        if(isValid)
+                        if (isValid)
                             subjectList.add(subject);
                         continue;
                     }
                     //
-                    if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                    if (subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
                         subjectList.add(subject);
                         continue;
                     }
@@ -128,15 +128,15 @@ public class AssessmentHelper {
             Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
-            for(int year=1; year<=course.getTotalYear(); year++){
-                if(year > filterYear)
+            for (int year = 1; year <= course.getTotalYear(); year++) {
+                if (year > filterYear)
                     continue;
                 List<Subject> currSubList = dirtyDao.getSpecialCurriculumSubjectList(course.getId(), year, 1, type);
-                for(Subject subject : currSubList) {
+                for (Subject subject : currSubList) {
                     StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                             subject.getId());
                     //Not
-                    if(subjectRecord == null) {
+                    if (subjectRecord == null) {
                         //Prerequizite
                         List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -144,22 +144,22 @@ public class AssessmentHelper {
                         boolean isValid = true;
 
                         //
-                        if(subjectPrerequisite.size() > 0) {
+                        if (subjectPrerequisite.size() > 0) {
                             //Iterate the subjects list of prerequisite
-                            for(Subject s : subjectPrerequisite) {
+                            for (Subject s : subjectPrerequisite) {
                                 StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                                if(subRecord == null)
+                                if (subRecord == null)
                                     isValid = false;
-                                else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                                else if (subRecord.getMark().equalsIgnoreCase("FAILED"))
                                     isValid = false;
                             }
                         }
-                        if(isValid)
+                        if (isValid)
                             subjectList.add(subject);
                         continue;
                     }
                     //
-                    if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                    if (subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
                         subjectList.add(subject);
                         continue;
                     }
@@ -183,13 +183,13 @@ public class AssessmentHelper {
             Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
-            for(int year=1; year<=course.getTotalYear(); year++){
+            for (int year = 1; year <= course.getTotalYear(); year++) {
                 List<Subject> currSubList = dirtyDao.getCurriculumSubjectList(course.getId(), year, iSem);
-                for(Subject subject : currSubList) {
+                for (Subject subject : currSubList) {
                     StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                             subject.getId());
                     //Not
-                    if(subjectRecord == null) {
+                    if (subjectRecord == null) {
                         //Prerequizite
                         List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -197,22 +197,22 @@ public class AssessmentHelper {
                         boolean isValid = true;
 
                         //
-                        if(subjectPrerequisite.size() > 0) {
+                        if (subjectPrerequisite.size() > 0) {
                             //Iterate the subjects list of prerequisite
-                            for(Subject s : subjectPrerequisite) {
+                            for (Subject s : subjectPrerequisite) {
                                 StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                                if(subRecord == null)
+                                if (subRecord == null)
                                     isValid = false;
-                                else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                                else if (subRecord.getMark().equalsIgnoreCase("FAILED"))
                                     isValid = false;
                             }
                         }
-                        if(isValid)
+                        if (isValid)
                             subjectList.add(subject);
                         continue;
                     }
                     //
-                    if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                    if (subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
                         subjectList.add(subject);
                         continue;
                     }
@@ -234,15 +234,15 @@ public class AssessmentHelper {
             Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
-            for(int year=1; year<=course.getTotalYear(); year++){
-                if(year > filterYear)
+            for (int year = 1; year <= course.getTotalYear(); year++) {
+                if (year > filterYear)
                     break;
                 List<Subject> currSubList = dirtyDao.getCurriculumSubjectList(course.getId(), year, iSem);
-                for(Subject subject : currSubList) {
+                for (Subject subject : currSubList) {
                     StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                             subject.getId());
                     //Not
-                    if(subjectRecord == null) {
+                    if (subjectRecord == null) {
                         //Prerequizite
                         List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -250,23 +250,23 @@ public class AssessmentHelper {
                         boolean isValid = true;
 
                         //
-                        if(subjectPrerequisite.size() > 0) {
+                        if (subjectPrerequisite.size() > 0) {
                             //Iterate the subjects list of prerequisite
-                            for(Subject s : subjectPrerequisite) {
+                            for (Subject s : subjectPrerequisite) {
                                 StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                                if(subRecord == null)
+                                if (subRecord == null)
                                     isValid = false;
-                                //Remove from list if not pass
-                                else if(!subRecord.getMark().equalsIgnoreCase("PASSED"))
+                                    //Remove from list if not pass
+                                else if (!subRecord.getMark().equalsIgnoreCase("PASSED"))
                                     isValid = false;
                             }
                         }
-                        if(isValid)
+                        if (isValid)
                             subjectList.add(subject);
                         continue;
                     }
                     //If passed and ongoing shoud'not add to the available list
-                    if(!subjectRecord.getMark().equalsIgnoreCase("PASSED") &&
+                    if (!subjectRecord.getMark().equalsIgnoreCase("PASSED") &&
                             !subjectRecord.getMark().equalsIgnoreCase("ONGOING")) {
                         subjectList.add(subject);
                         continue;
@@ -291,11 +291,11 @@ public class AssessmentHelper {
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             List<Subject> currSubList = dirtyDao.getSpecialCurriculumSubjectList(course.getId(), year, 1, type);
-            for(Subject subject : currSubList) {
+            for (Subject subject : currSubList) {
                 StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                         subject.getId());
                 //Not
-                if(subjectRecord == null) {
+                if (subjectRecord == null) {
                     //Prerequizite
                     List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -303,22 +303,22 @@ public class AssessmentHelper {
                     boolean isValid = true;
 
                     //
-                    if(subjectPrerequisite.size() > 0) {
+                    if (subjectPrerequisite.size() > 0) {
                         //Iterate the subjects list of prerequisite
-                        for(Subject s : subjectPrerequisite) {
+                        for (Subject s : subjectPrerequisite) {
                             StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                            if(subRecord == null)
+                            if (subRecord == null)
                                 isValid = false;
-                            else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                            else if (subRecord.getMark().equalsIgnoreCase("FAILED"))
                                 isValid = false;
                         }
                     }
-                    if(isValid)
+                    if (isValid)
                         subjectList.add(subject);
                     continue;
                 }
                 //
-                if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                if (subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
                     subjectList.add(subject);
                     continue;
                 }
@@ -339,15 +339,15 @@ public class AssessmentHelper {
             Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
-            if(year > filterYear)
+            if (year > filterYear)
                 return new ArrayList<>();
 
             List<Subject> currSubList = dirtyDao.getSpecialCurriculumSubjectList(course.getId(), year, 1, type);
-            for(Subject subject : currSubList) {
+            for (Subject subject : currSubList) {
                 StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                         subject.getId());
                 //Not
-                if(subjectRecord == null) {
+                if (subjectRecord == null) {
                     //Prerequizite
                     List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -355,23 +355,23 @@ public class AssessmentHelper {
                     boolean isValid = true;
 
                     //
-                    if(subjectPrerequisite.size() > 0) {
+                    if (subjectPrerequisite.size() > 0) {
                         //Iterate the subjects list of prerequisite
-                        for(Subject s : subjectPrerequisite) {
+                        for (Subject s : subjectPrerequisite) {
                             StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                            if(subRecord == null)
+                            if (subRecord == null)
                                 isValid = false;
-                            //Remove from list if not pass
-                            else if(!subRecord.getMark().equalsIgnoreCase("PASSED"))
+                                //Remove from list if not pass
+                            else if (!subRecord.getMark().equalsIgnoreCase("PASSED"))
                                 isValid = false;
                         }
                     }
-                    if(isValid)
+                    if (isValid)
                         subjectList.add(subject);
                     continue;
                 }
                 //
-                if(!subjectRecord.getMark().equalsIgnoreCase("PASSED") &&
+                if (!subjectRecord.getMark().equalsIgnoreCase("PASSED") &&
                         !subjectRecord.getMark().equalsIgnoreCase("ONGOING")) {
                     subjectList.add(subject);
                     continue;
@@ -395,11 +395,11 @@ public class AssessmentHelper {
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             List<Subject> currSubList = dirtyDao.getCurriculumSubjectList(course.getId(), cYear, iSem);
-            for(Subject subject : currSubList) {
+            for (Subject subject : currSubList) {
                 StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                         subject.getId());
                 //Not
-                if(subjectRecord == null) {
+                if (subjectRecord == null) {
                     //Prerequizite
                     List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -407,22 +407,22 @@ public class AssessmentHelper {
                     boolean isValid = true;
 
                     //
-                    if(subjectPrerequisite.size() > 0) {
+                    if (subjectPrerequisite.size() > 0) {
                         //Iterate the subjects list of prerequisite
-                        for(Subject s : subjectPrerequisite) {
+                        for (Subject s : subjectPrerequisite) {
                             StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                            if(subRecord == null)
+                            if (subRecord == null)
                                 isValid = false;
-                            else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                            else if (subRecord.getMark().equalsIgnoreCase("FAILED"))
                                 isValid = false;
                         }
                     }
-                    if(isValid)
+                    if (isValid)
                         subjectList.add(subject);
                     continue;
                 }
                 //
-                if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                if (subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
                     subjectList.add(subject);
                     continue;
                 }
@@ -443,15 +443,15 @@ public class AssessmentHelper {
             Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
-            if(cYear > filterYear)
+            if (cYear > filterYear)
                 return new ArrayList<>();
 
             List<Subject> currSubList = dirtyDao.getCurriculumSubjectList(course.getId(), cYear, iSem);
-            for(Subject subject : currSubList) {
+            for (Subject subject : currSubList) {
                 StudentSubjectRecord subjectRecord = dirtyDao.getStudentSubjectRecordById(student.getId(),
                         subject.getId());
                 //Not
-                if(subjectRecord == null) {
+                if (subjectRecord == null) {
                     //Prerequizite
                     List<Subject> subjectPrerequisite = AssessmentHelper.prerequisiteOf(subject.getId());
 
@@ -459,22 +459,22 @@ public class AssessmentHelper {
                     boolean isValid = true;
 
                     //
-                    if(subjectPrerequisite.size() > 0) {
+                    if (subjectPrerequisite.size() > 0) {
                         //Iterate the subjects list of prerequisite
-                        for(Subject s : subjectPrerequisite) {
+                        for (Subject s : subjectPrerequisite) {
                             StudentSubjectRecord subRecord = dirtyDao.getStudentSubjectRecordById(student.getId(), s.getId());
-                            if(subRecord == null)
+                            if (subRecord == null)
                                 isValid = false;
-                            else if(subRecord.getMark().equalsIgnoreCase("FAILED"))
+                            else if (subRecord.getMark().equalsIgnoreCase("FAILED"))
                                 isValid = false;
                         }
                     }
-                    if(isValid)
+                    if (isValid)
                         subjectList.add(subject);
                     continue;
                 }
                 //
-                if(subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
+                if (subjectRecord.getMark().equalsIgnoreCase("FAILED")) {
                     subjectList.add(subject);
                     continue;
                 }
@@ -490,7 +490,7 @@ public class AssessmentHelper {
     public static List<Subject> prerequisiteOf(long subjectId) {
         try {
             return new DirtyDaoImpl().getPrerequisiteBySujectId(subjectId);
-        } catch (Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
         }

@@ -33,7 +33,7 @@ public class SubjectListStage extends Stage {
     public void callback(Subject subject) {
         this.subject = subject;
         listener.onAdd(subject);
-        Platform.runLater(()->close());
+        Platform.runLater(() -> close());
     }
 
     public Subject getSelectedItem() {

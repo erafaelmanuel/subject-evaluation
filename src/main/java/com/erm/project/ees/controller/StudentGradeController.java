@@ -85,7 +85,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
         Image image = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
         imgvLogo.setImage(image);
 
-        for(Course course : courseDao.getCourseList()) {
+        for (Course course : courseDao.getCourseList()) {
             cbCourse.getItems().add(course.getName());
             COURSE_LIST.add(course);
         }
@@ -96,48 +96,49 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @FXML
     protected void onChoose() {
-        switch(cbYearSem.getSelectionModel().getSelectedIndex()) {
-            case 0 :
+        switch (cbYearSem.getSelectionModel().getSelectedIndex()) {
+            case 0:
                 clear();
-                loadStudent(student , 1, 1);
+                loadStudent(student, 1, 1);
                 break;
-            case 1 :
+            case 1:
                 clear();
-                loadStudent(student , 1, 2);
+                loadStudent(student, 1, 2);
                 break;
-            case 2 :
+            case 2:
                 clear();
-                loadStudent(student , 2, 1);
+                loadStudent(student, 2, 1);
                 break;
-            case 3 :
+            case 3:
                 clear();
-                loadStudent(student , 2, 2);
+                loadStudent(student, 2, 2);
                 break;
-            case 4 :
+            case 4:
                 clear();
-                loadStudent(student , 3, 1);
+                loadStudent(student, 3, 1);
                 break;
-            case 5 :
+            case 5:
                 clear();
-                loadStudent(student , 3, 2);
+                loadStudent(student, 3, 2);
                 break;
-            case 6 :
+            case 6:
                 clear();
-                loadStudent(student , 4, 1);
+                loadStudent(student, 4, 1);
                 break;
-            case 7 :
+            case 7:
                 clear();
-                loadStudent(student , 4, 2);
+                loadStudent(student, 4, 2);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
     @FXML
     protected void onClickEvaluation(ActionEvent event) {
         final EnrollmentStage enrollmentStage = new EnrollmentStage();
-        new Thread(()->{
-            Platform.runLater(()->enrollmentStage.showAndWait());
+        new Thread(() -> {
+            Platform.runLater(() -> enrollmentStage.showAndWait());
             enrollmentStage.getController().listener(student);
         }).start();
     }
@@ -188,7 +189,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
         tblRecord.getColumns().add(finalterm);
         tblRecord.getColumns().add(mark);
 
-        for(StudentSubjectRecord record : new DirtyDaoImpl().getStudentSubjectRecords(student.getCourseId(),
+        for (StudentSubjectRecord record : new DirtyDaoImpl().getStudentSubjectRecords(student.getCourseId(),
                 student.getId(), year, semester)) {
             tblRecord.getItems().add(record);
         }
@@ -205,12 +206,12 @@ public class StudentGradeController implements Initializable, StudentResultStage
         txCourse.setText(courseDao.getCourseById(student.getCourseId()).getName());
         txSNumber.setText(student.getStudentNumber() + "");
         lbStudent.setText(student.getFirstName() + " " + student.getLastName());
-        txYS.setText(section.getYear() + "-" +section.getName().toUpperCase());
+        txYS.setText(section.getYear() + "-" + section.getName().toUpperCase());
         txStatus.setText(student.getStatus());
 
         int index = 0;
-        for(int i=0; i<COURSE_LIST.size(); i++) {
-            if(student.getCourseId() == COURSE_LIST.get(i).getId()) {
+        for (int i = 0; i < COURSE_LIST.size(); i++) {
+            if (student.getCourseId() == COURSE_LIST.get(i).getId()) {
                 cbCourse.getSelectionModel().select(i);
                 index = i;
                 break;
@@ -218,11 +219,11 @@ public class StudentGradeController implements Initializable, StudentResultStage
         }
 
         clear();
-        loadStudent(student ,1, 1);
+        loadStudent(student, 1, 1);
 
         cbYearSem.setItems(OBSERVABLE_LIST_CURRICULUM);
-        for(int year=1; year<=COURSE_LIST.get(index).getTotalYear(); year++) {
-            for(int sem=1; sem<=COURSE_LIST.get(index).getTotalSemester(); sem++) {
+        for (int year = 1; year <= COURSE_LIST.get(index).getTotalYear(); year++) {
+            for (int sem = 1; sem <= COURSE_LIST.get(index).getTotalSemester(); sem++) {
                 cbYearSem.getItems().add(format(year) + " YEAR / " + format(sem) + " SEMESTER");
             }
         }
@@ -236,32 +237,32 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @FXML
     protected void onClickSearch() {
-        if(!txSearch.getText().trim().isEmpty()) {
+        if (!txSearch.getText().trim().isEmpty()) {
             if (txSearch.getText().trim().matches("^[0-9a-zA-Z]+$")) {
                 List<Student> studentList = new ArrayList<>();
-                if(isNumber(txSearch.getText().trim())) {
+                if (isNumber(txSearch.getText().trim())) {
                     Student student = studentDao.getStudentById(Long.parseLong(txSearch.getText().trim()));
-                    if(student == null) {
+                    if (student == null) {
                         new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
                                 .start();
                         return;
                     }
                     studentList.add(student);
-                }else {
+                } else {
                     studentList.addAll(studentDao
-                            .getStudentList("WHERE firstName='" +txSearch.getText().trim()+ "' " +
-                                    "OR lastName='"+txSearch.getText().trim()+"' " +
-                                    "OR middleName='"+txSearch.getText().trim()+"'"));
-                    if(studentList.size() < 1) {
+                            .getStudentList("WHERE firstName='" + txSearch.getText().trim() + "' " +
+                                    "OR lastName='" + txSearch.getText().trim() + "' " +
+                                    "OR middleName='" + txSearch.getText().trim() + "'"));
+                    if (studentList.size() < 1) {
                         new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
                                 .start();
                         return;
                     }
                 }
-                if(studentList.size() > 1) {
+                if (studentList.size() > 1) {
                     StudentResultStage studentResultStage = new StudentResultStage();
                     studentResultStage.setOnSelectStudentLister(this);
-                    Platform.runLater(()->studentResultStage.showAndWait());
+                    Platform.runLater(() -> studentResultStage.showAndWait());
                     studentResultStage.getController().listener(studentList);
                 } else {
                     onSelect(studentList.get(0));
@@ -280,32 +281,32 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @FXML
     protected void onActionSearch() {
-        if(!txSearch.getText().trim().isEmpty()) {
+        if (!txSearch.getText().trim().isEmpty()) {
             if (txSearch.getText().trim().matches("^[0-9a-zA-Z]+$")) {
                 List<Student> studentList = new ArrayList<>();
-                if(isNumber(txSearch.getText().trim())) {
+                if (isNumber(txSearch.getText().trim())) {
                     Student student = studentDao.getStudentById(Long.parseLong(txSearch.getText().trim()));
-                    if(student == null) {
+                    if (student == null) {
                         new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
                                 .start();
                         return;
                     }
                     studentList.add(student);
-                }else {
+                } else {
                     studentList.addAll(studentDao
-                            .getStudentList("WHERE firstName='" +txSearch.getText().trim()+ "' " +
-                                    "OR lastName='"+txSearch.getText().trim()+"' " +
-                                    "OR middleName='"+txSearch.getText().trim()+"'"));
-                    if(studentList.size() < 1) {
+                            .getStudentList("WHERE firstName='" + txSearch.getText().trim() + "' " +
+                                    "OR lastName='" + txSearch.getText().trim() + "' " +
+                                    "OR middleName='" + txSearch.getText().trim() + "'"));
+                    if (studentList.size() < 1) {
                         new Thread(() -> JOptionPane.showMessageDialog(null, "No result found"))
                                 .start();
                         return;
                     }
                 }
-                if(studentList.size() > 1) {
+                if (studentList.size() > 1) {
                     StudentResultStage studentResultStage = new StudentResultStage();
                     studentResultStage.setOnSelectStudentLister(this);
-                    Platform.runLater(()->studentResultStage.showAndWait());
+                    Platform.runLater(() -> studentResultStage.showAndWait());
                     studentResultStage.getController().listener(studentList);
                 } else {
                     onSelect(studentList.get(0));
@@ -324,10 +325,14 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     public String format(int num) {
         switch (num) {
-            case 1: return "1ST";
-            case 2: return "2ND";
-            case 3: return "3RD";
-            default: return num + "TH";
+            case 1:
+                return "1ST";
+            case 2:
+                return "2ND";
+            case 3:
+                return "3RD";
+            default:
+                return num + "TH";
         }
     }
 

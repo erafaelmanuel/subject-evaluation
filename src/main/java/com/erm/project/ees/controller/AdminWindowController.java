@@ -86,26 +86,32 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @FXML
     protected void onClickExit() {
         Stage stage = (Stage) menuBar.getScene().getWindow();
-        if(PopOnExitWindow.display("Are you sure you want to exit?"))
+        if (PopOnExitWindow.display("Are you sure you want to exit?"))
             stage.close();
     }
 
     @FXML
     protected void onClickAdd() {
         switch (mCurrent) {
-            case TABLE_STUDENT: studentInputStage.showAndWait(); break;
+            case TABLE_STUDENT:
+                studentInputStage.showAndWait();
+                break;
             case TABLE_COURSE:
                 courseStage.showAndWait();
                 break;
-            case TABLE_SUBJECT: subjectInputStage.showAndWait(); break;
-            default: courseStage.showAndWait(); break;
+            case TABLE_SUBJECT:
+                subjectInputStage.showAndWait();
+                break;
+            default:
+                courseStage.showAndWait();
+                break;
         }
     }
 
     @FXML
     protected void onClickSpecial() {
         final int index = tblData.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             Platform.runLater(() -> specialCurriculumStage.showAndWait());
             specialCurriculumStage.getController().courseProperty(COURSE_LIST.get(index));
         }
@@ -127,7 +133,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @FXML
     protected void onClickDelete() {
         final int index = tblData.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             switch (mCurrent) {
                 case TABLE_STUDENT:
                     studentDao.deleteStudentById(STUDENT_LIST.get(index).getId());
@@ -151,24 +157,24 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @FXML
     protected void onClickUpdate() {
         final int index = tblData.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             switch (mCurrent) {
                 case TABLE_STUDENT:
                     Student student = STUDENT_LIST.get(index);
-                    Platform.runLater(()-> studentInputStage.showAndWait());
+                    Platform.runLater(() -> studentInputStage.showAndWait());
                     studentInputStage.getController().listen(student);
                     break;
                 case TABLE_SUBJECT:
-                    new Thread(()-> {
+                    new Thread(() -> {
                         Subject subject = SUBJECT_LIST.get(index);
                         Platform.runLater(() -> subjectInputStage.showAndWait());
                         subjectInputStage.getController().listen(subject);
                     }).start();
                     break;
                 case TABLE_COURSE:
-                        Course course = COURSE_LIST.get(index);
-                        Platform.runLater(() -> courseStage.showAndWait());
-                        courseStage.getController().listen(course);
+                    Course course = COURSE_LIST.get(index);
+                    Platform.runLater(() -> courseStage.showAndWait());
+                    courseStage.getController().listen(course);
                     break;
             }
         }
@@ -177,7 +183,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @FXML
     protected void onClickInputGrade() {
         final int index = tblData.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
+        if (index > -1) {
             Student student = STUDENT_LIST.get(index);
             StudentGradeInputStage studentGradeInputStage = new StudentGradeInputStage();
             Platform.runLater(() -> studentGradeInputStage.showAndWait());
@@ -197,6 +203,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         miSpecial.setVisible(false);
         lbTitle.setText("Student List");
     }
+
     @FXML
     protected void onClickCourse() {
         mCurrent = TABLE_COURSE;
@@ -215,6 +222,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         stage.close();
         stage.callBack();
     }
+
     private void loadStudent() {
         TableColumn<Object, String> stStudentNumber = new TableColumn<>("Student Number");
         stStudentNumber.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
@@ -253,7 +261,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         tblData.getColumns().add(stContact);
 
         STUDENT_LIST.clear();
-        for(Student student : studentDao.getStudentList()) {
+        for (Student student : studentDao.getStudentList()) {
             tblData.getItems().add(student);
             STUDENT_LIST.add(student);
         }
@@ -282,7 +290,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         tblData.getColumns().add(suUnit);
 
         SUBJECT_LIST.clear();
-        for(Subject subject : subjectDao.getSubjectList()) {
+        for (Subject subject : subjectDao.getSubjectList()) {
             tblData.getItems().add(subject);
             SUBJECT_LIST.add(subject);
         }
@@ -316,7 +324,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         tblData.getColumns().add(tSemCol);
 
         COURSE_LIST.clear();
-        for(Course course : courseDao.getCourseList()) {
+        for (Course course : courseDao.getCourseList()) {
             tblData.getItems().add(course);
             COURSE_LIST.add(course);
         }
