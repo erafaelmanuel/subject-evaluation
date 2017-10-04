@@ -95,6 +95,7 @@ public class EnrollmentController implements Initializable {
     private final SectionDao sectionDao = new SectionDaoImpl();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
     private final StudentDao studentDao = new StudentDaoImpl();
+    private SuggestionDao suggestionDao = new SuggestionDaoImpl();
 
     private Student student;
     private Course course;
@@ -224,7 +225,13 @@ public class EnrollmentController implements Initializable {
                 loadAbItem(list);
                 hideLoading();
             }).start();
-        } else if (cbAbSubject.getSelectionModel().getSelectedIndex() == 0) {
+        }else if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("SUGGEST")) {
+            new Thread(() -> {
+                List<com.erm.project.ees.model.Subject> list = suggestionDao.getSubjectListByStudent(student.getId());
+                loadAbItem(list);
+                hideLoading();
+            }).start();
+        }else if (cbAbSubject.getSelectionModel().getSelectedIndex() == 0) {
             new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
                         cbCurSemester.getSelectionModel().getSelectedIndex() + 1, cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
@@ -261,6 +268,12 @@ public class EnrollmentController implements Initializable {
                 loadAbItem(list);
                 hideLoading();
             }).start();
+        }else if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("SUGGEST")) {
+            new Thread(() -> {
+                List<com.erm.project.ees.model.Subject> list = suggestionDao.getSubjectListByStudent(student.getId());
+                loadAbItem(list);
+                hideLoading();
+            }).start();
         } else if (cbAbSubject.getSelectionModel().getSelectedIndex() <= course.getTotalYear()) {
             new Thread(() -> {
                 List<com.erm.project.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
@@ -288,6 +301,12 @@ public class EnrollmentController implements Initializable {
                 //Remove list
                 loadRemoveList(list);
 
+                loadAbItem(list);
+                hideLoading();
+            }).start();
+        }else if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("SUGGEST")) {
+            new Thread(() -> {
+                List<com.erm.project.ees.model.Subject> list = suggestionDao.getSubjectListByStudent(student.getId());
                 loadAbItem(list);
                 hideLoading();
             }).start();
@@ -633,6 +652,8 @@ public class EnrollmentController implements Initializable {
                     cbCurSemester.setDisable(true);
                 });
             }
+
+            Platform.runLater(()->cbAbSubject.getItems().add("SUGGEST"));
 
             ENROLLED_LIST.addAll(subjectList);
 

@@ -65,7 +65,8 @@ public class SuggestionDaoImpl implements SuggestionDao {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE studentId=?;";
+                String sql = "SELECT SU.id, SU._name, SU._desc, SU._unit FROM " + TABLE_NAME + " " +
+                        "as SG JOIN tblsubject as SU ON SG.subjectId=SU.id WHERE studentId=?;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, studentId);
