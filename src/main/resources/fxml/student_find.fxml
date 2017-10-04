@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="297.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/8.0.65" fx:controller="com.erm.project.ees.controller.StudentFindController" xmlns:fx="http://javafx.com/fxml/1">
+<FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="297.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.erm.project.ees.controller.StudentFindController">
    <children>
       <AnchorPane prefHeight="241.0" prefWidth="273.0" style="-fx-background-color: #ecf0f1;">
          <children>
@@ -22,7 +21,7 @@
                      </VBox.margin>
                   </ImageView>
                   <VBox prefHeight="22.0" prefWidth="226.0" />
-                  <JFXTextField fx:id="txStudentNumber" focusColor="#c35f0d" promptText="Student Number" />
+                  <JFXTextField fx:id="txStudentNumber" focusColor="#c35f0d" promptText="Enter a student detail" />
                   <VBox prefHeight="17.0" prefWidth="226.0" />
                   <JFXButton buttonType="RAISED" onAction="#onClickEnter" prefHeight="29.0" prefWidth="226.0" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Enter" textFill="WHITE" />
                </children>

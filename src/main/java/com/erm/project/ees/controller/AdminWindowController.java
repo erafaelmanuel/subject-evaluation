@@ -75,8 +75,12 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tblData.setItems(OBSERVABLE_LIST);
+
         loadStudent();
+
         lbTitle.setText("Student List");
+
+        miSpecial.setVisible(false);
 
         studentInputStage.setOnItemAddLister(this);
         courseStage.getCurriculumStage().setOnItemAddLister(this);

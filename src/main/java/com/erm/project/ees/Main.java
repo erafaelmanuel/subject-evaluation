@@ -2,15 +2,12 @@ package com.erm.project.ees;
 
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.model.UserType;
-import com.erm.project.ees.stage.AdminStage;
-import com.erm.project.ees.stage.ConfigurationStage;
-import com.erm.project.ees.stage.LoginStage;
-import com.erm.project.ees.stage.TeacherStage;
+import com.erm.project.ees.stage.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application implements ConfigurationStage.OnFinishListener, LoginStage.OnLoginListener,
-    TeacherStage.OnSignOutListener, AdminStage.OnSignOutListener {
+    TeacherStage.OnSignOutListener, AdminStage.OnSignOutListener, DeanStage.OnSignOutListener {
 
     private Stage primaryStage;
 
@@ -42,6 +39,8 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
             primaryStage.close();
         else if(userType.getType().equals(UserType.ADMIN.getType()))
             showAdminWindow();
+        else if(userType.getType().equals(UserType.DEAN.getType()))
+            showDeanWindow();
         else
             showTeacherWindow();
     }
@@ -68,6 +67,12 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         TeacherStage teacherStage = new TeacherStage();
         teacherStage.setListener(this);
         teacherStage.show();
+    }
+
+    protected void showDeanWindow() {
+        DeanStage deanStage = new DeanStage();
+        deanStage.setListener(this);
+        deanStage.show();
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.erm.project.ees.model;
 
 public enum UserType {
 
-    TEACHER("user/teacher"), ADMIN("admin/admin");
+    TEACHER("user/teacher"), DEAN("user/dean"),  ADMIN("admin/admin");
 
     private String type;
 

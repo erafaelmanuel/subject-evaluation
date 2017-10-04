@@ -71,6 +71,8 @@ public class UserDetail {
             this.userType = UserType.TEACHER;
         else if (userType.equals(UserType.ADMIN.getType()))
             this.userType = UserType.ADMIN;
+        else if(userType.equals(UserType.DEAN.getType()))
+            this.userType = UserType.DEAN;
     }
 
     public boolean isActivated() {

@@ -195,6 +195,12 @@ public class StudentGradeController implements Initializable, StudentResultStage
         }
     }
 
+    @FXML
+    protected void onClickCreditSubject() {
+        clear();
+        loadStudent(student, 1, 1);
+    }
+
     private void clear() {
         tblRecord.getItems().clear();
         tblRecord.getColumns().clear();

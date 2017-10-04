@@ -41,7 +41,7 @@
                            <children>
                               <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-4.0" layoutY="3.0" onAction="#onClickEvaluation" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="  Evaluation" textFill="WHITE" />
                               <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-4.0" layoutY="31.0" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="  Grade" textFill="WHITE" />
-                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="59.0" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #2980b9;" text="  Credit Subject" textFill="WHITE" />
+                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="59.0" onAction="#onClickCreditSubject" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #2980b9;" text="  Credit Subject" textFill="WHITE" />
                            </children>
                         </AnchorPane>
                   </content>
