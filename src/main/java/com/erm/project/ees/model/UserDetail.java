@@ -8,6 +8,7 @@ public class UserDetail {
     private UserType userType;
     private boolean isActivated;
     private String registrationDate;
+    private String activated;
 
     public UserDetail() {
         super();
@@ -89,6 +90,14 @@ public class UserDetail {
 
     public void setRegistrationDate(String registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getActivated() {
+        return activated;
+    }
+
+    public void setActivated(String activated) {
+        this.activated = activated;
     }
 
     @Override

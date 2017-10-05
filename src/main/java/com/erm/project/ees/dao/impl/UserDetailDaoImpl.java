@@ -249,13 +249,14 @@ public class UserDetailDaoImpl implements UserDetailDao {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
 
-                String sql = "UPDATE " + TABLE_NAME + " SET username=?, password=?, userType=? WHERE id = ?";
+                String sql = "UPDATE " + TABLE_NAME + " SET username=?, password=?, userType=?, isActivated=? WHERE id = ?";
                 PreparedStatement pst = connection.prepareStatement(sql);
 
                 pst.setString(1, userDetail.getUsername());
                 pst.setString(2, userDetail.getPassword());
                 pst.setString(3, userDetail.getUserType().getType());
-                pst.setLong(4, id);
+                pst.setBoolean(4, userDetail.isActivated());
+                pst.setLong(5, id);
 
                 pst.executeUpdate();
             }

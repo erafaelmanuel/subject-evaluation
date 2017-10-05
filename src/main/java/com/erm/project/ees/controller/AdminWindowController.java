@@ -3,12 +3,15 @@ package com.erm.project.ees.controller;
 import com.erm.project.ees.dao.CourseDao;
 import com.erm.project.ees.dao.StudentDao;
 import com.erm.project.ees.dao.SubjectDao;
+import com.erm.project.ees.dao.UserDetailDao;
 import com.erm.project.ees.dao.impl.CourseDaoImpl;
 import com.erm.project.ees.dao.impl.StudentDaoImpl;
 import com.erm.project.ees.dao.impl.SubjectDaoImpl;
+import com.erm.project.ees.dao.impl.UserDetailDaoImpl;
 import com.erm.project.ees.model.Course;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.Subject;
+import com.erm.project.ees.model.UserDetail;
 import com.erm.project.ees.stage.*;
 import com.erm.project.ees.stage.window.PopOnExitWindow;
 import javafx.application.Platform;
@@ -20,13 +23,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminWindowController implements Initializable, StudentInputStage.OnItemAddLister,
-        CurriculumStage.OnItemAddLister, SubjectInputStage.OnItemAddLister {
+        CurriculumStage.OnItemAddLister, SubjectInputStage.OnItemAddLister, UserInputStage.OnItemAddLister {
 
     @FXML
     private Button bnAdd;
@@ -49,6 +53,18 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @FXML
     private MenuItem miSpecial;
 
+    @FXML
+    private MenuItem miUpdate;
+
+    @FXML
+    private MenuItem miDelete;
+
+    @FXML
+    private MenuItem miActivate;
+
+    @FXML
+    private MenuItem miDeactivate;
+
 
     private static final ObservableList<Object> OBSERVABLE_LIST = FXCollections.observableArrayList();
 
@@ -56,6 +72,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private static final int TABLE_STUDENT = 1;
     private static final int TABLE_SUBJECT = 2;
     private static final int TABLE_COURSE = 3;
+    private static final int TABLE_USER = 4;
 
     private int mCurrent = TABLE_STUDENT;
 
@@ -63,14 +80,17 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private final StudentInputStage studentInputStage = new StudentInputStage();
     private final SubjectInputStage subjectInputStage = new SubjectInputStage();
     private final SpecialCurriculumStage specialCurriculumStage = new SpecialCurriculumStage();
+    private final UserInputStage userInputStage = new UserInputStage();
 
     private final List<Student> STUDENT_LIST = new ArrayList<>();
     private final List<Course> COURSE_LIST = new ArrayList<>();
     private final List<Subject> SUBJECT_LIST = new ArrayList<>();
+    private final List<UserDetail> USER_LIST = new ArrayList<>();
 
     private final CourseDao courseDao = new CourseDaoImpl();
     private final StudentDao studentDao = new StudentDaoImpl();
     private final SubjectDao subjectDao = new SubjectDaoImpl();
+    private final UserDetailDao userDetailDao = new UserDetailDaoImpl();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -82,9 +102,13 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         miSpecial.setVisible(false);
 
+        miActivate.setVisible(false);
+        miDeactivate.setVisible(false);
+
         studentInputStage.setOnItemAddLister(this);
         courseStage.getCurriculumStage().setOnItemAddLister(this);
         subjectInputStage.setOnItemAddLister(this);
+        userInputStage.setOnItemAddLister(this);
     }
 
     @FXML
@@ -106,9 +130,50 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
             case TABLE_SUBJECT:
                 subjectInputStage.showAndWait();
                 break;
+            case TABLE_USER:
+                userInputStage.showAndWait();
+                break;
             default:
                 courseStage.showAndWait();
                 break;
+        }
+    }
+
+    @FXML
+    protected void onClickActivate() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            UserDetail userDetail = USER_LIST.get(index);
+            if(!userDetail.getUserType().getType().equalsIgnoreCase("admin/admin")) {
+                userDetail.setActivated(true);
+                userDetailDao.updateUserDetailById(userDetail.getId(), userDetail);
+
+                clear();
+                loadUser();
+            } else {
+                new Thread(()-> JOptionPane.showMessageDialog(null,
+                        "You don't have permission to update/delete this account"))
+                        .start();
+            }
+        }
+    }
+
+    @FXML
+    protected void onClickDeactivate() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            UserDetail userDetail = USER_LIST.get(index);
+            if(!userDetail.getUserType().getType().equalsIgnoreCase("admin/admin")) {
+                userDetail.setActivated(false);
+                userDetailDao.updateUserDetailById(userDetail.getId(), userDetail);
+
+                clear();
+                loadUser();
+            } else {
+                new Thread(()-> JOptionPane.showMessageDialog(null,
+                        "You don't have permission to update/delete this account"))
+                        .start();
+            }
         }
     }
 
@@ -120,18 +185,6 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
             specialCurriculumStage.getController().courseProperty(COURSE_LIST.get(index));
         }
 
-    }
-
-    @FXML
-    protected void onClickSubject() {
-        mCurrent = TABLE_SUBJECT;
-
-        clear();
-        loadSubject();
-
-        miInputGrade.setVisible(false);
-        miSpecial.setVisible(false);
-        lbTitle.setText("Subject List");
     }
 
     @FXML
@@ -153,6 +206,20 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                     subjectDao.deleteSubjectById(SUBJECT_LIST.get(index).getId());
                     clear();
                     loadSubject();
+                    break;
+                case TABLE_USER:
+                    UserDetail userDetail = USER_LIST.get(index);
+                    if(!userDetail.getUserType().getType().equalsIgnoreCase("admin/admin")) {
+                        userDetail.setActivated(true);
+                        userDetailDao.deleteUserDetailById(userDetail.getId());
+
+                        clear();
+                        loadUser();
+                    } else {
+                        new Thread(()-> JOptionPane.showMessageDialog(null,
+                                "You don't have permission to update/delete this account"))
+                                .start();
+                    }
                     break;
             }
         }
@@ -195,6 +262,24 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         }
     }
 
+    @FXML
+    protected void onClickSubject() {
+        mCurrent = TABLE_SUBJECT;
+
+        clear();
+        loadSubject();
+
+        miInputGrade.setVisible(false);
+        miSpecial.setVisible(false);
+
+        miUpdate.setVisible(true);
+        miDelete.setVisible(true);
+
+        miActivate.setVisible(false);
+        miDeactivate.setVisible(false);
+
+        lbTitle.setText("Subject List");
+    }
 
     @FXML
     protected void onClickStudent() {
@@ -205,6 +290,13 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         miInputGrade.setVisible(true);
         miSpecial.setVisible(false);
+
+        miUpdate.setVisible(true);
+        miDelete.setVisible(true);
+
+        miActivate.setVisible(false);
+        miDeactivate.setVisible(false);
+
         lbTitle.setText("Student List");
     }
 
@@ -217,9 +309,34 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         miInputGrade.setVisible(false);
         miSpecial.setVisible(true);
+
+        miUpdate.setVisible(true);
+        miDelete.setVisible(true);
+
+        miActivate.setVisible(false);
+        miDeactivate.setVisible(false);
+
         lbTitle.setText("Course List");
     }
 
+    @FXML
+    protected void onClickUser() {
+        mCurrent = TABLE_USER;
+
+        clear();
+        loadUser();
+
+        miInputGrade.setVisible(false);
+        miSpecial.setVisible(false);
+
+        miUpdate.setVisible(false);
+        miDelete.setVisible(true);
+
+        miActivate.setVisible(true);
+        miDeactivate.setVisible(true);
+
+        lbTitle.setText("User List");
+    }
     @FXML
     protected void onClickSignout() {
         AdminStage stage = (AdminStage) menuBar.getScene().getWindow();
@@ -334,6 +451,47 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         }
     }
 
+    private void loadUser() {
+        TableColumn<Object, Long> uId = new TableColumn<>("ID");
+        uId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        uId.setPrefWidth(200);
+
+        TableColumn<Object, String> uUser = new TableColumn<>("Username");
+        uUser.setCellValueFactory(new PropertyValueFactory<>("username"));
+        uUser.setPrefWidth(200);
+
+        TableColumn<Object, String> uPass = new TableColumn<>("Password");
+        uPass.setCellValueFactory(new PropertyValueFactory<>("password"));
+        uPass.setPrefWidth(200);
+
+        TableColumn<Object, String> uType = new TableColumn<>("Type");
+        uType.setCellValueFactory(new PropertyValueFactory<>("userType"));
+        uType.setPrefWidth(200);
+
+        TableColumn<Object, String> uIA = new TableColumn<>("Activated");
+        uIA.setCellValueFactory(new PropertyValueFactory<>("activated"));
+        uIA.setPrefWidth(200);
+
+        TableColumn<Object, String> uDate = new TableColumn<>("Registration Date");
+        uDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
+        uDate.setPrefWidth(200);
+
+
+        tblData.getColumns().add(uId);
+        tblData.getColumns().add(uUser);
+        tblData.getColumns().add(uPass);
+        tblData.getColumns().add(uType);
+        tblData.getColumns().add(uIA);
+        tblData.getColumns().add(uDate);
+
+        USER_LIST.clear();
+        for (UserDetail userDetail : userDetailDao.getUserDetailList()) {
+            userDetail.setActivated(userDetail.isActivated() ? "YES":"NO");
+            tblData.getItems().add(userDetail);
+            USER_LIST.add(userDetail);
+        }
+    }
+
     private void clear() {
         tblData.getColumns().clear();
         tblData.getItems().clear();
@@ -356,5 +514,11 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     public void onAddSubject() {
         clear();
         loadSubject();
+    }
+
+    @Override
+    public void onAddUser() {
+        clear();
+        loadUser();
     }
 }

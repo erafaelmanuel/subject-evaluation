@@ -43,8 +43,10 @@
                     <items>
                         <MenuItem fx:id="miSpecial" mnemonicParsing="false" onAction="#onClickSpecial" text="Add special curriculum" />
                         <MenuItem fx:id="miInputGrade" mnemonicParsing="false" onAction="#onClickInputGrade" text="Input Grade" />
-                      <MenuItem mnemonicParsing="false" onAction="#onClickUpdate" text="Update" />
-                        <MenuItem mnemonicParsing="false" onAction="#onClickDelete" text="Delete" />
+                        <MenuItem fx:id="miActivate" mnemonicParsing="false" onAction="#onClickActivate" text="Activate" />
+                        <MenuItem fx:id="miDeactivate" mnemonicParsing="false" onAction="#onClickDeactivate" text="Deactivate" />
+                      <MenuItem fx:id="miUpdate" mnemonicParsing="false" onAction="#onClickUpdate" text="Update" />
+                        <MenuItem fx:id="miDelete" mnemonicParsing="false" onAction="#onClickDelete" text="Delete" />
                     </items>
                   </ContextMenu>
                </contextMenu>
@@ -100,7 +102,7 @@
           <Menu mnemonicParsing="false" text="List">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#onClickCourse" text="Course" />
-                  <MenuItem mnemonicParsing="false" text="User" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickUser" text="User" />
                   <MenuItem mnemonicParsing="false" text="Section" />
               <MenuItem mnemonicParsing="false" onAction="#onClickStudent" text="Student" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickSubject" text="Subject" />

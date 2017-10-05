@@ -86,7 +86,7 @@ public class LoginController implements Initializable {
 
             for (UserDetail userDetail : userDetailDao.getUserDetailList()) {
                 if (txUsername.getText().trim().equals(userDetail.getUsername()) &&
-                        txPassword.getText().trim().equals(userDetail.getPassword())) {
+                        txPassword.getText().trim().equals(userDetail.getPassword()) && userDetail.isActivated()) {
                     isValid = true;
                     this.userDetail = userDetail;
                     break;

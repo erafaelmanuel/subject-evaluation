@@ -146,6 +146,41 @@ public class DeanWindowController implements Initializable {
     }
 
     @FXML
+    protected void onClickRefresh() {
+        final List<Subject> subjectList = new ArrayList<>();
+        for (com.erm.project.ees.model.Subject subject : curriculumDao.getSubjectList(
+                getCurriculumByYearAndSem(student.getCourseId(),
+                        cbYS.getSelectionModel().getSelectedIndex()).getId())) {
+            StudentSubjectRecord remark = dirtyDao.getStudentSubjectRecordById(student.getId(), subject.getId());
+            boolean suggestion = suggestionDao.getSubject(student.getId(), subject.getId()) != null;
+            Subject _subject = new Subject();
+            _subject.setId(subject.getId());
+            _subject.setName(subject.getName());
+            _subject.setDesc(subject.getDesc());
+            _subject.setRemark(remark == null ? "" : remark.getMark());
+            _subject.setSuggest(suggestion ? "YES" : "NO");
+            subjectList.add(_subject);
+        }
+        Platform.runLater(() -> {
+            SUBJECT_LIST.clear();
+            SUBJECT_LIST.addAll(subjectList);
+            tblList.setItems(SUBJECT_LIST);
+        });
+    }
+
+    @FXML
+    protected void onActionSearch() {
+        if(!txSN.getText().trim().isEmpty()) {
+            if(isNumber(txSN.getText().trim())) {
+                student = studentDao.getStudentById(Long.parseLong(txSN.getText().trim()));
+                listener(student);
+            } else
+                new Thread(()->JOptionPane.showMessageDialog(null, "Invalid input"))
+                        .start();
+        }
+    }
+
+    @FXML
     protected void onClickSignOut() {
         DeanStage stage = (DeanStage) menuBar.getScene().getWindow();
         stage.close();
