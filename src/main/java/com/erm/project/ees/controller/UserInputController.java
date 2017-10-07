@@ -7,6 +7,7 @@ import com.erm.project.ees.stage.UserInputStage;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,6 +44,15 @@ public class UserInputController implements Initializable {
         if(!(txUsername.getText().trim().isEmpty() && txPassword.getText().trim().isEmpty()) &&
                 (txPassword.getText().trim().matches("^[0-9a-zA-Z]+$")
                         && txUsername.getText().trim().matches("^[0-9a-zA-Z]+$"))) {
+
+            for(UserDetail user : userDetailDao.getUserDetailList()) {
+                if(user.getUsername().trim().equals(txUsername.getText().trim())) {
+                    new Thread(()->
+                            JOptionPane.showMessageDialog(null, "Username is already used."))
+                    .start();
+                    return;
+                }
+            }
             UserDetail userDetail = new UserDetail();
             userDetail.setUsername(txUsername.getText().trim());
             userDetail.setPassword(txPassword.getText().trim());

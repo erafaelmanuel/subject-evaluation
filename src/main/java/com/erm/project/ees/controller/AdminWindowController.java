@@ -144,24 +144,6 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     }
 
     @FXML
-    protected void onClickItem() {
-        final int index = tblData.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
-            subClear();
-            loadSubjectPrerequisite(dirtyDao.getPrerequisiteBySujectId(SUBJECT_LIST.get(index).getId()));
-        }
-    }
-
-    @FXML
-    protected void onPressedItem() {
-        final int index = tblData.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
-            subClear();
-            loadSubjectPrerequisite(dirtyDao.getPrerequisiteBySujectId(SUBJECT_LIST.get(index).getId()));
-        }
-    }
-
-    @FXML
     protected void onActionSearch() {
         clear();
         switch (mCurrent) {
@@ -233,6 +215,44 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                 break;
             case TABLE_USER:
                 loadUser();
+                break;
+        }
+    }
+
+    @FXML
+    protected void onClickItem() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        switch (mCurrent) {
+            case TABLE_STUDENT:
+                break;
+            case TABLE_COURSE:
+                break;
+            case TABLE_SUBJECT:
+                if(index > -1) {
+                    subClear();
+                    loadSubjectPrerequisite(dirtyDao.getPrerequisiteBySujectId(SUBJECT_LIST.get(index).getId()));
+                }
+                break;
+            case TABLE_USER:
+                break;
+        }
+    }
+
+    @FXML
+    protected void onPressedItem() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        switch (mCurrent) {
+            case TABLE_STUDENT:
+                break;
+            case TABLE_COURSE:
+                break;
+            case TABLE_SUBJECT:
+                if(index > -1) {
+                    subClear();
+                    loadSubjectPrerequisite(dirtyDao.getPrerequisiteBySujectId(SUBJECT_LIST.get(index).getId()));
+                }
+                break;
+            case TABLE_USER:
                 break;
         }
     }
