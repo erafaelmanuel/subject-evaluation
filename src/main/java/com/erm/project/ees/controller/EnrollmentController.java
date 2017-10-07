@@ -336,8 +336,9 @@ public class EnrollmentController implements Initializable {
 
     @FXML
     protected void onClickAdd() {
-        if (tblAbSubject.getSelectionModel().getSelectedIndex() > -1) {
-            Subject subject = tblAbSubject.getSelectionModel().getSelectedItem().getValue();
+        final int index = tblAbSubject.getSelectionModel().getSelectedIndex();
+        if (index > -1) {
+            Subject subject = AVAILABLE_SUBJECT_LIST.get(index);
 
             //add to remove table
             addYeSubject(subject);
@@ -370,7 +371,8 @@ public class EnrollmentController implements Initializable {
     @Deprecated
     private void loadYeSubject(List<com.erm.project.ees.model.Subject> subjectList) {
         for (com.erm.project.ees.model.Subject subject : subjectList) {
-            ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
+            ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(),
+                    subject.getUnit(), subject.getUnitDisplay()));
             Platform.runLater(() -> {
                 totalYeUnit += subject.getUnit();
                 lbYeUnit.setText(totalYeUnit + "");
@@ -401,10 +403,10 @@ public class EnrollmentController implements Initializable {
             descCol.setPrefWidth(210);
             descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
 
-            JFXTreeTableColumn<Subject, Integer> unitCol = new JFXTreeTableColumn<>("Unit");
+            JFXTreeTableColumn<Subject, String> unitCol = new JFXTreeTableColumn<>("Unit");
             unitCol.setResizable(false);
             unitCol.setPrefWidth(80);
-            unitCol.setCellValueFactory(param -> param.getValue().getValue().unitProperty().asObject());
+            unitCol.setCellValueFactory(param -> param.getValue().getValue().unitDisplayProperty());
 
             tblYeSubject.getColumns().add(idCol);
             tblYeSubject.getColumns().add(nameCol);
@@ -421,7 +423,8 @@ public class EnrollmentController implements Initializable {
             if (s.getId() == subject.getId())
                 return;
         }
-        ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
+        ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(),
+                subject.getUnit(), subject.getUnitDisplay()));
         Platform.runLater(() -> {
             TreeItem<Subject> root = new RecursiveTreeItem<>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
 
@@ -451,7 +454,8 @@ public class EnrollmentController implements Initializable {
                 if (s.getId() == subject.getId())
                     continue first;
             }
-            ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
+            ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(),
+                    subject.getUnit(), subject.getUnitDisplay()));
 
             totalYeUnit += subject.getUnit();
             lbYeUnit.setText(totalYeUnit + "");
@@ -809,7 +813,8 @@ public class EnrollmentController implements Initializable {
             AVAILABLE_SUBJECT_LIST.remove(0);
 
         for (com.erm.project.ees.model.Subject subject : subjectList) {
-            AVAILABLE_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
+            AVAILABLE_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(),
+                    subject.getUnit(), subject.getUnitDisplay()));
             totalAbUnit += subject.getUnit();
         }
         TreeItem<Subject> root = new RecursiveTreeItem<>(AVAILABLE_SUBJECT_LIST, RecursiveTreeObject::getChildren);
@@ -831,7 +836,8 @@ public class EnrollmentController implements Initializable {
             AVAILABLE_SUBJECT_LIST.remove(0);
 
         for (com.erm.project.ees.model.Subject subject : subjectList) {
-            AVAILABLE_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
+            AVAILABLE_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(),
+                    subject.getUnit(), subject.getUnitDisplay()));
             totalAbUnit += subject.getUnit();
         }
 
@@ -854,10 +860,10 @@ public class EnrollmentController implements Initializable {
             descCol.setPrefWidth(210);
             descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
 
-            JFXTreeTableColumn<Subject, Integer> unitCol = new JFXTreeTableColumn<>("Unit");
+            JFXTreeTableColumn<Subject, String> unitCol = new JFXTreeTableColumn<>("Unit");
             unitCol.setResizable(false);
             unitCol.setPrefWidth(80);
-            unitCol.setCellValueFactory(param -> param.getValue().getValue().unitProperty().asObject());
+            unitCol.setCellValueFactory(param -> param.getValue().getValue().unitDisplayProperty());
 
             tblAbSubject.getColumns().add(idCol);
             tblAbSubject.getColumns().add(nameCol);

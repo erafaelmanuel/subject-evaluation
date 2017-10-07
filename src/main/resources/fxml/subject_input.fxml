@@ -49,54 +49,68 @@
                <left>
                   <VBox prefHeight="184.0" prefWidth="477.0" BorderPane.alignment="CENTER">
                      <children>
-                        <HBox prefHeight="49.0" prefWidth="581.0">
+                        <HBox prefHeight="27.0" prefWidth="477.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="96.0" text="Subject Name :">
+                              <Label prefHeight="17.0" prefWidth="88.0" text="Subject Name :">
                                  <HBox.margin>
-                                    <Insets bottom="16.0" left="30.0" top="16.0" />
+                                    <Insets bottom="3.0" left="30.0" right="3.0" top="9.0" />
                                  </HBox.margin>
                               </Label>
                               <JFXTextField fx:id="txName" prefHeight="25.0" prefWidth="194.0" promptText="Subject Name">
                                  <HBox.margin>
-                                    <Insets bottom="10.0" left="3.0" right="10.0" top="10.0" />
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                  </HBox.margin>
                               </JFXTextField>
                               <Label fx:id="lbNError" prefHeight="17.0" prefWidth="148.0" text="Name is required" textFill="#c0392b" visible="false">
                                  <HBox.margin>
-                                    <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="9.0" />
                                  </HBox.margin>
                               </Label>
                            </children>
                         </HBox>
                         <HBox prefHeight="49.0" prefWidth="475.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="81.0" text="Description :">
+                              <Label prefHeight="17.0" prefWidth="89.0" text="Description :">
                                  <HBox.margin>
-                                    <Insets bottom="16.0" left="30.0" right="16.0" top="16.0" />
+                                    <Insets bottom="3.0" left="30.0" right="3.0" top="9.0" />
                                  </HBox.margin>
                               </Label>
                               <JFXTextField fx:id="txDesc" prefHeight="25.0" prefWidth="194.0" promptText="Subject Description">
                                  <HBox.margin>
-                                    <Insets bottom="10.0" left="3.0" right="10.0" top="10.0" />
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                  </HBox.margin>
                               </JFXTextField>
                               <Label fx:id="lbDError" prefHeight="17.0" prefWidth="146.0" text="Description is required" textFill="#c0392b" visible="false">
                                  <HBox.margin>
-                                    <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="9.0" />
                                  </HBox.margin>
                               </Label>
                            </children>
                         </HBox>
                         <HBox prefHeight="49.0" prefWidth="475.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="66.0" text="Unit :">
+                              <Label prefHeight="17.0" prefWidth="90.0" text="Unit/Lecture :">
                                  <HBox.margin>
-                                    <Insets bottom="16.0" left="30.0" right="16.0" top="16.0" />
+                                    <Insets bottom="3.0" left="30.0" right="3.0" top="9.0" />
                                  </HBox.margin>
                               </Label>
-                              <JFXComboBox fx:id="cbUnit" prefHeight="25.0" prefWidth="182.0">
+                              <JFXComboBox fx:id="cbUnit" prefHeight="25.0" prefWidth="194.0">
                                  <HBox.margin>
-                                    <Insets bottom="10.0" left="3.0" right="10.0" top="10.0" />
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                 </HBox.margin>
+                              </JFXComboBox>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="49.0" prefWidth="475.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="90.0" text="Unit/Lab :">
+                                 <HBox.margin>
+                                    <Insets bottom="3.0" left="30.0" right="3.0" top="9.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <JFXComboBox fx:id="cbUnitLab" prefHeight="25.0" prefWidth="193.0">
+                                 <HBox.margin>
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                  </HBox.margin>
                               </JFXComboBox>
                            </children>

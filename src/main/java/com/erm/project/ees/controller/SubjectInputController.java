@@ -36,6 +36,9 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
     private JFXComboBox<String> cbUnit;
 
     @FXML
+    private JFXComboBox<String> cbUnitLab;
+
+    @FXML
     private JFXTreeTableView<Subject> tblSubject;
 
     @FXML
@@ -57,8 +60,27 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
         cbUnit.getItems().add("3 UNIT");
         cbUnit.getItems().add("4 UNIT");
         cbUnit.getItems().add("5 UNIT");
+        cbUnit.getItems().add("6 UNIT");
+        cbUnit.getItems().add("7 UNIT");
+        cbUnit.getItems().add("8 UNIT");
+        cbUnit.getItems().add("9 UNIT");
+        cbUnit.getItems().add("10 UNIT");
+
+
+        cbUnitLab.getItems().add("0 UNIT");
+        cbUnitLab.getItems().add("1 UNIT");
+        cbUnitLab.getItems().add("2 UNIT");
+        cbUnitLab.getItems().add("3 UNIT");
+        cbUnitLab.getItems().add("4 UNIT");
+        cbUnitLab.getItems().add("5 UNIT");
+        cbUnitLab.getItems().add("6 UNIT");
+        cbUnitLab.getItems().add("7 UNIT");
+        cbUnitLab.getItems().add("8 UNIT");
+        cbUnitLab.getItems().add("9 UNIT");
+        cbUnitLab.getItems().add("10 UNIT");
 
         cbUnit.getSelectionModel().select(0);
+        cbUnitLab.getSelectionModel().select(0);
 
         initTable();
     }
@@ -96,7 +118,8 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
         if (isValid()) {
             SUBJECT.setName(txName.getText().trim());
             SUBJECT.setDesc(txDesc.getText().trim());
-            SUBJECT.setUnit(cbUnit.getSelectionModel().getSelectedIndex() + 1);
+            SUBJECT.setUnitLecture(cbUnit.getSelectionModel().getSelectedIndex() + 1);
+            SUBJECT.setUnitLaboratory(cbUnitLab.getSelectionModel().getSelectedIndex());
 
             if (subjectDao.getSubjectById(SUBJECT.getId()) == null)
                 SUBJECT.setId(subjectDao.addSubject(SUBJECT).getId());

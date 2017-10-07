@@ -251,7 +251,7 @@ public class CurriculumDaoImpl implements CurriculumDao {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "SELECT TBL_SUB.id, TBL_SUB._name, TBL_SUB._desc, TBL_SUB._unit FROM tblcurriculumsubjectlist AS TBL_CCS JOIN tblsubject AS TBL_SUB ON TBL_CCS.subjectId = TBL_SUB.id JOIN tblcurriculum as TBL_C ON TBL_CCS.curriculumId = TBL_C.id WHERE TBL_C.course_id=? AND TBL_C._year=? AND TBL_C._semester=?;";
+                String sql = "SELECT TBL_SUB.id, TBL_SUB._name, TBL_SUB._desc, TBL_SUB._unit, TBL_SUB._unitLecture, TBL_SUB._unitLaboratory FROM tblcurriculumsubjectlist AS TBL_CCS JOIN tblsubject AS TBL_SUB ON TBL_CCS.subjectId = TBL_SUB.id JOIN tblcurriculum as TBL_C ON TBL_CCS.curriculumId = TBL_C.id WHERE TBL_C.course_id=? AND TBL_C._year=? AND TBL_C._semester=?;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, courseId);
@@ -265,6 +265,8 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     subjectList.add(subject);
                 }
                 dbManager.close();
@@ -470,9 +472,9 @@ public class CurriculumDaoImpl implements CurriculumDao {
             int count = 0;
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "SELECT TBL_SUB.id, TBL_SUB._name, TBL_SUB._desc, TBL_SUB._unit FROM " +
-                        "tblcurriculumsubjectlist AS TBL_CCS JOIN tblsubject AS TBL_SUB ON TBL_CCS.subjectId = " +
-                        "TBL_SUB.id WHERE TBL_CCS.curriculumId=?";
+                String sql = "SELECT TBL_SUB.id, TBL_SUB._name, TBL_SUB._desc, TBL_SUB._unit, TBL_SUB._unitLecture, " +
+                        "TBL_SUB._unitLaboratory FROM tblcurriculumsubjectlist AS TBL_CCS JOIN tblsubject AS TBL_SUB " +
+                        "ON TBL_CCS.subjectId = TBL_SUB.id WHERE TBL_CCS.curriculumId=?";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, curriculumId);
@@ -484,6 +486,8 @@ public class CurriculumDaoImpl implements CurriculumDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     subjectList.add(subject);
                 }
                 dbManager.close();

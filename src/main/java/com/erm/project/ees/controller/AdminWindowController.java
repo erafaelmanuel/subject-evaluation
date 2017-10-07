@@ -574,7 +574,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         suDesc.setPrefWidth(200);
 
         TableColumn<Object, String> suUnit = new TableColumn<>("Unit");
-        suUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        suUnit.setCellValueFactory(new PropertyValueFactory<>("unitDisplay"));
         suUnit.setPrefWidth(200);
 
         tblData.getColumns().add(suId);
@@ -603,7 +603,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         suDesc.setPrefWidth(200);
 
         TableColumn<Object, String> suUnit = new TableColumn<>("Unit");
-        suUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        suUnit.setCellValueFactory(new PropertyValueFactory<>("unitDisplay"));
         suUnit.setPrefWidth(200);
 
         tblData.getColumns().add(suId);
@@ -630,7 +630,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         suName.setResizable(false);
 
         TableColumn<Object, String> suUnit = new TableColumn<>("Unit");
-        suUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        suUnit.setCellValueFactory(new PropertyValueFactory<>("unitDisplay"));
         suUnit.setPrefWidth(80);
         suUnit.setResizable(false);
 

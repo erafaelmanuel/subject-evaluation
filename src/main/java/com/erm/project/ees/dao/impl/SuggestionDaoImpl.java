@@ -65,7 +65,7 @@ public class SuggestionDaoImpl implements SuggestionDao {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "SELECT SU.id, SU._name, SU._desc, SU._unit FROM " + TABLE_NAME + " " +
+                String sql = "SELECT SU.id, SU._name, SU._desc, SU._unit, SU._unitLecture, SU._unitLaboratory FROM " + TABLE_NAME + " " +
                         "as SG JOIN tblsubject as SU ON SG.subjectId=SU.id WHERE studentId=?;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
@@ -78,6 +78,8 @@ public class SuggestionDaoImpl implements SuggestionDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     subjectList.add(subject);
                 }
                 dbManager.close();

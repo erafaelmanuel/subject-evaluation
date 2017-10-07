@@ -45,7 +45,9 @@ public class SubjectDaoImpl implements SubjectDao {
                         .concat("id bigint PRIMARY KEY AUTO_INCREMENT,")
                         .concat("_name varchar(100),")
                         .concat("_desc varchar(200),")
-                        .concat("_unit int);");
+                        .concat("_unit int")
+                        .concat("_unitLecture int")
+                        .concat("_unitLaboratory int);");
 
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.executeUpdate();
@@ -75,8 +77,8 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
-
-                    dbManager.close();
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     return subject;
                 }
             }
@@ -112,6 +114,8 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
 
                     dbManager.close();
                     return subject;
@@ -146,6 +150,8 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     subjectList.add(subject);
                 }
                 dbManager.close();
@@ -183,6 +189,8 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     subjectList.add(subject);
                 }
                 dbManager.close();
@@ -225,6 +233,8 @@ public class SubjectDaoImpl implements SubjectDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     subjectList.add(subject);
                 }
                 dbManager.close();
@@ -248,12 +258,15 @@ public class SubjectDaoImpl implements SubjectDao {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
                 final long id = generate();
-                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _desc, _unit) VALUES (?, ?, ?, ?);";
+                String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _desc, _unit, _unitLecture, _unitLaboratory) " +
+                        "VALUES (?, ?, ?, ?, ?, ?);";
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, id);
                 pst.setString(2, subject.getName());
                 pst.setString(3, subject.getDesc());
                 pst.setInt(4, subject.getUnit());
+                pst.setInt(5, subject.getUnitLecture());
+                pst.setInt(6, subject.getUnitLaboratory());
                 pst.executeUpdate();
 
                 dbManager.close();
@@ -275,13 +288,17 @@ public class SubjectDaoImpl implements SubjectDao {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();
-                String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _desc=?, _unit=? WHERE id = ?;";
+                String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _desc=?, _unit=?, _unitLecture=?, _unitLaboratory=? " +
+                        "WHERE id = ?;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setString(1, subject.getName());
                 pst.setString(2, subject.getDesc());
                 pst.setInt(3, subject.getUnit());
-                pst.setLong(4, subject.getId());
+                pst.setInt(4, subject.getUnitLecture());
+                pst.setInt(5, subject.getUnitLaboratory());
+                pst.setLong(6, subject.getId());
+
                 pst.executeUpdate();
             }
             dbManager.close();

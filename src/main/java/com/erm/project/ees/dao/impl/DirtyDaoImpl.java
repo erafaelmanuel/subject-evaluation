@@ -149,7 +149,7 @@ public class DirtyDaoImpl implements DirtyDao {
         List<Subject> subjectList = new ArrayList<>();
         try {
             if (dbManager.connect()) {
-                String sql = "SELECT S.id, S._name, S._desc, S._unit from tblcourse as C JOIN tblcurriculum as CU ON C.id = CU.course_id JOIN tblcurriculumsubjectlist as CSL ON CSL.curriculumId = CU.id JOIN tblsubject as S ON S.id = CSL.subjectId WHERE CU._year = ? AND CU._semester = ? AND C.id = ?";
+                String sql = "SELECT S.id, S._name, S._desc, S._unit, S._unitLecture, S._unitLaboratory from tblcourse as C JOIN tblcurriculum as CU ON C.id = CU.course_id JOIN tblcurriculumsubjectlist as CSL ON CSL.curriculumId = CU.id JOIN tblsubject as S ON S.id = CSL.subjectId WHERE CU._year = ? AND CU._semester = ? AND C.id = ?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setInt(1, year);
                 pst.setInt(2, semester);
@@ -161,6 +161,8 @@ public class DirtyDaoImpl implements DirtyDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     subjectList.add(subject);
                 }
                 dbManager.close();
@@ -179,7 +181,7 @@ public class DirtyDaoImpl implements DirtyDao {
         List<Subject> subjectList = new ArrayList<>();
         try {
             if (dbManager.connect()) {
-                String sql = "SELECT S.id, S._name, S._desc, S._unit from tblcourse as C JOIN tblspecialcurriculum as SCU ON C.id = SCU.course_id JOIN tblspecialcurriculumsubjectlist as SCSL ON SCSL.curriculumId = SCU.id JOIN tblsubject as S ON S.id = SCSL.subjectId WHERE SCU._year = ? AND SCU._semester = ? AND C.id = ? AND SCU._type = ?";
+                String sql = "SELECT S.id, S._name, S._desc, S._unit, S._unitLecture, S._unitLaboratory from tblcourse as C JOIN tblspecialcurriculum as SCU ON C.id = SCU.course_id JOIN tblspecialcurriculumsubjectlist as SCSL ON SCSL.curriculumId = SCU.id JOIN tblsubject as S ON S.id = SCSL.subjectId WHERE SCU._year = ? AND SCU._semester = ? AND C.id = ? AND SCU._type = ?";
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setInt(1, year);
                 pst.setInt(2, semester);
@@ -192,6 +194,8 @@ public class DirtyDaoImpl implements DirtyDao {
                     subject.setName(rs.getString(2));
                     subject.setDesc(rs.getString(3));
                     subject.setUnit(rs.getInt(4));
+                    subject.setUnitLecture(rs.getInt(5));
+                    subject.setUnitLaboratory(rs.getInt(6));
                     subjectList.add(subject);
                 }
                 dbManager.close();
