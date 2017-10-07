@@ -202,6 +202,47 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
+    public List<Subject> getSubjectListBySearch(String query) {
+        List<Subject> subjectList = new ArrayList<>();
+        try {
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=? OR _unit=? OR _name LIKE ?;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, -1L);
+                pst.setInt(2, -1);
+                pst.setString(3, query + "%");
+
+                if(query.matches("^[0-9]+$") && !query.matches("^[a-zA-Z]+$")) {
+                    pst.setLong(1, Long.parseLong(query));
+                    pst.setInt(2, Integer.parseInt(query));
+                }
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    Subject subject = new Subject();
+                    subject.setId(rs.getLong(1));
+                    subject.setName(rs.getString(2));
+                    subject.setDesc(rs.getString(3));
+                    subject.setUnit(rs.getInt(4));
+                    subjectList.add(subject);
+                }
+                dbManager.close();
+                return subjectList;
+            }
+            throw new NoResultFoundException("No result found on the user detail table");
+        } catch (SQLException e) {
+            LOGGER.info("Connection error");
+            dbManager.close();
+            return subjectList;
+        } catch (NoResultFoundException e) {
+            LOGGER.info("NoResultFoundException");
+            dbManager.close();
+            return subjectList;
+        }
+    }
+
+    @Override
     public Subject addSubject(Subject subject) {
         try {
             if (dbManager.connect()) {

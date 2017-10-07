@@ -9,7 +9,7 @@ public class Student {
     private String middleName;
     private int age;
     private String gender;
-    private int contactNumber;
+    private long contactNumber;
     private long sectionId;
     private long courseId;
     private String status;
@@ -19,7 +19,7 @@ public class Student {
     }
 
     public Student(long studentNumber, String firstName, String lastName, String middleName, int age, String gender,
-                   int contactNumber, long sectionId, long courseId) {
+                   long contactNumber, long sectionId, long courseId) {
         this.studentNumber = studentNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -116,11 +116,11 @@ public class Student {
         this.gender = gender;
     }
 
-    public int getContactNumber() {
+    public long getContactNumber() {
         return contactNumber;
     }
 
-    public void setContactNumber(int contactNumber) {
+    public void setContactNumber(long contactNumber) {
         this.contactNumber = contactNumber;
     }
 

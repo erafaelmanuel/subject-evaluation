@@ -14,6 +14,8 @@ public interface SubjectDao {
 
     List<Subject> getSubjectList(String query);
 
+    List<Subject> getSubjectListBySearch(String query);
+
     Subject addSubject(Subject subject);
 
     boolean updateSubjectById(long id, Subject subject);

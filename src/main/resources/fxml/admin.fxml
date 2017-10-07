@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
@@ -9,6 +10,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -55,14 +57,14 @@
          <top>
             <BorderPane prefHeight="93.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <left>
-                  <HBox prefHeight="54.0" prefWidth="375.0" BorderPane.alignment="CENTER">
+                  <HBox prefHeight="45.0" prefWidth="179.0" BorderPane.alignment="CENTER">
                      <children>
                         <JFXButton fx:id="bnAdd" onAction="#onClickAdd" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #2980b9;" text="Add" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </JFXButton>
-                        <JFXButton prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #bdc3c7;" text="Refresh" textFill="WHITE" />
+                        <JFXButton onAction="#onClickRefresh" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #bdc3c7;" text="Refresh" textFill="WHITE" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -86,6 +88,24 @@
                      </children>
                   </HBox>
                </top>
+               <right>
+                  <FlowPane alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="332.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                     <padding>
+                        <Insets bottom="5.0" right="10.0" />
+                     </padding>
+                     <children>
+                        <JFXTextField fx:id="txSearch" onAction="#onActionSearch" prefHeight="25.0" prefWidth="196.0" promptText="Enter a subject id, name or unit" />
+                        <JFXButton fx:id="bnSearch" buttonType="RAISED" onAction="#onClickSearch" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Search" textFill="WHITE">
+                           <FlowPane.margin>
+                              <Insets left="10.0" />
+                           </FlowPane.margin>
+                        </JFXButton>
+                     </children>
+                  </FlowPane>
+               </right>
             </BorderPane>
          </top>
       </BorderPane>

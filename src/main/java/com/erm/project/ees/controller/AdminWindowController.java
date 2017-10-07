@@ -14,6 +14,8 @@ import com.erm.project.ees.model.Subject;
 import com.erm.project.ees.model.UserDetail;
 import com.erm.project.ees.stage.*;
 import com.erm.project.ees.stage.window.PopOnExitWindow;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -65,6 +67,12 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @FXML
     private MenuItem miDeactivate;
 
+    @FXML
+    private JFXButton bnSearch;
+
+    @FXML
+    private JFXTextField txSearch;
+
 
     private static final ObservableList<Object> OBSERVABLE_LIST = FXCollections.observableArrayList();
 
@@ -105,10 +113,70 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         miActivate.setVisible(false);
         miDeactivate.setVisible(false);
 
+        bnSearch.setVisible(false);
+        txSearch.setVisible(false);
+
         studentInputStage.setOnItemAddLister(this);
         courseStage.getCurriculumStage().setOnItemAddLister(this);
         subjectInputStage.setOnItemAddLister(this);
         userInputStage.setOnItemAddLister(this);
+    }
+
+    @FXML
+    protected void onClickSearch() {
+        clear();
+        switch (mCurrent) {
+            case TABLE_STUDENT:
+                loadStudent();
+                break;
+            case TABLE_COURSE:
+                loadCourse();
+                break;
+            case TABLE_SUBJECT:
+                loadSubject(subjectDao.getSubjectListBySearch(txSearch.getText().trim()));
+                break;
+            case TABLE_USER:
+                loadUser();
+                break;
+        }
+    }
+
+    @FXML
+    protected void onActionSearch() {
+        clear();
+        switch (mCurrent) {
+            case TABLE_STUDENT:
+                loadStudent();
+                break;
+            case TABLE_COURSE:
+                loadCourse();
+                break;
+            case TABLE_SUBJECT:
+                loadSubject(subjectDao.getSubjectListBySearch(txSearch.getText().trim()));
+                break;
+            case TABLE_USER:
+                loadUser();
+                break;
+        }
+    }
+
+    @FXML
+    protected void onClickRefresh() {
+        clear();
+        switch (mCurrent) {
+            case TABLE_STUDENT:
+                loadStudent();
+                break;
+            case TABLE_COURSE:
+                loadCourse();
+                break;
+            case TABLE_SUBJECT:
+                loadSubject();
+                break;
+            case TABLE_USER:
+                loadUser();
+                break;
+        }
     }
 
     @FXML
@@ -279,6 +347,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         miDeactivate.setVisible(false);
 
         lbTitle.setText("Subject List");
+
+        bnSearch.setVisible(true);
+        txSearch.setVisible(true);
     }
 
     @FXML
@@ -298,6 +369,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         miDeactivate.setVisible(false);
 
         lbTitle.setText("Student List");
+
+        bnSearch.setVisible(false);
+        txSearch.setVisible(false);
     }
 
     @FXML
@@ -317,6 +391,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         miDeactivate.setVisible(false);
 
         lbTitle.setText("Course List");
+
+        bnSearch.setVisible(false);
+        txSearch.setVisible(false);
     }
 
     @FXML
@@ -336,6 +413,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         miDeactivate.setVisible(true);
 
         lbTitle.setText("User List");
+
+        bnSearch.setVisible(false);
+        txSearch.setVisible(false);
     }
     @FXML
     protected void onClickSignout() {
@@ -412,6 +492,35 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         SUBJECT_LIST.clear();
         for (Subject subject : subjectDao.getSubjectList()) {
+            tblData.getItems().add(subject);
+            SUBJECT_LIST.add(subject);
+        }
+    }
+
+    private void loadSubject(List<Subject> subjectList) {
+        TableColumn<Object, String> suId = new TableColumn<>("Id");
+        suId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        suId.setPrefWidth(200);
+
+        TableColumn<Object, String> suName = new TableColumn<>("Name");
+        suName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        suName.setPrefWidth(200);
+
+        TableColumn<Object, String> suDesc = new TableColumn<>("Description");
+        suDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        suDesc.setPrefWidth(200);
+
+        TableColumn<Object, String> suUnit = new TableColumn<>("Unit");
+        suUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        suUnit.setPrefWidth(200);
+
+        tblData.getColumns().add(suId);
+        tblData.getColumns().add(suName);
+        tblData.getColumns().add(suDesc);
+        tblData.getColumns().add(suUnit);
+
+        SUBJECT_LIST.clear();
+        for (Subject subject : subjectList) {
             tblData.getItems().add(subject);
             SUBJECT_LIST.add(subject);
         }
