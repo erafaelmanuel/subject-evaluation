@@ -57,7 +57,7 @@ public class StudentDaoImpl implements StudentDao {
                         .concat("middleName varchar(100),")
                         .concat("age int,")
                         .concat("gender varchar(100),")
-                        .concat("contactNumber int,")
+                        .concat("contactNumber bigint,")
                         .concat("sectionId bigint,")
                         .concat("courseId bigint,")
                         .concat("status varchar(100),")
@@ -100,7 +100,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setMiddleName(rs.getString(5));
                     student.setAge(rs.getInt(6));
                     student.setGender(rs.getString(7));
-                    student.setContactNumber(rs.getInt(8));
+                    student.setContactNumber(rs.getLong(8));
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
                     student.setStatus(rs.getString(11));
@@ -144,7 +144,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setMiddleName(rs.getString(5));
                     student.setAge(rs.getInt(6));
                     student.setGender(rs.getString(7));
-                    student.setContactNumber(rs.getInt(8));
+                    student.setContactNumber(rs.getLong(8));
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
                     student.setStatus(rs.getString(11));
@@ -186,7 +186,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setMiddleName(rs.getString(5));
                     student.setAge(rs.getInt(6));
                     student.setGender(rs.getString(7));
-                    student.setContactNumber(rs.getInt(8));
+                    student.setContactNumber(rs.getLong(8));
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
                     student.setStatus(rs.getString(11));
@@ -232,7 +232,7 @@ public class StudentDaoImpl implements StudentDao {
                     student.setMiddleName(rs.getString(5));
                     student.setAge(rs.getInt(6));
                     student.setGender(rs.getString(7));
-                    student.setContactNumber(rs.getInt(8));
+                    student.setContactNumber(rs.getLong(8));
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
                     student.setStatus(rs.getString(11));
@@ -271,7 +271,7 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setString(5, student.getMiddleName());
                 pst.setInt(6, student.getAge());
                 pst.setString(7, student.getGender());
-                pst.setInt(8, student.getContactNumber());
+                pst.setLong(8, student.getContactNumber());
                 pst.setLong(9, student.getSectionId());
                 pst.setLong(10, student.getCourseId());
                 pst.setString(11, student.getStatus());
@@ -300,7 +300,7 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setString(3, student.getMiddleName());
                 pst.setInt(4, student.getAge());
                 pst.setString(5, student.getGender());
-                pst.setInt(6, student.getContactNumber());
+                pst.setLong(6, student.getContactNumber());
                 pst.setLong(7, student.getSectionId());
                 pst.setLong(8, student.getCourseId());
                 pst.setString(9, student.getStatus());

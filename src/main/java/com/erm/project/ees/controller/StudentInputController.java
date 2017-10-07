@@ -119,12 +119,11 @@ public class StudentInputController implements Initializable {
             STUDENT.setMiddleName(txMName.getText());
             STUDENT.setAge(Integer.parseInt(txAge.getText()));
             STUDENT.setGender(cbGender.getSelectionModel().getSelectedItem());
-            STUDENT.setContactNumber(Integer.parseInt(txCNumber.getText()));
+            STUDENT.setContactNumber(Long.parseLong(txCNumber.getText()));
             STUDENT.setCourseId(COURSE_LIST.get(cbCourse.getSelectionModel().getSelectedIndex()).getId());
             STUDENT.setSectionId(SECTION_LIST.get(cbSection.getSelectionModel().getSelectedIndex()).getId());
             STUDENT.setStatus("REGULAR");
 
-            System.out.println(STUDENT);
             if (studentDao.getStudentById(STUDENT.getId()) == null)
                 studentDao.addStudent(STUDENT);
             else
@@ -292,7 +291,7 @@ public class StudentInputController implements Initializable {
         txLName.setText(STUDENT.getLastName());
         txMName.setText(STUDENT.getMiddleName());
         txAge.setText(STUDENT.getAge() + "");
-        txCNumber.setText(STUDENT.getContactNumber() + "");
+        txCNumber.setText("0" + STUDENT.getContactNumber() + "");
 
         for (int i = 0; i < COURSE_LIST.size(); i++) {
             if (COURSE_LIST.get(i).getId() == STUDENT.getCourseId()) {
