@@ -1,13 +1,7 @@
 package com.erm.project.ees.controller;
 
-import com.erm.project.ees.dao.CourseDao;
-import com.erm.project.ees.dao.StudentDao;
-import com.erm.project.ees.dao.SubjectDao;
-import com.erm.project.ees.dao.UserDetailDao;
-import com.erm.project.ees.dao.impl.CourseDaoImpl;
-import com.erm.project.ees.dao.impl.StudentDaoImpl;
-import com.erm.project.ees.dao.impl.SubjectDaoImpl;
-import com.erm.project.ees.dao.impl.UserDetailDaoImpl;
+import com.erm.project.ees.dao.*;
+import com.erm.project.ees.dao.impl.*;
 import com.erm.project.ees.model.Course;
 import com.erm.project.ees.model.Student;
 import com.erm.project.ees.model.Subject;
@@ -73,6 +67,8 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     @FXML
     private JFXTextField txSearch;
 
+    @FXML
+    private TableView<Object> tblSubData;
 
     private static final ObservableList<Object> OBSERVABLE_LIST = FXCollections.observableArrayList();
 
@@ -93,11 +89,13 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private final List<Student> STUDENT_LIST = new ArrayList<>();
     private final List<Course> COURSE_LIST = new ArrayList<>();
     private final List<Subject> SUBJECT_LIST = new ArrayList<>();
+    private final List<Subject> SUBJECT_PREREQUISITE_LIST = new ArrayList<>();
     private final List<UserDetail> USER_LIST = new ArrayList<>();
 
     private final CourseDao courseDao = new CourseDaoImpl();
     private final StudentDao studentDao = new StudentDaoImpl();
     private final SubjectDao subjectDao = new SubjectDaoImpl();
+    private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final UserDetailDao userDetailDao = new UserDetailDaoImpl();
 
     @Override
@@ -115,6 +113,10 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         bnSearch.setVisible(false);
         txSearch.setVisible(false);
+
+        tblSubData.setPlaceholder(new Label("No Subject Prerequisite"));
+        tblSubData.setVisible(false);
+        tblSubData.setPrefWidth(0);
 
         studentInputStage.setOnItemAddLister(this);
         courseStage.getCurriculumStage().setOnItemAddLister(this);
@@ -142,7 +144,63 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     }
 
     @FXML
+    protected void onClickItem() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            subClear();
+            loadSubjectPrerequisite(dirtyDao.getPrerequisiteBySujectId(SUBJECT_LIST.get(index).getId()));
+        }
+    }
+
+    @FXML
+    protected void onPressedItem() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            subClear();
+            loadSubjectPrerequisite(dirtyDao.getPrerequisiteBySujectId(SUBJECT_LIST.get(index).getId()));
+        }
+    }
+
+    @FXML
     protected void onActionSearch() {
+        clear();
+        switch (mCurrent) {
+            case TABLE_STUDENT:
+                loadStudent();
+                break;
+            case TABLE_COURSE:
+                loadCourse();
+                break;
+            case TABLE_SUBJECT:
+                loadSubject(subjectDao.getSubjectListBySearch(txSearch.getText().trim()));
+                break;
+            case TABLE_USER:
+                loadUser();
+                break;
+        }
+    }
+
+    @FXML
+    protected void onSearchPressed() {
+        clear();
+        switch (mCurrent) {
+            case TABLE_STUDENT:
+                loadStudent();
+                break;
+            case TABLE_COURSE:
+                loadCourse();
+                break;
+            case TABLE_SUBJECT:
+                loadSubject(subjectDao.getSubjectListBySearch(txSearch.getText().trim()));
+                break;
+            case TABLE_USER:
+                loadUser();
+                break;
+        }
+    }
+
+    @FXML
+    protected void onSearchReleased() {
         clear();
         switch (mCurrent) {
             case TABLE_STUDENT:
@@ -350,6 +408,11 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         bnSearch.setVisible(true);
         txSearch.setVisible(true);
+
+        tblSubData.setVisible(true);
+        tblSubData.setPrefWidth(400);
+
+        loadSubjectPrerequisite(new ArrayList<>());
     }
 
     @FXML
@@ -372,6 +435,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         bnSearch.setVisible(false);
         txSearch.setVisible(false);
+
+        tblSubData.setVisible(false);
+        tblSubData.setPrefWidth(0);
     }
 
     @FXML
@@ -394,6 +460,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         bnSearch.setVisible(false);
         txSearch.setVisible(false);
+
+        tblSubData.setVisible(false);
+        tblSubData.setPrefWidth(0);
     }
 
     @FXML
@@ -416,6 +485,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         bnSearch.setVisible(false);
         txSearch.setVisible(false);
+
+        tblSubData.setVisible(false);
+        tblSubData.setPrefWidth(0);
     }
     @FXML
     protected void onClickSignout() {
@@ -526,6 +598,33 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         }
     }
 
+    private void loadSubjectPrerequisite(List<Subject> subjectList) {
+        TableColumn<Object, String> suId = new TableColumn<>("Id");
+        suId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        suId.setPrefWidth(100);
+        suId.setResizable(false);
+
+        TableColumn<Object, String> suName = new TableColumn<>("Name");
+        suName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        suName.setPrefWidth(190);
+        suName.setResizable(false);
+
+        TableColumn<Object, String> suUnit = new TableColumn<>("Unit");
+        suUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        suUnit.setPrefWidth(80);
+        suUnit.setResizable(false);
+
+        tblSubData.getColumns().add(suId);
+        tblSubData.getColumns().add(suName);
+        tblSubData.getColumns().add(suUnit);
+
+        SUBJECT_PREREQUISITE_LIST.clear();
+        for (Subject subject : subjectList) {
+            tblSubData.getItems().add(subject);
+            SUBJECT_PREREQUISITE_LIST.add(subject);
+        }
+    }
+
     private void loadCourse() {
         TableColumn<Object, String> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -604,6 +703,11 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private void clear() {
         tblData.getColumns().clear();
         tblData.getItems().clear();
+    }
+
+    private void subClear() {
+        tblSubData.getColumns().clear();
+        tblSubData.getItems().clear();
     }
 
 
