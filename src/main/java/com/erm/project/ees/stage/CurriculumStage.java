@@ -22,7 +22,7 @@ public class CurriculumStage extends Stage {
             setResizable(false);
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/course_curriculum.fxml"));
             Parent root = loader.load();
-            setScene(new Scene(root, 700, 600));
+            setScene(new Scene(root, 690, 590));
             setOnCloseRequest(e -> new Thread(() -> controller.dispose(CurriculumController.State.DISCARD)).start());
             controller = loader.getController();
         } catch (IOException e) {

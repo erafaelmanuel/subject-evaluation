@@ -4,6 +4,7 @@ import com.erm.project.ees.dao.SubjectDao;
 import com.erm.project.ees.dao.impl.SubjectDaoImpl;
 import com.erm.project.ees.model.recursive.Subject;
 import com.erm.project.ees.stage.SubjectListStage;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
@@ -19,6 +20,7 @@ import javafx.scene.control.TreeItem;
 
 import javax.swing.*;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SubjectListController implements Initializable {
@@ -28,9 +30,34 @@ public class SubjectListController implements Initializable {
 
     private final ObservableList<Subject> SUBJECT_LIST = FXCollections.observableArrayList();
 
+    private final SubjectDao subjectDao = new SubjectDaoImpl();
+
+    @FXML
+    private JFXTextField txSearch;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initTable();
+    }
+
+    @FXML
+    protected void onClickSearch() {
+        loadSubject(subjectDao.getSubjectListBySearch(txSearch.getText().trim()));
+    }
+
+    @FXML
+    protected void onActionSearch() {
+        loadSubject(subjectDao.getSubjectListBySearch(txSearch.getText().trim()));
+    }
+
+    @FXML
+    protected void onPressedSearch() {
+        loadSubject(subjectDao.getSubjectListBySearch(txSearch.getText().trim()));
+    }
+
+    @FXML
+    protected void onReleasedSearch() {
+        loadSubject(subjectDao.getSubjectListBySearch(txSearch.getText().trim()));
     }
 
     @FXML
@@ -53,10 +80,8 @@ public class SubjectListController implements Initializable {
     }
 
     private void initTable() {
-        final SubjectDao subjectDao = new SubjectDaoImpl();
-
         for (com.erm.project.ees.model.Subject s : subjectDao.getSubjectList())
-            SUBJECT_LIST.add(new Subject(s.getId(), s.getName(), s.getDesc(), s.getUnit()));
+            SUBJECT_LIST.add(new Subject(s.getId(), s.getName(), s.getDesc(), s.getUnit(), s.getUnitDisplay()));
 
         TreeItem<com.erm.project.ees.model.recursive.Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,
                 RecursiveTreeObject::getChildren);
@@ -64,7 +89,7 @@ public class SubjectListController implements Initializable {
         Platform.runLater(() -> {
             JFXTreeTableColumn<Subject, Long> idCol = new JFXTreeTableColumn<>("ID");
             idCol.setResizable(false);
-            idCol.setPrefWidth(80);
+            idCol.setPrefWidth(100);
             idCol.setCellValueFactory(param -> param.getValue().getValue().idProperty().asObject());
 
             JFXTreeTableColumn<com.erm.project.ees.model.recursive.Subject, String> nameCol = new JFXTreeTableColumn<>("Subject");
@@ -74,13 +99,13 @@ public class SubjectListController implements Initializable {
 
             JFXTreeTableColumn<com.erm.project.ees.model.recursive.Subject, String> descCol = new JFXTreeTableColumn<>("Description");
             descCol.setResizable(false);
-            descCol.setPrefWidth(210);
+            descCol.setPrefWidth(250);
             descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
 
-            JFXTreeTableColumn<com.erm.project.ees.model.recursive.Subject, Integer> unitCol = new JFXTreeTableColumn<>("Unit");
+            JFXTreeTableColumn<com.erm.project.ees.model.recursive.Subject, String> unitCol = new JFXTreeTableColumn<>("Unit");
             unitCol.setResizable(false);
-            unitCol.setPrefWidth(80);
-            unitCol.setCellValueFactory(param -> param.getValue().getValue().unitProperty().asObject());
+            unitCol.setPrefWidth(100);
+            unitCol.setCellValueFactory(param -> param.getValue().getValue().unitDisplayProperty());
 
             tblSubject.getColumns().add(idCol);
             tblSubject.getColumns().add(nameCol);
@@ -92,5 +117,21 @@ public class SubjectListController implements Initializable {
             tblSubject.setRoot(root);
             tblSubject.setShowRoot(false);
         });
+    }
+
+    private void loadSubject(List<com.erm.project.ees.model.Subject> subjectList) {
+
+        SUBJECT_LIST.clear();
+        for (com.erm.project.ees.model.Subject s : subjectList)
+            SUBJECT_LIST.add(new Subject(s.getId(), s.getName(), s.getDesc(), s.getUnit(), s.getUnitDisplay()));
+
+        TreeItem<com.erm.project.ees.model.recursive.Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,
+                RecursiveTreeObject::getChildren);
+
+        Platform.runLater(() -> {
+            tblSubject.setRoot(root);
+            tblSubject.setShowRoot(false);
+        });
+
     }
 }

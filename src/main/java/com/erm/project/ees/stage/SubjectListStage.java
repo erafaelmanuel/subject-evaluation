@@ -20,7 +20,7 @@ public class SubjectListStage extends Stage {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/subject_list.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 600, 400);
+            Scene scene = new Scene(root, 600, 650);
 
             initModality(Modality.APPLICATION_MODAL);
             setResizable(false);

@@ -51,7 +51,7 @@
                      <children>
                         <HBox prefHeight="27.0" prefWidth="477.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="88.0" text="Subject Name :">
+                              <Label prefHeight="17.0" prefWidth="90.0" text="Subject Name :">
                                  <HBox.margin>
                                     <Insets bottom="3.0" left="30.0" right="3.0" top="9.0" />
                                  </HBox.margin>
@@ -67,6 +67,9 @@
                                  </HBox.margin>
                               </Label>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
                         </HBox>
                         <HBox prefHeight="49.0" prefWidth="475.0">
                            <children>
@@ -86,6 +89,9 @@
                                  </HBox.margin>
                               </Label>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
                         </HBox>
                         <HBox prefHeight="49.0" prefWidth="475.0">
                            <children>
@@ -100,6 +106,9 @@
                                  </HBox.margin>
                               </JFXComboBox>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
                         </HBox>
                         <HBox prefHeight="49.0" prefWidth="475.0">
                            <children>

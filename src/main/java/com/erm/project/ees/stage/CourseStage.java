@@ -19,7 +19,7 @@ public class CourseStage extends Stage {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/course_input.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 421, 349);
+            Scene scene = new Scene(root, 418, 349);
 
             initModality(Modality.APPLICATION_MODAL);
             setResizable(false);
