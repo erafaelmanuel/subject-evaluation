@@ -3,16 +3,20 @@ package com.erm.project.ees;
 import com.erm.project.ees.dao.conn.DBManager;
 import com.erm.project.ees.model.UserType;
 import com.erm.project.ees.stage.*;
+import com.erm.project.ees.util.ResourceHelper;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Main extends Application implements ConfigurationStage.OnFinishListener, LoginStage.OnLoginListener,
     TeacherStage.OnSignOutListener, AdminStage.OnSignOutListener, DeanStage.OnSignOutListener {
 
     private Stage primaryStage;
 
-    public static void main(String args[]) {
-        launch(args);
+    public static void main(String args[]) throws IOException {
+        launch();
     }
 
     public void start(Stage primaryStage) throws Exception {

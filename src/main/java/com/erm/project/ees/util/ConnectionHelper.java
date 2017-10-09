@@ -10,8 +10,6 @@ import java.util.Properties;
 
 public class ConnectionHelper {
 
-    public static final String CONNECTION_PROPERTIES = "/connection.properties";
-
     public static UserLibrary getUserLibrary() {
         try {
             InputStream inputStream = ResourceHelper.resourceAsStreamWithBasePath("connection.properties");

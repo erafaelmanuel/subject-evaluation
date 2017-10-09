@@ -33,6 +33,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -345,7 +346,17 @@ public class StudentGradeController implements Initializable, StudentResultStage
     @FXML
     private void onClickAS() {
         try {
-            Desktop.getDesktop().open(new File(ResourceHelper.dir() + "/sample3.pdf"));
+            final String path = "pdf/"
+            .concat(student.getStudentNumber() + "")
+            .concat(".pdf");
+            final File file = new File(path);
+            if(file.exists()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                new Thread(()->
+                        JOptionPane.showMessageDialog(null, "No file exist"))
+                .start();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -10,7 +10,7 @@ import com.erm.project.ees.model.recursive.Subject;
 import com.erm.project.ees.stage.AdvisingFormStage;
 import com.erm.project.ees.util.AssessmentHelper;
 import com.erm.project.ees.util.ResourceHelper;
-import com.erm.project.ees.util.document.PDF;
+import com.erm.project.ees.util.document.AdvisingDoc;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class EnrollmentController implements Initializable {
+public class EnrollmentController implements Initializable, AdvisingDoc.CreationListener {
 
     @FXML
     private JFXTreeTableView<Subject> tblAbSubject;
@@ -152,10 +152,11 @@ public class EnrollmentController implements Initializable {
         stage.close();
 
         new Thread(() -> {
-            PDF pdf = new PDF();
-            pdf.setSubjectList(ENROLL_SUBJECT_LIST);
-            pdf.setStudent(student);
-            pdf.writeAndClose();
+            AdvisingDoc advisingDoc = new AdvisingDoc();
+            advisingDoc.addSubject(ENROLL_SUBJECT_LIST);
+            advisingDoc.setStudent(student);
+            advisingDoc.setCreationListener(this);
+            advisingDoc.create();
         }).start();
 
         new Thread(() -> Platform.runLater(() -> {
@@ -873,5 +874,11 @@ public class EnrollmentController implements Initializable {
             tblAbSubject.setRoot(root);
             tblAbSubject.setShowRoot(false);
         });
+    }
+
+    @Override
+    public void onError() {
+        JOptionPane.showMessageDialog(null, "Failed to create report. " +
+                "The file might open on other program");
     }
 }

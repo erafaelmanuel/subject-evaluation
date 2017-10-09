@@ -46,4 +46,8 @@ public class ResourceHelper {
     public static String dir() {
         return System.getProperty("user.dir");
     }
+
+    public static String dirWithBasePath() {
+        return System.getProperty("user.dir") + BASE_PATH;
+    }
 }
