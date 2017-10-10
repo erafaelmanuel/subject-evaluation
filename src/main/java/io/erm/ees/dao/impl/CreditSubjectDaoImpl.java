@@ -4,6 +4,7 @@ import io.erm.ees.dao.CreditSubjectDao;
 import io.erm.ees.dao.conn.DBManager;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.dao.exception.SubjectAlreadyPassedException;
+import io.erm.ees.dao.exception.SubjectDuplicateException;
 import io.erm.ees.model.v2.Record;
 import io.erm.ees.model.v2.Remark;
 
@@ -127,6 +128,41 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     }
 
     @Override
+    public List<Record> getRecordList(long studentId) {
+        List<Record> recordList = new ArrayList<>();
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM tblcreditsubject WHERE studentId=?;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, studentId);
+                ResultSet rs = pst.executeQuery();
+
+                while (rs.next()) {
+                    Record record = new Record();
+                    record.setId(rs.getLong(1));
+                    record.setMidterm(rs.getDouble(2));
+                    record.setFinalterm(rs.getDouble(3));
+                    record.setDate(rs.getString(4));
+                    record.setRemark(rs.getString(5));
+                    record.setSubjectId(rs.getLong(6));
+                    record.setAcademicListId(rs.getLong(7));
+                    record.setStudentId(rs.getLong(8));
+                    recordList.add(record);
+                }
+                DB_MANAGER.close();
+                return recordList;
+            }
+            throw new NoResultFoundException("No result found on the user detail table");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return recordList;
+        }
+    }
+
+    @Override
     public List<Record> getRecordList(long academicId, long studentId) {
         List<Record> recordList = new ArrayList<>();
         try {
@@ -163,10 +199,48 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     }
 
     @Override
+    public List<Record> getRecordListOfSubject(long subjectId, long studentId) {
+        List<Record> recordList = new ArrayList<>();
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM tblcreditsubject WHERE subjectId=? AND studentId=?;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                ResultSet rs = pst.executeQuery();
+
+                while (rs.next()) {
+                    Record record = new Record();
+                    record.setId(rs.getLong(1));
+                    record.setMidterm(rs.getDouble(2));
+                    record.setFinalterm(rs.getDouble(3));
+                    record.setDate(rs.getString(4));
+                    record.setRemark(rs.getString(5));
+                    record.setSubjectId(rs.getLong(6));
+                    record.setAcademicListId(rs.getLong(7));
+                    record.setStudentId(rs.getLong(8));
+                    recordList.add(record);
+                }
+                DB_MANAGER.close();
+                return recordList;
+            }
+            throw new NoResultFoundException("No result found on the user detail table");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return recordList;
+        }
+    }
+
+    @Override
     public void addRecord(long subjectId, long academicId, long studentId, Record record) {
         try {
-            if(isSubjectPassed(subjectId))
+            if(isSubjectPassed(subjectId, studentId))
                 throw new SubjectAlreadyPassedException("The subject is already passed");
+            if(isSubjectDuplicated(subjectId, academicId, studentId))
+                throw new SubjectDuplicateException("The subject is duplicated");
             if (DB_MANAGER.connect()) {
                 String sql = "INSERT INTO " + TABLE_NAME + "(midterm, finalterm, date, remark, subjectId, " +
                         "academicId, studentId) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -182,7 +256,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 pst.executeUpdate();
             }
             DB_MANAGER.close();
-        } catch (SQLException | SubjectAlreadyPassedException e) {
+        } catch (SQLException | SubjectAlreadyPassedException | SubjectDuplicateException e) {
             LOGGER.warning(e.getMessage());
             DB_MANAGER.close();
         }
@@ -228,16 +302,42 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     }
 
     @Override
-    public boolean isSubjectPassed(long subjectId) {
+    public boolean isSubjectPassed(long subjectId, long studentId) {
         try {
             final Remark remark = Remark.PASSED;
             if (DB_MANAGER.connect()) {
                 Connection connection = DB_MANAGER.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId = ? AND remark=? LIMIT 1;";
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, subjectId);
-                pst.setString(2, remark.getCode());
+                pst.setLong(2, studentId);
+                pst.setString(3, remark.getCode());
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                DB_MANAGER.close();
+                return result;
+            }
+            throw new SQLException("Connection Problem");
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isSubjectDuplicated(long subjectId, long academicId, long studentId) {
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND academicId=? AND studentId=? LIMIT 1;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, academicId);
+                pst.setLong(3, studentId);
                 ResultSet rs = pst.executeQuery();
 
                 final boolean result = rs.next();

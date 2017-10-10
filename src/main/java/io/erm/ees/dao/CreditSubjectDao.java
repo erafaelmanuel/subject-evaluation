@@ -22,7 +22,11 @@ public interface CreditSubjectDao {
 
     List<Record> getRecordList();
 
+    List<Record> getRecordList(long studentId);
+
     List<Record> getRecordList(long academicId, long studentId);
+
+    List<Record> getRecordListOfSubject(long subjectId, long studentId);
 
     void addRecord(long subjectId, long academicId, long studentId, Record record);
 
@@ -30,6 +34,8 @@ public interface CreditSubjectDao {
 
     void deleteRecordById(long id);
 
-    boolean isSubjectPassed(long subjectId);
+    boolean isSubjectPassed(long subjectId, long studentId);
+
+    boolean isSubjectDuplicated(long subjectId, long academicId, long studentId);
 
 }

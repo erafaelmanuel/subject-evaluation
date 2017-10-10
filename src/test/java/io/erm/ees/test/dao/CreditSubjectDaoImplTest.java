@@ -16,7 +16,7 @@ public class CreditSubjectDaoImplTest {
 
     private final Logger LOGGER = Logger.getLogger(CreditSubjectDaoImplTest.class.getSimpleName());
 
-    private Record record = new Record(1, 1, new Date().toString(), "PASSED");
+    private Record record = new Record(2.5, 2, new Date().toString(), "SUCCESS");
 
     @Before
     public void setup() {
@@ -39,7 +39,7 @@ public class CreditSubjectDaoImplTest {
     @Test
     public void testAddRecord() {
         LOGGER.info("Start the test of addRecord method");
-        creditSubjectDao.addRecord(101, 1, 1, record);
+        creditSubjectDao.addRecord(102, 201721195, 1, record);
     }
 
     @Test

@@ -17,13 +17,21 @@ public interface AcademicYearDao {
 
     void init();
 
+    List<AcademicYear> getAcademicYearList();
+
     List<AcademicYear> getAcademicYearList(long studentId);
 
-    void addAcademicYear(long courseId, AcademicYear academicYear);
+    List<AcademicYear> getAcademicYearList(long code, int semester);
+
+    List<AcademicYear> getAcademicYearListOpen(long courseId);
+
+    AcademicYear addAcademicYear(long courseId, AcademicYear academicYear);
 
     void deleteAcademicYearById(long id);
 
-    boolean statusOpen(long id);
+    void statusOpen(long code, int semester);
 
-    boolean statusClose(long id);
+    void statusClose(long code, int semester);
+
+    int currentSemesterOpen(long courseId);
 }
