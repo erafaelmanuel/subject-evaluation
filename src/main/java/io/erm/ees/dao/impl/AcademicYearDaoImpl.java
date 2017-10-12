@@ -39,7 +39,7 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
                         .concat(COL_5 + " int,")
                         .concat(COL_6 + " tinyint,")
                         .concat(COL_7 + " bigint,")
-                        .concat("FOREIGN KEY ("+ COL_7 +") REFERENCES tblcourse(id) ON DELETE CASCADE ON UPDATE CASCADE)");
+                        .concat("FOREIGN KEY ("+ COL_7 +") REFERENCES tblcourse(id) ON DELETE CASCADE ON UPDATE CASCADE);");
 
                 LOGGER.info("SQL : " + sql);
 
@@ -59,7 +59,7 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
         try {
             if (DB_MANAGER.connect()) {
                 Connection connection = DB_MANAGER.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " GROUP BY code, semester;";
+                String sql = "SELECT * FROM tblacademicyear GROUP BY code, semester ORDER BY code, semester ASC";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
@@ -249,8 +249,6 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
                 pst.setLong(2, code);
                 pst.setInt(3, semester);
                 pst.executeUpdate();
-
-
             }
             DB_MANAGER.close();
         } catch (SQLException e) {
@@ -303,6 +301,81 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
             LOGGER.warning(e.getMessage());
             DB_MANAGER.close();
             return 0;
+        }
+    }
+
+    @Override
+    public long academicYearOpen(long courseId) {
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT code FROM " + TABLE_NAME + " WHERE status=? AND courseId=? LIMIT 1;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setBoolean(1, true);
+                pst.setLong(2, courseId);
+                ResultSet rs = pst.executeQuery();
+
+                if(rs.next()) {
+                    final long result = rs.getLong(1);
+                    DB_MANAGER.close();
+                    return result;
+                }
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean isTaken(long studentId, long code) {
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM tblacademicyear AS TBL_AC JOIN tblcreditsubject AS TBL_CS ON TBL_" +
+                        "AC.id=TBL_CS.academicId WHERE TBL_CS.studentId=? AND TBL_AC.code=?";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, studentId);
+
+                ResultSet rs = pst.executeQuery();
+                final boolean result = rs.next();
+                DB_MANAGER.close();
+                return result;
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isAcademicYearIsExist(long code, long courseId) {
+        List<AcademicYear> academicYearList = new ArrayList<>();
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE code=? AND courseId=? LIMIT 1;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, code);
+                pst.setLong(2, courseId);
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                DB_MANAGER.close();
+                return result ;
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return false;
         }
     }
 

@@ -12,6 +12,7 @@ import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.stage.EnrollmentStage;
+import io.erm.ees.stage.EvaluationStage;
 import io.erm.ees.stage.StudentResultStage;
 import io.erm.ees.util.ResourceHelper;
 import com.jfoenix.controls.JFXComboBox;
@@ -136,10 +137,10 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @FXML
     protected void onClickEvaluation(ActionEvent event) {
-        final EnrollmentStage enrollmentStage = new EnrollmentStage();
+        final EvaluationStage evaluationStage = new EvaluationStage();
         new Thread(() -> {
-            Platform.runLater(() -> enrollmentStage.showAndWait());
-            enrollmentStage.getController().listener(student);
+            Platform.runLater(() -> evaluationStage.showAndWait());
+            evaluationStage.getController().listener(student);
         }).start();
     }
 

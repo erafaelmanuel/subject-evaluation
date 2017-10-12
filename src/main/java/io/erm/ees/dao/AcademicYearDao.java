@@ -34,4 +34,10 @@ public interface AcademicYearDao {
     void statusClose(long code, int semester);
 
     int currentSemesterOpen(long courseId);
+
+    long academicYearOpen(long courseId);
+
+    boolean isTaken(long studentId, long code);
+
+    boolean isAcademicYearIsExist(long code, long courseId);
 }
