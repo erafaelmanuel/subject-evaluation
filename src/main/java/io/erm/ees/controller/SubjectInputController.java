@@ -81,6 +81,8 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
 
         cbUnit.getSelectionModel().select(0);
         cbUnitLab.getSelectionModel().select(0);
+        txName.setText("");
+        txDesc.setText("");
 
         initTable();
     }
@@ -121,9 +123,14 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
             SUBJECT.setUnitLecture(cbUnit.getSelectionModel().getSelectedIndex() + 1);
             SUBJECT.setUnitLaboratory(cbUnitLab.getSelectionModel().getSelectedIndex());
 
-            if (subjectDao.getSubjectById(SUBJECT.getId()) == null)
+            if (subjectDao.getSubjectById(SUBJECT.getId()) == null) {
+                if(subjectDao.isSubjectNameExist(SUBJECT.getName().trim())) {
+                    new Thread(()->JOptionPane.showMessageDialog(null, "Subject already exist"))
+                            .start();
+                    return;
+                }
                 SUBJECT.setId(subjectDao.addSubject(SUBJECT).getId());
-            else {
+            } else {
                 subjectDao.updateSubjectById(SUBJECT.getId(), SUBJECT);
                 dirtyDao.deletePrerequisite(SUBJECT.getId());
             }
@@ -136,11 +143,14 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
             SubjectInputStage stage = (SubjectInputStage) ((Node) event.getSource()).getScene().getWindow();
             stage.callBack();
             SUBJECT.setId(0);
+
+            dispose();
         }
     }
 
     @FXML
     protected void onClickCancel(ActionEvent event) {
+        dispose();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
@@ -236,14 +246,19 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
     }
 
     public void listen(io.erm.ees.model.Subject subject) {
+
         SUBJECT.setId(subject.getId());
         SUBJECT.setName(subject.getName());
         SUBJECT.setDesc(subject.getDesc());
         SUBJECT.setUnit(subject.getUnit());
+        SUBJECT.setUnitLecture(subject.getUnitLecture());
+        SUBJECT.setUnitLaboratory(subject.getUnitLaboratory());
 
         txName.setText(SUBJECT.getName());
         txDesc.setText(SUBJECT.getDesc());
-        cbUnit.getSelectionModel().select(SUBJECT.getUnit() - 1);
+
+        cbUnit.getSelectionModel().select((SUBJECT.getUnitLecture()>0 ?SUBJECT.getUnitLecture()-1:0));
+        cbUnitLab.getSelectionModel().select(SUBJECT.getUnitLaboratory());
 
         SUBJECT_LIST.clear();
         for (io.erm.ees.model.Subject item : new DirtyDaoImpl().getPrerequisiteBySujectId(SUBJECT.getId())) {
@@ -256,6 +271,12 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
             tblSubject.setRoot(root);
             tblSubject.setShowRoot(false);
         });
+    }
 
+    public void dispose() {
+        cbUnit.getSelectionModel().select(0);
+        cbUnitLab.getSelectionModel().select(0);
+        txName.setText("");
+        txDesc.setText("");
     }
 }

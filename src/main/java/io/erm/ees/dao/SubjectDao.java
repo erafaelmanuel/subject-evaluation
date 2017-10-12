@@ -25,4 +25,6 @@ public interface SubjectDao {
     boolean deleteSubjectById(long id);
 
     boolean deleteSubject(String query);
+
+    boolean isSubjectNameExist(String name);
 }

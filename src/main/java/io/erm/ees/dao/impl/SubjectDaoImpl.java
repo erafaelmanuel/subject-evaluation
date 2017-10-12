@@ -339,6 +339,29 @@ public class SubjectDaoImpl implements SubjectDao {
         return false;
     }
 
+    @Override
+    public boolean isSubjectNameExist(String name) {
+        try {
+            Subject subject = null;
+            if (dbManager.connect()) {
+                Connection connection = dbManager.getConnection();
+                String sql = "SELECT * FROM "+ TABLE_NAME +" WHERE _name=? LIMIT 1;";
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setString(1, name);
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                dbManager.close();
+                return result;
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.info(e.getMessage());
+            dbManager.close();
+            return false;
+        }
+    }
+
     public long generate2() {
         return (long) (Math.random() * Long.MAX_VALUE);
     }

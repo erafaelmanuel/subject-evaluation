@@ -1,5 +1,7 @@
 package io.erm.ees.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.CourseDao;
 import io.erm.ees.dao.SectionDao;
 import io.erm.ees.dao.StudentDao;
@@ -12,11 +14,8 @@ import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.stage.EnrollmentStage;
-import io.erm.ees.stage.EvaluationStage;
 import io.erm.ees.stage.StudentResultStage;
 import io.erm.ees.util.ResourceHelper;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -137,10 +136,10 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @FXML
     protected void onClickEvaluation(ActionEvent event) {
-        final EvaluationStage evaluationStage = new EvaluationStage();
+        final EnrollmentStage enrollmentStage = new EnrollmentStage();
         new Thread(() -> {
-            Platform.runLater(() -> evaluationStage.showAndWait());
-            evaluationStage.getController().listener(student);
+            Platform.runLater(() -> enrollmentStage.showAndWait());
+            enrollmentStage.getController().listener(student);
         }).start();
     }
 
