@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.erm.ees.controller.TeacherWindowController">
+	<bottom>
+		<VBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="590.0" style="-fx-background-color: #34495e;" BorderPane.alignment="CENTER">
+			<BorderPane.margin>
+				<Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+			</BorderPane.margin>
+			<children>
+				<Label text="Status : today is monday" textFill="WHITE">
+					<font>
+						<Font size="13.0" />
+					</font>
+				</Label>
+			</children>
+			<padding>
+				<Insets left="5.0" right="10.0" />
+			</padding>
+		</VBox>
+	</bottom>
+   <center>
+      <BorderPane fx:id="blSpace" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #95a5a6;" BorderPane.alignment="CENTER">
+         <top>
+            <BorderPane prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <left>
+                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <BorderPane.margin>
+                        <Insets top="25.0" />
+                     </BorderPane.margin>
+                  </HBox>
+               </left>
+            </BorderPane>
+         </top>
+         <center>
+            <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </center>
+   <top>
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Application">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onClickSignout" text="Sign out" />
+              <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Transaction">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#onClickAssess" text="Assesstment" />
+                  <MenuItem mnemonicParsing="false" text="Evalutaion" />
+                  <MenuItem mnemonicParsing="false" text="Grade" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="System">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Settings" />
+                  <MenuItem mnemonicParsing="false" text="Backup and restore" />
+                  <MenuItem mnemonicParsing="false" text="Show status" />
+                  <MenuItem mnemonicParsing="false" text="System reset" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" text="Contact admin" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

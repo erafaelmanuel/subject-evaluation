@@ -1,5 +1,6 @@
 package io.erm.ees.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.CourseDao;
@@ -13,6 +14,7 @@ import io.erm.ees.model.Course;
 import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
+import io.erm.ees.stage.DropSubjectStage;
 import io.erm.ees.stage.EnrollmentStage;
 import io.erm.ees.stage.StudentResultStage;
 import io.erm.ees.util.ResourceHelper;
@@ -38,7 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class StudentGradeController implements Initializable, StudentResultStage.OnSelectStudentLister {
+public class StudentGradeController implements Initializable, StudentResultStage.OnSelectStudentLister,
+        EnrollmentStage.OnCloseListener {
 
     @FXML
     private ImageView imgvLogo;
@@ -69,6 +72,12 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @FXML
     private JFXTextField txSearch;
+
+    @FXML
+    private JFXButton bnEvaluation;
+
+    @FXML
+    private JFXButton bnAD;
 
     private Student student;
 
@@ -140,6 +149,17 @@ public class StudentGradeController implements Initializable, StudentResultStage
         new Thread(() -> {
             Platform.runLater(() -> enrollmentStage.showAndWait());
             enrollmentStage.getController().listener(student);
+            enrollmentStage.setListener(this);
+            enrollmentStage.setOnCloseRequest(e -> onClose());
+        }).start();
+    }
+
+    @FXML
+    protected void onClickAddDrop(ActionEvent event) {
+        final DropSubjectStage dropSubjectStage = new DropSubjectStage();
+        new Thread(() -> {
+            Platform.runLater(() -> dropSubjectStage.showAndWait());
+            dropSubjectStage.getController().listener(student);
         }).start();
     }
 
@@ -234,6 +254,14 @@ public class StudentGradeController implements Initializable, StudentResultStage
             }
         }
         cbYearSem.getSelectionModel().select(0);
+
+        if(new DirtyDaoImpl().getStudentSubjectRecordByMark(student.getId(), "ONGOING").size() > 0) {
+            bnEvaluation.setDisable(true);
+            bnAD.setDisable(false);
+        } else {
+            bnEvaluation.setDisable(false);
+            bnAD.setDisable(true);
+        }
     }
 
     @FXML
@@ -397,6 +425,25 @@ public class StudentGradeController implements Initializable, StudentResultStage
             for (int sem = 1; sem <= COURSE_LIST.get(index).getTotalSemester(); sem++) {
                 cbYearSem.getItems().add(format(year) + " YEAR / " + format(sem) + " SEMESTER");
             }
+        }
+
+        if(new DirtyDaoImpl().getStudentSubjectRecordByMark(student.getId(), "ONGOING").size() > 0) {
+            bnEvaluation.setDisable(true);
+            bnAD.setDisable(false);
+        } else {
+            bnEvaluation.setDisable(false);
+            bnAD.setDisable(true);
+        }
+    }
+
+    @Override
+    public void onClose() {
+        if(new DirtyDaoImpl().getStudentSubjectRecordByMark(student.getId(), "ONGOING").size() > 0) {
+            bnEvaluation.setDisable(true);
+            bnAD.setDisable(false);
+        } else {
+            bnEvaluation.setDisable(false);
+            bnAD.setDisable(true);
         }
     }
 }

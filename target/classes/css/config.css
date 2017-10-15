@@ -1,0 +1,26 @@
+
+#button_connect{
+	-fx-background-color:#2ecc71;
+	-fx-text-fill: #ffffff;
+}
+
+#button_connect:hover{
+	-fx-background-color:#27ae60;
+}
+
+#button_connect:pressed{
+	-fx-background-color: gray;
+}
+
+#button_save{
+	-fx-background-color:#e67e22;
+	-fx-text-fill: #ffffff;
+}
+
+#button_save:hover{
+	-fx-background-color:#d35400;
+}
+
+#button_save:pressed{
+	-fx-background-color:gray;
+}

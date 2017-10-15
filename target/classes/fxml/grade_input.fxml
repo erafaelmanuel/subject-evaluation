@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="259.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.erm.ees.controller.GradeInputController">
+   <center>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="282.0" prefWidth="542.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="261.0" prefWidth="542.0">
+               <children>
+                  <AnchorPane prefHeight="66.0" prefWidth="542.0" style="-fx-background-color: #2980b9;">
+                     <children>
+                        <Label layoutX="23.0" layoutY="22.0" text="Inserting Grades" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="199.0" prefWidth="542.0" style="-fx-background-color: #FFFFFF;">
+                     <children>
+                        <JFXButton layoutX="355.0" layoutY="145.0" onAction="#onClickSave" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE" />
+                        <JFXButton layoutX="448.0" layoutY="145.0" onAction="#onClickCancel" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #c0392b;" text="Cancel" textFill="WHITE" />
+                        <Label layoutX="50.0" layoutY="18.0" text="Mid-Term Grade :" />
+                        <Label layoutX="48.0" layoutY="61.0" text="Final-Term Grade :" />
+                        <JFXTextField fx:id="txMidterm" layoutX="162.0" layoutY="14.0" onKeyReleased="#onKeyReleased" prefHeight="25.0" prefWidth="144.0" />
+                        <JFXTextField fx:id="txFinalterm" layoutX="162.0" layoutY="57.0" onKeyReleased="#onKeyReleased" prefHeight="25.0" prefWidth="148.0" />
+                        <Label fx:id="lbMError" layoutX="324.0" layoutY="18.0" prefHeight="17.0" prefWidth="105.0" text="Invalid Grade" textFill="#c0392b" visible="false" />
+                        <Label fx:id="lbFError" layoutX="324.0" layoutY="61.0" prefHeight="17.0" prefWidth="105.0" text="Invalid Grade" textFill="#c0392b" visible="false" />
+                        <JFXRadioButton fx:id="rbPassed" layoutX="50.0" layoutY="105.0" onAction="#onSelectMark" text="PASSED" />
+                        <JFXRadioButton fx:id="rbFailed" layoutX="135.0" layoutY="105.0" onAction="#onSelectMark" text="FAILED" />
+                        <JFXRadioButton fx:id="rbIncomplete" layoutX="215.0" layoutY="105.0" onAction="#onSelectMark" selected="true" text="INCOMPLETE" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
+      </FlowPane>
+   </center>
+</BorderPane>

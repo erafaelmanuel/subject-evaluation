@@ -10,6 +10,7 @@ import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.model.recursive.Subject;
 import io.erm.ees.stage.AdvisingFormStage;
+import io.erm.ees.stage.EnrollmentStage;
 import io.erm.ees.util.AssessmentHelper;
 import io.erm.ees.util.ResourceHelper;
 import io.erm.ees.util.document.AdvisingDoc;
@@ -17,6 +18,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -26,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import javax.swing.*;
 import java.net.URL;
@@ -148,8 +151,8 @@ public class EnrollmentController implements Initializable, AdvisingDoc.Creation
                     JOptionPane.showMessageDialog(null, "The limit of unit is exceeded."));
             return;
         }
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        EnrollmentStage stage = (EnrollmentStage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setClose();
 
         new Thread(() -> {
             AdvisingDoc advisingDoc = new AdvisingDoc();

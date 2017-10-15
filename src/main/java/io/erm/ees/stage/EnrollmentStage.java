@@ -12,7 +12,8 @@ import java.io.IOException;
 
 public class EnrollmentStage extends Stage {
 
-    private static EnrollmentController controller;
+    private EnrollmentController controller;
+    private OnCloseListener listener;
 
     public EnrollmentStage() {
         try {
@@ -28,7 +29,23 @@ public class EnrollmentStage extends Stage {
         }
     }
 
+
+    public void setListener(OnCloseListener listener) {
+        this.listener = listener;
+    }
+
     public EnrollmentController getController() {
         return controller;
+    }
+
+    public void setClose() {
+        if(listener != null)
+            listener.onClose();
+        close();
+    }
+
+    @FunctionalInterface
+    public interface OnCloseListener {
+        void onClose();
     }
 }
