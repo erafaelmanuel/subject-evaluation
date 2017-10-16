@@ -45,8 +45,8 @@ public class SubjectDaoImpl implements SubjectDao {
                         .concat("id bigint PRIMARY KEY AUTO_INCREMENT,")
                         .concat("_name varchar(100),")
                         .concat("_desc varchar(200),")
-                        .concat("_unit int")
-                        .concat("_unitLecture int")
+                        .concat("_unit int,")
+                        .concat("_unitLecture int,")
                         .concat("_unitLaboratory int);");
 
                 PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
@@ -55,7 +55,7 @@ public class SubjectDaoImpl implements SubjectDao {
                 dbManager.close();
             }
         } catch (SQLException e) {
-            LOGGER.info("SQLException");
+            LOGGER.info(e.getMessage());
         }
     }
 

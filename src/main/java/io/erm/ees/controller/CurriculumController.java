@@ -161,7 +161,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
                 curriculumDao.addSubject(curriculumId, sCurrent.getId());
 
                 SUBJECT_LIST.add(new io.erm.ees.model.recursive.Subject(sCurrent.getId(), sCurrent.getName(),
-                        sCurrent.getDesc(), sCurrent.getUnit()));
+                        sCurrent.getDesc(), sCurrent.getUnit(), sCurrent.getUnitDisplay()));
 
                 TreeItem<io.erm.ees.model.recursive.Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,
                         RecursiveTreeObject::getChildren);
@@ -270,7 +270,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
 
             for (io.erm.ees.model.Subject subject : curriculumDao.getSubjectList(curriculumId)) {
                 subjectList.add(new io.erm.ees.model.recursive.Subject(subject.getId(), subject.getName(),
-                        subject.getDesc(), subject.getUnit()));
+                        subject.getDesc(), subject.getUnit(), subject.getUnitDisplay()));
                 totalUnit += subject.getUnit();
             }
             Platform.runLater(() -> {
@@ -334,10 +334,10 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
         descCol.setPrefWidth(210);
         descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
 
-        JFXTreeTableColumn<io.erm.ees.model.recursive.Subject, Integer> unitCol = new JFXTreeTableColumn<>("Unit");
+        JFXTreeTableColumn<io.erm.ees.model.recursive.Subject, String> unitCol = new JFXTreeTableColumn<>("Unit");
         unitCol.setResizable(false);
         unitCol.setPrefWidth(80);
-        unitCol.setCellValueFactory(param -> param.getValue().getValue().unitProperty().asObject());
+        unitCol.setCellValueFactory(param -> param.getValue().getValue().unitDisplayProperty());
 
         tblSList.getColumns().add(idCol);
         tblSList.getColumns().add(nameCol);
@@ -368,7 +368,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
                 curriculumDao.addSubject(curriculumId, sCurrent.getId());
 
                 SUBJECT_LIST.add(new io.erm.ees.model.recursive.Subject(sCurrent.getId(), sCurrent.getName(),
-                        sCurrent.getDesc(), sCurrent.getUnit()));
+                        sCurrent.getDesc(), sCurrent.getUnit(), sCurrent.getUnitDisplay()));
 
                 TreeItem<io.erm.ees.model.recursive.Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,
                         RecursiveTreeObject::getChildren);

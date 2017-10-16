@@ -67,7 +67,7 @@ public class SubjectListController implements Initializable {
             SubjectListStage stage = (SubjectListStage) ((Node) event.getSource()).getScene().getWindow();
             final Subject subject = SUBJECT_LIST.get(index);
             stage.callback(new io.erm.ees.model.Subject(subject.getId(), subject.getName(), subject.getDesc(),
-                    subject.getUnit()));
+                    subject.getUnit(), subject.getUnitLecture(), subject.getUnitLaboratory(), subject.getUnitDisplay()));
         } else
             new Thread(() -> JOptionPane.showMessageDialog(null,
                     "Select a subject")).start();
@@ -81,7 +81,8 @@ public class SubjectListController implements Initializable {
 
     private void initTable() {
         for (io.erm.ees.model.Subject s : subjectDao.getSubjectList())
-            SUBJECT_LIST.add(new Subject(s.getId(), s.getName(), s.getDesc(), s.getUnit(), s.getUnitDisplay()));
+            SUBJECT_LIST.add(new Subject(s.getId(), s.getName(), s.getDesc(), s.getUnit(), s.getUnitLecture(),
+                    s.getUnitLaboratory(), s.getUnitDisplay()));
 
         TreeItem<Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST,
                 RecursiveTreeObject::getChildren);
