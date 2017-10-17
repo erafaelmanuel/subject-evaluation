@@ -1,7 +1,7 @@
 package io.erm.ees.model.v2;
 
 public enum Remark {
-    PASSED(1, "PASSED"), FAILED(2, "FAILED"), INCOMPLETE(3, "INCOMPLETE"), DROPPED(3, "DROPPED");
+    NOTSET(0, "NOTSET"), PASSED(1, "PASSED"), FAILED(2, "FAILED"), INCOMPLETE(3, "INCOMPLETE"), DROPPED(3, "DROPPED");
 
     private int key;
     private String code;

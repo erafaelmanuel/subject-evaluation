@@ -39,7 +39,7 @@ public interface AcademicYearDao {
 
     int currentSemesterOpen(long courseId);
 
-    long academicYearOpen(long courseId);
+    long currentCodeOpen(long courseId);
 
     boolean isTaken(long studentId, long code, int semester);
 

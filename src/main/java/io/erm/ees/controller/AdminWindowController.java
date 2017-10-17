@@ -93,6 +93,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private final SpecialCurriculumStage specialCurriculumStage = new SpecialCurriculumStage();
     private final UserInputStage userInputStage = new UserInputStage();
     private final AcademicYearInputStage academicYearInputStage = new AcademicYearInputStage();
+    private final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
 
     private final List<Student> STUDENT_LIST = new ArrayList<>();
     private final List<Course> COURSE_LIST = new ArrayList<>();
@@ -448,9 +449,12 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         final int index = tblData.getSelectionModel().getSelectedIndex();
         if(index > -1) {
             AcademicYear academicYear = ACADEMIC_YEAR_LIST.get(index);
+
+            if(academicYear.isStatus()) return;
+
             academicYearDao.statusClose(academicYear.getCourseId());
             academicYearDao.statusOpen(academicYear.getCode(), academicYear.getCourseId(), academicYear.getSemester());
-
+            creditSubjectDao.setSubject(academicYear.getCourseId());
             clear();
             loadAcademicYear();
         }
@@ -461,8 +465,11 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         final int index = tblData.getSelectionModel().getSelectedIndex();
         if(index > -1) {
             AcademicYear academicYear = ACADEMIC_YEAR_LIST.get(index);
-            academicYearDao.statusClose(academicYear.getCode(), academicYear.getCourseId(), academicYear.getSemester());
 
+            if(!academicYear.isStatus()) return;
+
+            academicYearDao.statusClose(academicYear.getCode(), academicYear.getCourseId(), academicYear.getSemester());
+            creditSubjectDao.setSubject(academicYear.getCourseId());
             clear();
             loadAcademicYear();
         }
@@ -630,30 +637,37 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         TableColumn<Object, String> stStudentNumber = new TableColumn<>("Student Number");
         stStudentNumber.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
         stStudentNumber.setPrefWidth(200);
+        stStudentNumber.setSortable(false);
 
         TableColumn<Object, String> stFirstName = new TableColumn<>("FirstName");
         stFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         stFirstName.setPrefWidth(200);
+        stFirstName.setSortable(false);
 
         TableColumn<Object, String> stLastName = new TableColumn<>("LastName");
         stLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         stLastName.setPrefWidth(200);
+        stLastName.setSortable(false);
 
         TableColumn<Object, String> stMiddleName = new TableColumn<>("MiddleName");
         stMiddleName.setCellValueFactory(new PropertyValueFactory<>("middleName"));
         stMiddleName.setPrefWidth(200);
+        stMiddleName.setSortable(false);
 
         TableColumn<Object, String> stAge = new TableColumn<>("Age");
         stAge.setCellValueFactory(new PropertyValueFactory<>("age"));
         stAge.setPrefWidth(200);
+        stAge.setSortable(false);
 
         TableColumn<Object, String> stGender = new TableColumn<>("Gender");
         stGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
         stGender.setPrefWidth(200);
+        stGender.setSortable(false);
 
         TableColumn<Object, String> stContact = new TableColumn<>("Contact");
         stContact.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
         stContact.setPrefWidth(200);
+        stContact.setSortable(false);
 
         tblData.getColumns().add(stStudentNumber);
         tblData.getColumns().add(stFirstName);
@@ -674,30 +688,37 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         TableColumn<Object, String> ayId = new TableColumn<>("Id");
         ayId.setCellValueFactory(new PropertyValueFactory<>("id"));
         ayId.setPrefWidth(200);
+        ayId.setSortable(false);
 
         TableColumn<Object, String> ayCode = new TableColumn<>("Code");
         ayCode.setCellValueFactory(new PropertyValueFactory<>("code"));
         ayCode.setPrefWidth(200);
+        ayCode.setSortable(false);
 
         TableColumn<Object, String> ayYear = new TableColumn<>("Year");
         ayYear.setCellValueFactory(new PropertyValueFactory<>("name"));
         ayYear.setPrefWidth(200);
+        ayYear.setSortable(false);
 
         TableColumn<Object, String> aySem = new TableColumn<>("Semester");
         aySem.setCellValueFactory(new PropertyValueFactory<>("semester"));
         aySem.setPrefWidth(200);
+        aySem.setSortable(false);
 
         TableColumn<Object, String> ayStatus = new TableColumn<>("Status");
         ayStatus.setCellValueFactory(new PropertyValueFactory<>("displayStatus"));
         ayStatus.setPrefWidth(200);
+        ayStatus.setSortable(false);
 
         TableColumn<Object, String> ayCourse = new TableColumn<>("Course");
         ayCourse.setCellValueFactory(new PropertyValueFactory<>("displayCourse"));
         ayCourse.setPrefWidth(200);
+        ayCourse.setSortable(false);
 
         TableColumn<Object, String> ayStudents = new TableColumn<>("Total Student");
         ayStudents.setCellValueFactory(new PropertyValueFactory<>("students"));
         ayStudents.setPrefWidth(120);
+        ayStudents.setSortable(false);
 
         tblData.getColumns().add(ayId);
         tblData.getColumns().add(ayCode);

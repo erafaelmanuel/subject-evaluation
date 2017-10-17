@@ -53,7 +53,7 @@
    <top>
       <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="Application">
+          <Menu mnemonicParsing="false" text="Home">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#onClickSignout" text="Sign out" />
               <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />

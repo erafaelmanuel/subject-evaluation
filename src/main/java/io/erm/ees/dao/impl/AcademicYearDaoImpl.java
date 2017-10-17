@@ -59,7 +59,7 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
         try {
             if (DB_MANAGER.connect()) {
                 Connection connection = DB_MANAGER.getConnection();
-                String sql = "SELECT * FROM tblacademicyear GROUP BY code, semester, courseId ORDER BY code, courseId, semester ASC";
+                String sql = "SELECT * FROM tblacademicyear GROUP BY code, semester, courseId ORDER BY courseId, code, semester ASC";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
@@ -349,7 +349,7 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
     }
 
     @Override
-    public long academicYearOpen(long courseId) {
+    public long currentCodeOpen(long courseId) {
         try {
             if (DB_MANAGER.connect()) {
                 Connection connection = DB_MANAGER.getConnection();

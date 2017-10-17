@@ -260,7 +260,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
         }
         cbYearSem.getSelectionModel().select(0);
 
-        final long code = academicYearDao.academicYearOpen(course.getId());
+        final long code = academicYearDao.currentCodeOpen(course.getId());
         final int semester = academicYearDao.currentSemesterOpen(course.getId());
 
         if(code != 0 && !academicYearDao.isTaken(student.getId(), code, semester)) {
@@ -435,7 +435,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
             }
         }
 
-        final long code = academicYearDao.academicYearOpen(course.getId());
+        final long code = academicYearDao.currentCodeOpen(course.getId());
         final int semester = academicYearDao.currentSemesterOpen(course.getId());
 
         if(code != 0 && !academicYearDao.isTaken(student.getId(), code, semester)) {
@@ -449,7 +449,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @Override
     public void onClose() {
-        final long code = academicYearDao.academicYearOpen(course.getId());
+        final long code = academicYearDao.currentCodeOpen(course.getId());
         final int semester = academicYearDao.currentSemesterOpen(course.getId());
 
         if(code != 0 && !academicYearDao.isTaken(student.getId(), code, semester)) {

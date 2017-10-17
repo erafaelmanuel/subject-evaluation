@@ -10,6 +10,7 @@ import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.model.recursive.Subject;
+import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.stage.AdvisingFormStage;
 import io.erm.ees.util.ResourceHelper;
 import io.erm.ees.util.document.AdvisingDoc;
@@ -92,11 +93,13 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     private final SectionDao sectionDao = new SectionDaoImpl();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
     private final StudentDao studentDao = new StudentDaoImpl();
-    private SuggestionDao suggestionDao = new SuggestionDaoImpl();
+    private final SuggestionDao suggestionDao = new SuggestionDaoImpl();
+    private final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
 
     private Student student;
     private Course course;
     private Section section;
+    private AcademicYear academicYear;
 
     private final List<io.erm.ees.model.Subject> ENROLLED_LIST_REMOVE = new ArrayList<>();
     private final List<io.erm.ees.model.Subject> ENROLLED_LIST = new ArrayList<>();
@@ -121,7 +124,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     }
 
     @FXML
-    protected void onClickEnroll(ActionEvent event) {
+    protected void onClickEvaluate(ActionEvent event) {
 
         //Delete the enrolled subject
         dirtyDao.deleteStudentRecord(student.getId(), "ONGOING");
@@ -170,7 +173,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
         if (index == 0) {
             new Thread(() -> {
                 final int year = course.getTotalYear();
-                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
+                final int semester = academicYear.getSemester();
                 final List<io.erm.ees.model.Subject> list = new ArrayList<>();
                 EvaluationHelper.evaluate(student, year, semester, list);
 
@@ -180,7 +183,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
         } else if (index <= course.getTotalYear()) {
             new Thread(() -> {
                 final int year = cbAbSubject.getSelectionModel().getSelectedIndex();
-                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
+                final int semester = academicYear.getSemester();
                 final List<io.erm.ees.model.Subject> list = new ArrayList<>();
                 EvaluationHelper.evaluate(student, year, semester, list);
 
@@ -434,6 +437,10 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
             this.student = student;
             course = courseDao.getCourseById(student.getCourseId());
             section = sectionDao.getSectionById(student.getSectionId());
+            academicYear = academicYearDao.getAcademicYearListOpen(course.getId()).get(0);
+
+            txAYS.setText(academicYear.getName() + "  ( " + (academicYear.getSemester() == 1 ? "1ST SEMESTER )" :
+                    academicYear.getSemester() == 2 ? "2ND SEMESTER )" : "0/3RD SEMESTER )"));
 
             student.setStatus("REGULAR");
             studentDao.updateStudentById(student.getId(), student);
@@ -470,7 +477,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                 }
 
                 final int year = section.getYear() <= course.getTotalYear() ? section.getYear() : 0;
-                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
+                final int semester = academicYear.getSemester();
                 final List<io.erm.ees.model.Subject> list = new ArrayList<>();
                 EvaluationHelper.evaluate(student, year, semester, list);
 
@@ -480,6 +487,8 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                 } else
                     cbAbSubject.setDisable(false);
                 cbAbSubject.getSelectionModel().select(year);
+
+                txStatus.setText(student.getStatus());
             });
         }).start();
     }

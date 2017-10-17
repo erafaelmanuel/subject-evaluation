@@ -346,4 +346,24 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
             return false;
         }
     }
+
+    @Override
+    public void setSubject(long courseId) {
+        try {
+            if (DB_MANAGER.connect()) {
+                String sql = "UPDATE tblcreditsubject AS TBL_CS JOIN tblacademicyear AS TBL_AY ON TBL_CS.academicId" +
+                        "=TBL_AY.id SET TBL_CS.remark=? WHERE TBL_CS.remark=? AND TBL_AY.courseId=?;";
+
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
+                pst.setString(1, Remark.INCOMPLETE.getCode());
+                pst.setString(2, Remark.NOTSET.getCode());
+                pst.setLong(3, courseId);
+                pst.executeUpdate();
+            }
+            DB_MANAGER.close();
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+        }
+    }
 }

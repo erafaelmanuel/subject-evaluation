@@ -122,13 +122,13 @@
    <top>
       <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="Application">
+          <Menu mnemonicParsing="false" text="Home">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#onClickSignout" text="Sign out" />
               <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="List">
+          <Menu mnemonicParsing="false" text="Maintainance">
             <items>
                   <MenuItem fx:id="miAcademicYear" mnemonicParsing="false" onAction="#onClickAcademicYear" text="Academic Year" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickCourse" text="Course" />
@@ -138,14 +138,6 @@
                   <MenuItem mnemonicParsing="false" onAction="#onClickSubject" text="Subject" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Transaction">
-              <items>
-                  <MenuItem mnemonicParsing="false" text="Enroll student" />
-                <MenuItem mnemonicParsing="false" text="Evaluate" />
-                  <MenuItem mnemonicParsing="false" text="Export report" />
-                  <MenuItem mnemonicParsing="false" text="Manage your user" />
-              </items>
-            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />

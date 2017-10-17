@@ -30,7 +30,7 @@
                               <VBox alignment="CENTER" prefHeight="36.0" prefWidth="900.0" style="-fx-background-color: #34495e;" />
                               <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="900.0">
                                  <children>
-                                    <JFXButton buttonType="RAISED" onAction="#onClickEnroll" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #8e44ad;" text="Enroll" textFill="WHITE">
+                                    <JFXButton buttonType="RAISED" onAction="#onClickEvaluate" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #8e44ad;" text="Evaluate" textFill="WHITE">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>
