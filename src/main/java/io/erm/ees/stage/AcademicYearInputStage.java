@@ -1,5 +1,6 @@
 package io.erm.ees.stage;
 
+import io.erm.ees.controller.AcademicYearInputController;
 import io.erm.ees.util.ResourceHelper;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -13,16 +14,19 @@ import java.io.IOException;
 public class AcademicYearInputStage extends Stage {
 
     private OnItemAddLister onItemAddLister;
+    private AcademicYearInputController controller;
 
     public AcademicYearInputStage() {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/academic_year_input.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 590, 270);
+            Scene scene = new Scene(root, 590, 370);
 
             initModality(Modality.APPLICATION_MODAL);
             setResizable(false);
             setScene(scene);
+
+            controller = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,6 +39,10 @@ public class AcademicYearInputStage extends Stage {
     public void callBack() {
         onItemAddLister.onAddAcademicYear();
         Platform.runLater(() -> close());
+    }
+
+    public AcademicYearInputController getController() {
+        return controller;
     }
 
     @FunctionalInterface

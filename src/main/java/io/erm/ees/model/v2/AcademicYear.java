@@ -1,5 +1,7 @@
 package io.erm.ees.model.v2;
 
+import io.erm.ees.dao.impl.CourseDaoImpl;
+
 public class AcademicYear {
 
     private long id;
@@ -94,6 +96,18 @@ public class AcademicYear {
 
     public void setCourseId(long courseId) {
         this.courseId = courseId;
+    }
+
+    public String getDisplayStatus() {
+       return status ? "Open":"Close";
+    }
+
+    public String getDisplayCourse() {
+        return new CourseDaoImpl().getCourseById(courseId).getName();
+    }
+
+    public int getStudents() {
+        return 0;
     }
 
     @Override

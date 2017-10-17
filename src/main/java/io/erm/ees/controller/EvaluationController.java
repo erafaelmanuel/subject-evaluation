@@ -6,12 +6,11 @@ import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
 import io.erm.ees.helper.EvaluationHelper;
 import io.erm.ees.model.Course;
-import io.erm.ees.model.Curriculum;
+import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.model.recursive.Subject;
 import io.erm.ees.stage.AdvisingFormStage;
-import io.erm.ees.util.AssessmentHelper;
 import io.erm.ees.util.ResourceHelper;
 import io.erm.ees.util.document.AdvisingDoc;
 import javafx.application.Platform;
@@ -50,16 +49,13 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     private JFXComboBox<String> cbClass;
 
     @FXML
-    private JFXComboBox<String> cbMaxYear;
+    private JFXTextField txStudentNo;
 
     @FXML
-    private ImageView imgLogo;
+    private JFXTextField txCourse;
 
     @FXML
-    private Label lbStudentNo;
-
-    @FXML
-    private Label lbCourse;
+    private JFXTextField txAYS;
 
     @FXML
     private JFXTextField txYear;
@@ -100,6 +96,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
 
     private Student student;
     private Course course;
+    private Section section;
 
     private final List<io.erm.ees.model.Subject> ENROLLED_LIST_REMOVE = new ArrayList<>();
     private final List<io.erm.ees.model.Subject> ENROLLED_LIST = new ArrayList<>();
@@ -118,9 +115,6 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
         cbCurSemester.getItems().add("1ST SEMESTER");
         cbCurSemester.getItems().add("2ND SEMESTER");
         cbCurSemester.getSelectionModel().select(0);
-
-        Image image = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
-        imgLogo.setImage(image);
 
         Image logoLoading = new Image(ResourceHelper.resourceWithBasePath("image/loading.gif").toString());
         imgLoading.setImage(logoLoading);
@@ -168,100 +162,26 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     }
 
     @FXML
-    protected void onClickUndo() {
-        showLoading();
-        new Thread(() -> {
-            while (ENROLL_SUBJECT_LIST.size() > 0)
-                ENROLL_SUBJECT_LIST.remove(0);
-
-            totalYeUnit = 0;
-            ENROLLED_LIST_REMOVE.clear();
-
-            for (io.erm.ees.model.Subject subject : ENROLLED_LIST) {
-                ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
-                Platform.runLater(() -> {
-                    totalYeUnit += subject.getUnit();
-                    lbYeUnit.setText(totalYeUnit + "");
-                    if (totalYeUnit < 1 || totalYeUnit > 30) {
-                        lbYeUnit.setStyle("-fx-text-fill:#c0392b;");
-                        if (totalYeUnit > 30)
-                            lbexceed.setVisible(true);
-                    } else {
-                        lbYeUnit.setStyle("-fx-text-fill:#27ae60;");
-                        lbexceed.setVisible(false);
-                    }
-                });
-            }
-            TreeItem<Subject> root = new RecursiveTreeItem<>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
-            Platform.runLater(() -> {
-                tblYeSubject.setRoot(root);
-                tblYeSubject.setShowRoot(false);
-            });
-
-            Platform.runLater(() -> cbAbSubject.getSelectionModel().select("DROP"));
-            if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-                new Thread(() -> {
-                    List<io.erm.ees.model.Subject> list = new ArrayList<>();
-                    loadAbItem(list);
-                }).start();
-            }
-            hideLoading();
-        }).start();
-    }
-
-    @FXML
-    protected void onClickRefresh() {
-        /** TODO **/
-    }
-
-    @FXML
     protected void onChooseFilter() {
+        final int index = cbAbSubject.getSelectionModel().getSelectedIndex();
+        if(index == -1) return;
+
         showLoading();
-        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+        if (index == 0) {
             new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
-                //Remove list
-                loadRemoveList(list);
-
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        }else if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("SUGGEST")) {
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = suggestionDao.getSubjectListByStudent(student.getId());
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        }else if (cbAbSubject.getSelectionModel().getSelectedIndex() == 0) {
-            new Thread(() -> {
-//                List<io.erm.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
-//                        cbCurSemester.getSelectionModel().getSelectedIndex() + 1, cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
-//                if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
-//                    list.addAll(AssessmentHelper.getSpecialSubjectListWithFilter(student, "SPECIAL_CLASSES", cbMaxYear.getSelectionModel().getSelectedIndex() + 1));
-
-                final int year = cbMaxYear.getSelectionModel().getSelectedIndex() + 1;
+                final int year = course.getTotalYear();
                 final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
-                List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
+                final List<io.erm.ees.model.Subject> list = new ArrayList<>();
                 EvaluationHelper.evaluate(student, year, semester, list);
 
                 loadAbItem(list);
                 hideLoading();
             }).start();
-        } else if (cbAbSubject.getSelectionModel().getSelectedIndex() <= course.getTotalYear()) {
+        } else if (index <= course.getTotalYear()) {
             new Thread(() -> {
-//                List<io.erm.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
-//                        cbAbSubject.getSelectionModel().getSelectedIndex(), cbCurSemester.getSelectionModel().getSelectedIndex() + 1,
-//                        cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
-//                if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
-//                    list.addAll(AssessmentHelper.getSpecialSubjectListWithFilter(student, cbAbSubject.getSelectionModel().getSelectedIndex(), "SPECIAL_CLASSES",
-//                            cbMaxYear.getSelectionModel().getSelectedIndex() + 1));
-
-                final int year = cbMaxYear.getSelectionModel().getSelectedIndex() + 1;
+                final int year = cbAbSubject.getSelectionModel().getSelectedIndex();
                 final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
-                List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
+                final List<io.erm.ees.model.Subject> list = new ArrayList<>();
                 EvaluationHelper.evaluate(student, year, semester, list);
 
                 loadAbItem(list);
@@ -272,79 +192,33 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
 
     @FXML
     protected void onChooseSemester() {
+        clearYe();
+        final int index = cbAbSubject.getSelectionModel().getSelectedIndex();
+        final List<io.erm.ees.model.Subject> list = new ArrayList<>();
+        if(index == -1) return;
+
         showLoading();
-        if (cbAbSubject.getSelectionModel().getSelectedIndex() == 0) {
+        if (index == 0) {
             new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
-                        cbCurSemester.getSelectionModel().getSelectedIndex() + 1, cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
-                if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
-                    list.addAll(AssessmentHelper.getSpecialSubjectListWithFilter(student, "SPECIAL_CLASSES", cbMaxYear.getSelectionModel().getSelectedIndex() + 1));
+                final int year = course.getTotalYear();
+                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
+                EvaluationHelper.evaluate(student, year, semester, list);
 
                 loadAbItem(list);
                 hideLoading();
-            }).start();
-        }else if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("SUGGEST")) {
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = suggestionDao.getSubjectListByStudent(student.getId());
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        } else if (cbAbSubject.getSelectionModel().getSelectedIndex() <= course.getTotalYear()) {
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
-                        cbAbSubject.getSelectionModel().getSelectedIndex(), cbCurSemester.getSelectionModel().getSelectedIndex() + 1,
-                        cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
-                if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
-                    list.addAll(AssessmentHelper.getSpecialSubjectListWithFilter(student, cbAbSubject.getSelectionModel().getSelectedIndex(), "SPECIAL_CLASSES",
-                            cbMaxYear.getSelectionModel().getSelectedIndex() + 1));
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        }
-        if (ENROLLED_LIST.size() < 1) {
-            removeAllYeSubject();
-        }
-    }
 
-    @FXML
-    private void onChooseMaxYear() {
-        showLoading();
-        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
+                Platform.runLater(() -> txStatus.setText(student.getStatus()));
+            }).start();
+        } else if (index <= course.getTotalYear()) {
             new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
-                //Remove list
-                loadRemoveList(list);
+                final int year = cbAbSubject.getSelectionModel().getSelectedIndex();
+                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
+                EvaluationHelper.evaluate(student, year, semester, list);
 
                 loadAbItem(list);
                 hideLoading();
-            }).start();
-        }else if(cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("SUGGEST")) {
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = suggestionDao.getSubjectListByStudent(student.getId());
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        } else if (cbAbSubject.getSelectionModel().getSelectedIndex() == 0) {
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
-                        cbCurSemester.getSelectionModel().getSelectedIndex() + 1, cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
-                if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
-                    list.addAll(AssessmentHelper.getSpecialSubjectListWithFilter(student, "SPECIAL_CLASSES", cbMaxYear.getSelectionModel().getSelectedIndex() + 1));
 
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        } else if (cbAbSubject.getSelectionModel().getSelectedIndex() <= course.getTotalYear()) {
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
-                        cbAbSubject.getSelectionModel().getSelectedIndex(), cbCurSemester.getSelectionModel().getSelectedIndex() + 1,
-                        cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
-                if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
-                    list.addAll(AssessmentHelper.getSpecialSubjectListWithFilter(student, cbAbSubject.getSelectionModel().getSelectedIndex(), "SPECIAL_CLASSES",
-                            cbMaxYear.getSelectionModel().getSelectedIndex() + 1));
-                loadAbItem(list);
-                hideLoading();
+                Platform.runLater(() -> txStatus.setText(student.getStatus()));
             }).start();
         }
     }
@@ -559,39 +433,23 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
         new Thread(() -> {
             this.student = student;
             course = courseDao.getCourseById(student.getCourseId());
-
-            List<Curriculum> curriculumList = curriculumDao.getCurriculumListByCourseId(student.getCourseId());
+            section = sectionDao.getSectionById(student.getSectionId());
 
             student.setStatus("REGULAR");
             studentDao.updateStudentById(student.getId(), student);
 
-            root:
-            for (Curriculum curriculum : curriculumList) {
-                for (io.erm.ees.model.Subject subject : curriculumDao.getSubjectList(curriculum.getId())) {
-                    StudentSubjectRecord record = dirtyDao.getStudentSubjectRecordById(student.getId(), subject.getId());
-                    if (record == null)
-                        continue;
-                    else {
-                        if (record.getMark().equalsIgnoreCase("FAILED") ||
-                                record.getMark().equalsIgnoreCase("DROPPED")) {
-                            student.setStatus("IRREGULAR");
-                            studentDao.updateStudentById(student.getId(), student);
-                            break root;
-                        }
-                    }
-                }
-            }
-
             Platform.runLater(() -> {
-                lbStudentNo.setText(student.getStudentNumber() + "");
-                lbCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
+                clearAb();
+                initAbSubject();
+
+                txStudentNo.setText(student.getStudentNumber() + "");
+                txCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
                 txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
                         student.getMiddleName().substring(0, 1)).toUpperCase());
                 txYear.setText(new SectionDaoImpl().getSectionById(student.getSectionId()).getYear() + "");
                 txStatus.setText(student.getStatus());
 
                 int totalYear = course.getTotalYear();
-
                 if (totalYear <= 4) {
                     cbAbSubject.getItems().add("ALL");
                     cbAbSubject.getItems().add("1ST YR");
@@ -610,79 +468,19 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                     cbAbSubject.getItems().add("1ST YR");
                     cbAbSubject.getItems().add("2ND YR");
                 }
-                cbAbSubject.getSelectionModel().select(0);
 
-                if (totalYear <= 4) {
-                    cbMaxYear.getItems().add("1ST YR");
-                    cbMaxYear.getItems().add("2ND YR");
-                    cbMaxYear.getItems().add("3RD YR");
-                    cbMaxYear.getItems().add("4TH YR");
-                } else if (totalYear == 5) {
-                    cbMaxYear.getItems().add("1ST YR");
-                    cbMaxYear.getItems().add("2ND YR");
-                    cbMaxYear.getItems().add("3RD YR");
-                    cbMaxYear.getItems().add("4TH YR");
-                    cbMaxYear.getItems().add("5TH YR");
-                } else {
-                    cbMaxYear.getItems().add("1ST YR");
-                    cbMaxYear.getItems().add("2ND YR");
-                }
-                int year = new SectionDaoImpl().getSectionById(student.getSectionId()).getYear();
-                switch (year) {
-                    case 5:
-                        cbMaxYear.getSelectionModel().select(4);
-                        break;
-                    case 4:
-                        cbMaxYear.getSelectionModel().select(3);
-                        break;
-                    case 3:
-                        cbMaxYear.getSelectionModel().select(2);
-                        break;
-                    case 2:
-                        cbMaxYear.getSelectionModel().select(1);
-                        break;
-                    default:
-                        cbMaxYear.getSelectionModel().select(0);
-                        break;
-                }
+                final int year = section.getYear() <= course.getTotalYear() ? section.getYear() : 0;
+                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
+                final List<io.erm.ees.model.Subject> list = new ArrayList<>();
+                EvaluationHelper.evaluate(student, year, semester, list);
+
+                if(student.getStatus().equals("REGULAR")) {
+                    loadYeSubject(list);
+                    cbAbSubject.setDisable(true);
+                } else
+                    cbAbSubject.setDisable(false);
+                cbAbSubject.getSelectionModel().select(year);
             });
-
-//            List<io.erm.ees.model.Subject> list = AssessmentHelper.getSubjectListWithFilter(student,
-//                    cbCurSemester.getSelectionModel().getSelectedIndex() + 1, cbMaxYear.getSelectionModel().getSelectedIndex() + 1);
-//            if (cbCurSemester.getSelectionModel().getSelectedIndex() == 1)
-//                list.addAll(AssessmentHelper.getSpecialSubjectListWithFilter(student, "SPECIAL_CLASSES", cbMaxYear.getSelectionModel().getSelectedIndex() + 1));
-            final int year = cbMaxYear.getSelectionModel().getSelectedIndex() + 1;
-            final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
-            List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
-            EvaluationHelper.evaluate(student, year, semester, list);
-
-            clearAb();
-            initAbSubject(list);
-
-            List<io.erm.ees.model.Subject> subjectList = new ArrayList<>();
-            List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
-
-            for (StudentSubjectRecord record : recordList) {
-                io.erm.ees.model.Subject subject = new SubjectDaoImpl().getSubjectById(record.getSubjectId());
-                subjectList.add(subject);
-            }
-
-            if (subjectList.size() > 0) {
-                Platform.runLater(() -> {
-                    cbAbSubject.getItems().add("DROP");
-
-                    cbCurSemester.getSelectionModel().select(dirtyDao.getStudentSubjectRecordSemester(student.getId(), "ONGOING") - 1);
-                    cbCurSemester.setDisable(true);
-                });
-            }
-
-            Platform.runLater(()->cbAbSubject.getItems().add("SUGGEST"));
-
-            ENROLLED_LIST.addAll(subjectList);
-
-            clearYe();
-            loadYeSubject(subjectList);
         }).start();
     }
 
@@ -837,34 +635,16 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                     subject.getUnit(), subject.getUnitDisplay()));
             totalAbUnit += subject.getUnit();
         }
-        TreeItem<Subject> root = new RecursiveTreeItem<>(AVAILABLE_SUBJECT_LIST, RecursiveTreeObject::getChildren);
-
         Platform.runLater(() -> {
+            TreeItem<Subject> root = new RecursiveTreeItem<>(AVAILABLE_SUBJECT_LIST, RecursiveTreeObject::getChildren);
             lbAbUnit.setText(totalAbUnit + "");
             tblAbSubject.setRoot(root);
             tblAbSubject.setShowRoot(false);
         });
     }
 
-    private void initAbSubject(List<io.erm.ees.model.Subject> subjectList) {
-
-        //reset the total unit
-        totalAbUnit = 0;
-
-        //reset the list
-        while (AVAILABLE_SUBJECT_LIST.size() > 0)
-            AVAILABLE_SUBJECT_LIST.remove(0);
-
-        for (io.erm.ees.model.Subject subject : subjectList) {
-            AVAILABLE_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(),
-                    subject.getUnit(), subject.getUnitDisplay()));
-            totalAbUnit += subject.getUnit();
-        }
-
+    private void initAbSubject() {
         Platform.runLater(() -> {
-            lbAbUnit.setText(totalAbUnit + "");
-            TreeItem<Subject> root = new RecursiveTreeItem<>(AVAILABLE_SUBJECT_LIST, RecursiveTreeObject::getChildren);
-
             JFXTreeTableColumn<Subject, Long> idCol = new JFXTreeTableColumn<>("ID");
             idCol.setResizable(false);
             idCol.setPrefWidth(80);
@@ -890,7 +670,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
             tblAbSubject.getColumns().add(descCol);
             tblAbSubject.getColumns().add(unitCol);
 
-            tblAbSubject.setRoot(root);
+            tblAbSubject.setRoot(null);
             tblAbSubject.setShowRoot(false);
         });
     }

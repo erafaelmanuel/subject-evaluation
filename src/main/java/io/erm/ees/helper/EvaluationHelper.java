@@ -31,6 +31,7 @@ public class EvaluationHelper {
         return evaluationHelper;
     }
 
+    @Deprecated
     public boolean evaluate(Student student, int year) {
         try {
             final AcademicYear academicYear = new AcademicYear();
@@ -61,6 +62,7 @@ public class EvaluationHelper {
         }
     }
 
+    @Deprecated
     public void condition(Student student, int _year, int _semester) {
         Course course = courseDao.getCourseById(student.getCourseId());
 
@@ -106,13 +108,44 @@ public class EvaluationHelper {
     }
 
     public static void evaluate(Student student, int _year, int _semester, List<Subject> subjectList) {
+        final Course course = courseDao.getCourseById(student.getCourseId());
+        student.setStatus("REGULAR");
+
+        year:for (int y = 1; y <= course.getTotalYear(); y++) {
+            for (int s = 1; s <= course.getTotalSemester(); s++) {
+
+                List<Subject> list = curriculumDao.getSubjectList(course.getId(), y, s);
+                list:for (Subject subject : list) {
+                    final boolean isPassed = creditSubjectDao.isSubjectPassed(subject.getId(), student.getId());
+                    if(s!=_semester) {
+                        if(!isPassed)
+                            student.setStatus("IRREGULAR");
+                        continue;
+                    }
+
+                    //Check if subject is passed
+                    if (!isPassed) {
+                        for(Subject pSubject:new DirtyDaoImpl().getPrerequisiteBySujectId(subject.getId()))
+                            //if subject is passed then remove it from the list by skipping the add method
+                            if(!creditSubjectDao.isSubjectPassed(pSubject.getId(), student.getId())) continue list;
+                        AVAILABLE_LIST.add(subject);
+                    }
+                }
+                //end
+                if (y == _year && s == _semester) break year;
+            }
+        }
+        subjectList.addAll(AVAILABLE_LIST);
+        clear();
+    }
+
+    public static void evaluateWithMajor(Student student, int _year, int _semester, List<Subject> subjectList) {
         Course course = courseDao.getCourseById(student.getCourseId());
         year:for (int y = 1; y <= course.getTotalYear(); y++) {
             for (int s = 1; s <= course.getTotalSemester(); s++) {
 
                 List<Subject> list = curriculumDao.getSubjectList(course.getId(), y, s);
                 List<Subject> majorList = new MajorSubjectDaoImpl().getSubjectList(course.getId(), y, s);
-                System.out.println(list);
 
                 list:for (Subject subject : list) {
                     if(s!=_semester) continue;
@@ -132,7 +165,8 @@ public class EvaluationHelper {
                 if (y == _year && s == _semester) break year;
             }
         }
-       subjectList.addAll(AVAILABLE_LIST);
+        subjectList.addAll(AVAILABLE_LIST);
+        System.out.println(AVAILABLE_LIST);
         clear();
     }
 

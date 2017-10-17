@@ -18,7 +18,7 @@ public class EvaluationStage extends Stage {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/evaluation.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 900, 600);
+            Scene scene = new Scene(root, 1100, 600);
             this.initModality(Modality.APPLICATION_MODAL);
             this.setScene(scene);
 

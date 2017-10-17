@@ -3,19 +3,18 @@ package io.erm.ees.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import io.erm.ees.dao.AcademicYearDao;
 import io.erm.ees.dao.CourseDao;
 import io.erm.ees.dao.SectionDao;
 import io.erm.ees.dao.StudentDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
-import io.erm.ees.dao.impl.DirtyDaoImpl;
-import io.erm.ees.dao.impl.SectionDaoImpl;
-import io.erm.ees.dao.impl.StudentDaoImpl;
+import io.erm.ees.dao.impl.*;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.stage.DropSubjectStage;
 import io.erm.ees.stage.EnrollmentStage;
+import io.erm.ees.stage.EvaluationStage;
 import io.erm.ees.stage.StudentResultStage;
 import io.erm.ees.util.ResourceHelper;
 import javafx.application.Platform;
@@ -81,6 +80,8 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     private Student student;
 
+    private Course course;
+
     private ObservableList<String> OBSERVABLE_LIST_CURRICULUM = FXCollections.observableArrayList();
     private ObservableList<StudentSubjectRecord> OBSERVABLE_LIST_RECORD = FXCollections.observableArrayList();
     private final List<Course> COURSE_LIST = new ArrayList<>();
@@ -88,6 +89,8 @@ public class StudentGradeController implements Initializable, StudentResultStage
     private final CourseDao courseDao = new CourseDaoImpl();
     private final SectionDao sectionDao = new SectionDaoImpl();
     private final StudentDao studentDao = new StudentDaoImpl();
+    private final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -145,12 +148,12 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @FXML
     protected void onClickEvaluation(ActionEvent event) {
-        final EnrollmentStage enrollmentStage = new EnrollmentStage();
+        final EvaluationStage evaluationStage = new EvaluationStage();
         new Thread(() -> {
-            Platform.runLater(() -> enrollmentStage.showAndWait());
-            enrollmentStage.getController().listener(student);
-            enrollmentStage.setListener(this);
-            enrollmentStage.setOnCloseRequest(e -> onClose());
+            Platform.runLater(() -> evaluationStage.showAndWait());
+            evaluationStage.getController().listener(student);
+            //evaluationStage.setListener(this);
+            evaluationStage.setOnCloseRequest(e -> onClose());
         }).start();
     }
 
@@ -228,8 +231,10 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     public void listener(Student student) {
         this.student = student;
+        this.course = courseDao.getCourseById(student.getCourseId());
         final Section section = sectionDao.getSectionById(student.getSectionId());
-        txCourse.setText(courseDao.getCourseById(student.getCourseId()).getName());
+
+        txCourse.setText(course.getName());
         txSNumber.setText(student.getStudentNumber() + "");
         lbStudent.setText(student.getFirstName() + " " + student.getLastName());
         txYS.setText(section.getYear() + "-" + section.getName().toUpperCase());
@@ -255,12 +260,15 @@ public class StudentGradeController implements Initializable, StudentResultStage
         }
         cbYearSem.getSelectionModel().select(0);
 
-        if(new DirtyDaoImpl().getStudentSubjectRecordByMark(student.getId(), "ONGOING").size() > 0) {
-            bnEvaluation.setDisable(true);
-            bnAD.setDisable(false);
-        } else {
+        final long code = academicYearDao.academicYearOpen(course.getId());
+        final int semester = academicYearDao.currentSemesterOpen(course.getId());
+
+        if(code != 0 && !academicYearDao.isTaken(student.getId(), code, semester)) {
             bnEvaluation.setDisable(false);
             bnAD.setDisable(true);
+        } else {
+            bnEvaluation.setDisable(true);
+            bnAD.setDisable(false);
         }
     }
 
@@ -427,23 +435,29 @@ public class StudentGradeController implements Initializable, StudentResultStage
             }
         }
 
-        if(new DirtyDaoImpl().getStudentSubjectRecordByMark(student.getId(), "ONGOING").size() > 0) {
-            bnEvaluation.setDisable(true);
-            bnAD.setDisable(false);
-        } else {
+        final long code = academicYearDao.academicYearOpen(course.getId());
+        final int semester = academicYearDao.currentSemesterOpen(course.getId());
+
+        if(code != 0 && !academicYearDao.isTaken(student.getId(), code, semester)) {
             bnEvaluation.setDisable(false);
             bnAD.setDisable(true);
+        } else {
+            bnEvaluation.setDisable(true);
+            bnAD.setDisable(false);
         }
     }
 
     @Override
     public void onClose() {
-        if(new DirtyDaoImpl().getStudentSubjectRecordByMark(student.getId(), "ONGOING").size() > 0) {
-            bnEvaluation.setDisable(true);
-            bnAD.setDisable(false);
-        } else {
+        final long code = academicYearDao.academicYearOpen(course.getId());
+        final int semester = academicYearDao.currentSemesterOpen(course.getId());
+
+        if(code != 0 && !academicYearDao.isTaken(student.getId(), code, semester)) {
             bnEvaluation.setDisable(false);
             bnAD.setDisable(true);
+        } else {
+            bnEvaluation.setDisable(true);
+            bnAD.setDisable(false);
         }
     }
 }

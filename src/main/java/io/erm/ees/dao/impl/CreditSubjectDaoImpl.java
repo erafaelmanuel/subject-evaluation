@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class CreditSubjectDaoImpl implements CreditSubjectDao {
 
-    private static final DBManager DB_MANAGER = new DBManager();
+    private final DBManager DB_MANAGER = new DBManager();
 
     private static final Logger LOGGER = Logger.getLogger(CreditSubjectDaoImpl.class.getSimpleName());
 
@@ -28,7 +28,6 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
 
     @Override
     public void init() {
-        Connection connection = null;
         try {
             if (DB_MANAGER.connect()) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
@@ -47,11 +46,9 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                         .concat("FOREIGN KEY ("+ COL_8 +") REFERENCES tblstudent(id) ON DELETE CASCADE ON UPDATE CASCADE);");
 
                 LOGGER.info("SQL : " + sql);
-
-                connection = DB_MANAGER.getConnection();
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 pst.executeUpdate();
-                connection.close();
+                DB_MANAGER.close();
             }
         } catch (SQLException e) {
             LOGGER.info(e.getMessage());
@@ -63,10 +60,9 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     public Record getRecordById(long id) {
         try {
             if (DB_MANAGER.connect()) {
-                Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
 
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 pst.setLong(1, id);
                 ResultSet rs = pst.executeQuery();
 
@@ -98,10 +94,9 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
         List<Record> recordList = new ArrayList<>();
         try {
             if (DB_MANAGER.connect()) {
-                Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + ";";
 
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {

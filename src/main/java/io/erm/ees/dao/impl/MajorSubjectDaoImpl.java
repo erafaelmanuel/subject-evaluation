@@ -5,9 +5,7 @@ import io.erm.ees.dao.conn.DBManager;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.dao.exception.SubjectDuplicateException;
 import io.erm.ees.dao.exception.SubjectNotBelongException;
-import io.erm.ees.helper.IdGenerator;
 import io.erm.ees.model.Subject;
-import io.erm.ees.model.v2.AcademicYear;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +17,7 @@ import java.util.logging.Logger;
 
 public class MajorSubjectDaoImpl implements MajorSubjectDao {
 
-    private static final DBManager DB_MANAGER = new DBManager();
+    private final DBManager DB_MANAGER = new DBManager();
 
     private static final Logger LOGGER = Logger.getLogger(CreditSubjectDaoImpl.class.getSimpleName());
 
@@ -56,13 +54,12 @@ public class MajorSubjectDaoImpl implements MajorSubjectDao {
         List<Subject> subjectList = new ArrayList<>();
         try {
             if (DB_MANAGER.connect()) {
-                Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT TBL_SUB.id, TBL_SUB._name, TBL_SUB._desc, TBL_SUB._unit, TBL_SUB._unitLecture, " +
                         "TBL_SUB._unitLaboratory FROM tblmajorsubject AS TBL_MS JOIN tblsubject AS TBL_SUB ON TBL_MS" +
                         ".subjectId=TBL_SUB.id JOIN tblcurriculum AS TBL_CUR ON TBL_MS.curriculumId=TBL_CUR.id WHERE" +
                         " TBL_CUR.course_id=? AND TBL_CUR._year=? AND TBL_CUR._semester=?";
 
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 pst.setLong(1, courseId);
                 pst.setInt(2, year);
                 pst.setInt(3, semester);

@@ -29,15 +29,21 @@ public interface AcademicYearDao {
 
     void deleteAcademicYearById(long id);
 
-    void statusOpen(long code, int semester);
+    void deleteAcademicYear(long code, long courseId, int semester);
 
-    void statusClose(long code, int semester);
+    void statusOpen(long code, long courseId, int semester);
+
+    void statusClose(long courseId);
+
+    void statusClose(long code, long courseId, int semester);
 
     int currentSemesterOpen(long courseId);
 
     long academicYearOpen(long courseId);
 
-    boolean isTaken(long studentId, long code);
+    boolean isTaken(long studentId, long code, int semester);
 
     boolean isAcademicYearIsExist(long code, long courseId);
+
+    boolean isAcademicYearIsExist(long code, long courseId, int semester);
 }

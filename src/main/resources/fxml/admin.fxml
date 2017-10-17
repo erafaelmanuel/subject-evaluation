@@ -43,6 +43,8 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
+                        <MenuItem fx:id="miOpen" mnemonicParsing="false" onAction="#onClickOpen" text="Open" />
+                        <MenuItem fx:id="miClose" mnemonicParsing="false" onAction="#onClickClose" text="Close" />
                         <MenuItem fx:id="miSpecial" mnemonicParsing="false" onAction="#onClickSpecial" text="Add special curriculum" />
                         <MenuItem fx:id="miInputGrade" mnemonicParsing="false" onAction="#onClickInputGrade" text="Input Grade" />
                         <MenuItem fx:id="miActivate" mnemonicParsing="false" onAction="#onClickActivate" text="Activate" />
@@ -77,7 +79,7 @@
                <top>
                   <HBox prefHeight="43.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Label fx:id="lbTitle" prefHeight="25.0" prefWidth="131.0" text="Label">
+                        <Label fx:id="lbTitle" prefHeight="25.0" prefWidth="274.0" text="Label">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -128,6 +130,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="List">
             <items>
+                  <MenuItem fx:id="miAcademicYear" mnemonicParsing="false" onAction="#onClickAcademicYear" text="Academic Year" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickCourse" text="Course" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickUser" text="User" />
                   <MenuItem mnemonicParsing="false" text="Section" />

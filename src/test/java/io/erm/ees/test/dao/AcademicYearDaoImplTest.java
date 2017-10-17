@@ -39,13 +39,13 @@ public class AcademicYearDaoImplTest {
     @Test
     public void testStatusOpen() {
         LOGGER.info("Start the test of statusOpen method");
-        academicYearDao.statusOpen(20172018, 1);
+        academicYearDao.statusOpen(20172018, 1, 1);
     }
 
     @Test
     public void testStatusClose() {
         LOGGER.info("Start the test of statusClose method");
-        academicYearDao.statusClose(20172018, 2);
+        academicYearDao.statusClose(20172018, 2, 1);
     }
 
 

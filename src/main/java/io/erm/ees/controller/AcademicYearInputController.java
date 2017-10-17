@@ -1,19 +1,14 @@
 package io.erm.ees.controller;
 
-import com.jfoenix.controls.*;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.CourseDao;
-import io.erm.ees.dao.DirtyDao;
-import io.erm.ees.dao.SubjectDao;
 import io.erm.ees.dao.impl.AcademicYearDaoImpl;
 import io.erm.ees.dao.impl.CourseDaoImpl;
-import io.erm.ees.dao.impl.DirtyDaoImpl;
-import io.erm.ees.dao.impl.SubjectDaoImpl;
 import io.erm.ees.model.Course;
-import io.erm.ees.model.recursive.Subject;
 import io.erm.ees.model.v2.AcademicYear;
-import io.erm.ees.stage.SubjectInputStage;
-import io.erm.ees.stage.SubjectListStage;
+import io.erm.ees.stage.AcademicYearInputStage;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -24,11 +19,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.*;
 
@@ -67,9 +60,24 @@ public class AcademicYearInputController implements Initializable {
     @FXML
     private HBox hbMessage;
 
+    @FXML
+    private JFXButton bnSave;
+
+    @FXML
+    private JFXTextField txYear;
+
+    @FXML
+    private CheckBox chbCurrentYear;
+
+    @FXML CheckBox chbFirstSem;
+
+    @FXML CheckBox chbSecondSem;
+
+    @FXML CheckBox chbThirdSem;
 
     private final ObservableList<String> COURSE_ITEM = FXCollections.observableArrayList();
     private final List<Course> COURSE_LIST = new ArrayList<>();
+    private boolean[] SEM_LIST;
 
     final CourseDao courseDao = new CourseDaoImpl();
 
@@ -80,37 +88,6 @@ public class AcademicYearInputController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        chbAll.setVisible(false);
-        chbFirst.setVisible(false);
-        chbSecond.setVisible(false);
-        chbThird.setVisible(false);
-        chbForth.setVisible(false);
-        chbFifth.setVisible(false);
-
-        COURSE_ITEM.clear();
-        for(Course course : courseDao.getCourseList()) {
-            COURSE_ITEM.add(course.getName());
-            COURSE_LIST.add(course);
-        }
-        if(COURSE_ITEM.size() > 0) {
-            cbCourse.setItems(COURSE_ITEM);
-            cbCourse.getSelectionModel().select(0);
-            final int index = cbCourse.getSelectionModel().getSelectedIndex();
-            if(index > -1) {
-                setCheckBoxes(index);
-                txName.setText(name);
-                txSemester.setText(COURSE_LIST.get(index).getTotalSemester() + " Semester");
-
-                if(new AcademicYearDaoImpl().isAcademicYearIsExist(code, COURSE_LIST.get(index).getId())) {
-                    lbStatus.setText("You've already created the academic year for course " + COURSE_LIST.get(index).getName());
-                    hbMessage.setStyle("-fx-background-color:#1abc9c;");
-                } else {
-                    lbStatus.setText("You've not create an academic year for this course yet");
-                    hbMessage.setStyle("-fx-background-color:#95a5a6;");
-                }
-            }
-        }
-
         chbAll.selectedProperty().addListener((o, _o, _n)->{
             if(_n){
                 final int index = cbCourse.getSelectionModel().getSelectedIndex();
@@ -133,24 +110,59 @@ public class AcademicYearInputController implements Initializable {
     protected void onClickSave(ActionEvent event) {
         final int index = cbCourse.getSelectionModel().getSelectedIndex();
         if(index > -1) {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            long code = Long.parseLong(String.format(Locale.ENGLISH, "%d%d", year, year+1));
-            String name = String.format(Locale.ENGLISH, "%d-%d", year, year+1);
             if (chbAll.isSelected()) {
                 for (int y = 1; y<=COURSE_LIST.get(index).getTotalYear(); y++) {
                     for (int s = 1; s<=COURSE_LIST.get(index).getTotalSemester(); s++) {
+                        if(SEM_LIST[s-1])
+                            continue;
                         AcademicYear academicYear = new AcademicYear(code, name, s, y, false, 0);
                         new AcademicYearDaoImpl().addAcademicYear(COURSE_LIST.get(index).getId(), academicYear);
                     }
                 }
             }
 
-            new AcademicYearDaoImpl().statusOpen(code, 1);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.close();
+            //new AcademicYearDaoImpl().statusOpen(code, 1);
+            AcademicYearInputStage stage = (AcademicYearInputStage) ((Node) event.getSource()).getScene().getWindow();
+            stage.callBack();
         }
 
+    }
+
+    @FXML
+    protected void onReleasedYear() {
+        if(txYear.getText().trim().matches("^[0-9]+$")) {
+            try {
+                if (Long.parseLong(txYear.getText().trim()) > 999999) {
+                    txYear.setStyle("-fx-text-fill:#c0392b");
+                    txName.setText("--");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                txYear.setStyle("-fx-text-fill:#c0392b");
+                txName.setText("--");
+                return;
+            }
+
+            txYear.setStyle("-fx-text-fill:#000000");
+
+            if(Integer.parseInt(txYear.getText().trim()) < 1) {
+                txYear.setText("1");
+                txYear.end();
+            }
+
+            bnSave.setDisable(false);
+            year = Integer.parseInt(txYear.getText().trim());
+            code = Long.parseLong(String.format(Locale.ENGLISH, "%d%d", year, year+1));
+            name = String.format(Locale.ENGLISH, "%d-%d", year, year+1);
+
+            txName.setText(name);
+
+            setup();
+        } else {
+            txYear.setStyle("-fx-text-fill:#c0392b");
+            txName.setText("--");
+            bnSave.setDisable(true);
+        }
     }
 
     @FXML
@@ -160,19 +172,29 @@ public class AcademicYearInputController implements Initializable {
     }
 
     @FXML
-    protected void onChooseCourse() {
-        final int index = cbCourse.getSelectionModel().getSelectedIndex();
-        if(index > -1) {
-            setCheckBoxes(index);
+    protected void onChooseCurrentYear() {
+        if(chbCurrentYear.isSelected()) {
+            bnSave.setDisable(false);
+            txYear.setVisible(false);
+            txYear.setText("");
 
-            if(new AcademicYearDaoImpl().isAcademicYearIsExist(code, COURSE_LIST.get(index).getId())) {
-                lbStatus.setText("You've already created the academic year for course " + COURSE_LIST.get(index).getName());
-                hbMessage.setStyle("-fx-background-color:#1abc9c;");
-            } else {
-                lbStatus.setText("You've not created the academic year for this course yet");
-                lbStatus.setText("You've not create an academic year for this course yet");
-            }
+            year = calendar.get(Calendar.YEAR);
+            code = Long.parseLong(String.format(Locale.ENGLISH, "%d%d", year, year+1));
+            name = String.format(Locale.ENGLISH, "%d-%d", year, year+1);
+
+            txName.setText(name);
+
+            setup();
+        } else {
+            txYear.setVisible(true);
+            txName.setText("--");
+            bnSave.setDisable(true);
         }
+    }
+
+    @FXML
+    protected void onChooseCourse() {
+        setup();
     }
 
     @FXML
@@ -258,5 +280,94 @@ public class AcademicYearInputController implements Initializable {
 
         chbAll.setVisible(true);
         chbAll.setSelected(true);
+    }
+
+    public void listener() {
+        Platform.runLater(()->{
+            chbCurrentYear.setSelected(true);
+            txYear.setVisible(false);
+            txYear.setText("");
+
+            chbAll.setVisible(false);
+            chbFirst.setVisible(false);
+            chbSecond.setVisible(false);
+            chbThird.setVisible(false);
+            chbForth.setVisible(false);
+            chbFifth.setVisible(false);
+
+            chbFirstSem.setDisable(true);
+            chbSecondSem.setDisable(true);
+            chbThirdSem.setDisable(true);
+
+            chbFirstSem.setSelected(true);
+            chbSecondSem.setSelected(true);
+            chbThirdSem.setSelected(true);
+
+            chbFirstSem.setIndeterminate(false);
+            chbSecondSem.setIndeterminate(false);
+            chbThirdSem.setIndeterminate(false);
+
+            chbThirdSem.setVisible(false);
+
+            txName.setText(name);
+        });
+
+        COURSE_ITEM.clear();
+        for(Course course : courseDao.getCourseList()) {
+            COURSE_ITEM.add(course.getName());
+            COURSE_LIST.add(course);
+        }
+        if(COURSE_ITEM.size() > 0) {
+            Platform.runLater(()-> {
+                cbCourse.setItems(COURSE_ITEM);
+                cbCourse.getSelectionModel().select(0);
+            });
+        }
+    }
+
+    public void setup() {
+        final int index = cbCourse.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            final int semester = COURSE_LIST.get(index).getTotalSemester();
+            setCheckBoxes(index);
+
+            chbFirstSem.setSelected(true);
+            chbSecondSem.setSelected(true);
+            chbThirdSem.setSelected(true);
+
+            chbFirstSem.setIndeterminate(false);
+            chbSecondSem.setIndeterminate(false);
+            chbThirdSem.setIndeterminate(false);
+
+            lbStatus.setText("You've already created the academic year on this course");
+            hbMessage.setStyle("-fx-background-color:#1abc9c;");
+            bnSave.setDisable(true);
+
+            SEM_LIST = new boolean[semester];
+            for(int i=1; i<= semester; i++) {
+                SEM_LIST[i-1]=true;
+                if (!new AcademicYearDaoImpl().isAcademicYearIsExist(code, COURSE_LIST.get(index).getId(), i)) {
+                    lbStatus.setText("You can still add an academic year on this course");
+                    hbMessage.setStyle("-fx-background-color:#95a5a6;");
+                    bnSave.setDisable(false);
+                    SEM_LIST[i-1]=false;
+                }
+            }
+
+            if(SEM_LIST[0]) {
+                chbFirstSem.setIndeterminate(true);
+                chbFirstSem.setSelected(false);
+            }
+            if(SEM_LIST[1]) {
+                chbSecondSem.setIndeterminate(true);
+                chbSecondSem.setSelected(false);
+            }
+            if(semester==3) {
+                if (SEM_LIST[2]) {
+                    chbThirdSem.setIndeterminate(true);
+                    chbThirdSem.setSelected(false);
+                }
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import io.erm.ees.model.Course;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.Subject;
 import io.erm.ees.model.UserDetail;
+import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.stage.*;
 import io.erm.ees.stage.window.PopOnExitWindow;
 import javafx.application.Platform;
@@ -26,13 +27,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminWindowController implements Initializable, StudentInputStage.OnItemAddLister,
-        CurriculumStage.OnItemAddLister, SubjectInputStage.OnItemAddLister, UserInputStage.OnItemAddLister {
+        CurriculumStage.OnItemAddLister, SubjectInputStage.OnItemAddLister, UserInputStage.OnItemAddLister,
+        AcademicYearInputStage.OnItemAddLister {
 
     @FXML
     private Button bnAdd;
-
-    @FXML
-    private Button bnRefresh;
 
     @FXML
     private MenuBar menuBar;
@@ -62,6 +61,12 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private MenuItem miDeactivate;
 
     @FXML
+    private MenuItem miOpen;
+
+    @FXML
+    private MenuItem miClose;
+
+    @FXML
     private JFXButton bnSearch;
 
     @FXML
@@ -77,6 +82,8 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private static final int TABLE_SUBJECT = 2;
     private static final int TABLE_COURSE = 3;
     private static final int TABLE_USER = 4;
+    private static final int TABLE_ACADEMIC_YEAR = 5;
+
 
     private int mCurrent = TABLE_STUDENT;
 
@@ -85,14 +92,17 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private final SubjectInputStage subjectInputStage = new SubjectInputStage();
     private final SpecialCurriculumStage specialCurriculumStage = new SpecialCurriculumStage();
     private final UserInputStage userInputStage = new UserInputStage();
+    private final AcademicYearInputStage academicYearInputStage = new AcademicYearInputStage();
 
     private final List<Student> STUDENT_LIST = new ArrayList<>();
     private final List<Course> COURSE_LIST = new ArrayList<>();
     private final List<Subject> SUBJECT_LIST = new ArrayList<>();
     private final List<Subject> SUBJECT_PREREQUISITE_LIST = new ArrayList<>();
+    private final List<AcademicYear> ACADEMIC_YEAR_LIST = new ArrayList<>();
     private final List<UserDetail> USER_LIST = new ArrayList<>();
 
     private final CourseDao courseDao = new CourseDaoImpl();
+    private final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
     private final StudentDao studentDao = new StudentDaoImpl();
     private final SubjectDao subjectDao = new SubjectDaoImpl();
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
@@ -111,6 +121,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         miActivate.setVisible(false);
         miDeactivate.setVisible(false);
 
+        miOpen.setVisible(false);
+        miClose.setVisible(false);
+
         bnSearch.setVisible(false);
         txSearch.setVisible(false);
 
@@ -122,6 +135,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         courseStage.getCurriculumStage().setOnItemAddLister(this);
         subjectInputStage.setOnItemAddLister(this);
         userInputStage.setOnItemAddLister(this);
+        academicYearInputStage.setOnItemAddLister(this);
     }
 
     @FXML
@@ -139,6 +153,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                 break;
             case TABLE_USER:
                 loadUser();
+                break;
+            case TABLE_ACADEMIC_YEAR:
+                loadAcademicYear();
                 break;
         }
     }
@@ -159,6 +176,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
             case TABLE_USER:
                 loadUser();
                 break;
+            case TABLE_ACADEMIC_YEAR:
+                loadAcademicYear();
+                break;
         }
     }
 
@@ -177,6 +197,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                 break;
             case TABLE_USER:
                 loadUser();
+                break;
+            case TABLE_ACADEMIC_YEAR:
+                loadAcademicYear();
                 break;
         }
     }
@@ -197,6 +220,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
             case TABLE_USER:
                 loadUser();
                 break;
+            case TABLE_ACADEMIC_YEAR:
+                loadAcademicYear();
+                break;
         }
     }
 
@@ -215,6 +241,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                 break;
             case TABLE_USER:
                 loadUser();
+                break;
+            case TABLE_ACADEMIC_YEAR:
+                loadAcademicYear();
                 break;
         }
     }
@@ -235,6 +264,8 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                 break;
             case TABLE_USER:
                 break;
+            case TABLE_ACADEMIC_YEAR:
+                break;
         }
     }
 
@@ -253,6 +284,8 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                 }
                 break;
             case TABLE_USER:
+                break;
+            case TABLE_ACADEMIC_YEAR:
                 break;
         }
     }
@@ -278,6 +311,12 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                 break;
             case TABLE_USER:
                 userInputStage.showAndWait();
+                break;
+            case TABLE_ACADEMIC_YEAR:
+                new Thread(() -> {
+                    Platform.runLater(academicYearInputStage::showAndWait);
+                    academicYearInputStage.getController().listener();
+                }).start();
                 break;
             default:
                 courseStage.showAndWait();
@@ -367,6 +406,13 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
                                 .start();
                     }
                     break;
+                case TABLE_ACADEMIC_YEAR:
+                    AcademicYear tempAcademicYear = ACADEMIC_YEAR_LIST.get(index);
+                    academicYearDao.deleteAcademicYear(tempAcademicYear.getCode(), tempAcademicYear.getCourseId(),
+                            tempAcademicYear.getSemester());
+                    clear();
+                    loadAcademicYear();
+                    break;
             }
         }
     }
@@ -398,6 +444,30 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     }
 
     @FXML
+    protected void onClickOpen() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            AcademicYear academicYear = ACADEMIC_YEAR_LIST.get(index);
+            academicYearDao.statusClose(academicYear.getCourseId());
+            academicYearDao.statusOpen(academicYear.getCode(), academicYear.getCourseId(), academicYear.getSemester());
+
+            clear();
+            loadAcademicYear();
+        }
+    }
+
+    @FXML
+    protected void onClickClose() {
+        final int index = tblData.getSelectionModel().getSelectedIndex();
+        if(index > -1) {
+            AcademicYear academicYear = ACADEMIC_YEAR_LIST.get(index);
+            academicYearDao.statusClose(academicYear.getCode(), academicYear.getCourseId(), academicYear.getSemester());
+
+            clear();
+            loadAcademicYear();
+        }
+    }
+    @FXML
     protected void onClickInputGrade() {
         final int index = tblData.getSelectionModel().getSelectedIndex();
         if (index > -1) {
@@ -406,6 +476,34 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
             Platform.runLater(() -> studentGradeInputStage.showAndWait());
             studentGradeInputStage.getController().listening(student);
         }
+    }
+
+    @FXML
+    protected void onClickAcademicYear() {
+        mCurrent = TABLE_ACADEMIC_YEAR;
+
+        clear();
+        loadAcademicYear();
+
+        miInputGrade.setVisible(false);
+        miSpecial.setVisible(false);
+
+        miUpdate.setVisible(false);
+        miDelete.setVisible(true);
+
+        miActivate.setVisible(false);
+        miDeactivate.setVisible(false);
+
+        lbTitle.setText("Academic Year List");
+
+        bnSearch.setVisible(false);
+        txSearch.setVisible(false);
+
+        tblSubData.setVisible(false);
+        tblSubData.setPrefWidth(0);
+
+        miOpen.setVisible(true);
+        miClose.setVisible(true);
     }
 
     @FXML
@@ -433,6 +531,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         tblSubData.setPrefWidth(400);
 
         loadSubjectPrerequisite(new ArrayList<>());
+
+        miOpen.setVisible(false);
+        miClose.setVisible(false);
     }
 
     @FXML
@@ -458,6 +559,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         tblSubData.setVisible(false);
         tblSubData.setPrefWidth(0);
+
+        miOpen.setVisible(false);
+        miClose.setVisible(false);
     }
 
     @FXML
@@ -483,6 +587,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         tblSubData.setVisible(false);
         tblSubData.setPrefWidth(0);
+
+        miOpen.setVisible(false);
+        miClose.setVisible(false);
     }
 
     @FXML
@@ -508,6 +615,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
 
         tblSubData.setVisible(false);
         tblSubData.setPrefWidth(0);
+
+        miOpen.setVisible(false);
+        miClose.setVisible(false);
     }
     @FXML
     protected void onClickSignout() {
@@ -559,6 +669,53 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
             STUDENT_LIST.add(student);
         }
     }
+
+    private void loadAcademicYear() {
+        TableColumn<Object, String> ayId = new TableColumn<>("Id");
+        ayId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        ayId.setPrefWidth(200);
+
+        TableColumn<Object, String> ayCode = new TableColumn<>("Code");
+        ayCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        ayCode.setPrefWidth(200);
+
+        TableColumn<Object, String> ayYear = new TableColumn<>("Year");
+        ayYear.setCellValueFactory(new PropertyValueFactory<>("name"));
+        ayYear.setPrefWidth(200);
+
+        TableColumn<Object, String> aySem = new TableColumn<>("Semester");
+        aySem.setCellValueFactory(new PropertyValueFactory<>("semester"));
+        aySem.setPrefWidth(200);
+
+        TableColumn<Object, String> ayStatus = new TableColumn<>("Status");
+        ayStatus.setCellValueFactory(new PropertyValueFactory<>("displayStatus"));
+        ayStatus.setPrefWidth(200);
+
+        TableColumn<Object, String> ayCourse = new TableColumn<>("Course");
+        ayCourse.setCellValueFactory(new PropertyValueFactory<>("displayCourse"));
+        ayCourse.setPrefWidth(200);
+
+        TableColumn<Object, String> ayStudents = new TableColumn<>("Total Student");
+        ayStudents.setCellValueFactory(new PropertyValueFactory<>("students"));
+        ayStudents.setPrefWidth(120);
+
+        tblData.getColumns().add(ayId);
+        tblData.getColumns().add(ayCode);
+        tblData.getColumns().add(ayYear);
+        tblData.getColumns().add(aySem);
+        tblData.getColumns().add(ayStatus);
+        tblData.getColumns().add(ayCourse);
+        tblData.getColumns().add(ayStudents);
+
+        ACADEMIC_YEAR_LIST.clear();
+        for (AcademicYear academicYear : academicYearDao.getAcademicYearList()) {
+            academicYear.getDisplayStatus();
+            academicYear.getDisplayCourse();
+            tblData.getItems().add(academicYear);
+            ACADEMIC_YEAR_LIST.add(academicYear);
+        }
+    }
+
 
     private void loadSubject() {
         TableColumn<Object, String> suId = new TableColumn<>("Id");
@@ -753,5 +910,11 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     public void onAddUser() {
         clear();
         loadUser();
+    }
+
+    @Override
+    public void onAddAcademicYear() {
+        clear();
+        loadAcademicYear();
     }
 }
