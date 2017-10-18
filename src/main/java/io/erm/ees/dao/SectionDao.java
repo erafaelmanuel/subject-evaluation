@@ -14,7 +14,7 @@ public interface SectionDao {
 
     List<Section> getSectionList(String query);
 
-    boolean addSection(Section section);
+    Section addSection(Section section);
 
     boolean updateSectionById(long id, Section section);
 

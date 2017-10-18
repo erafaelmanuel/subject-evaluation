@@ -4,6 +4,7 @@ import io.erm.ees.dao.SectionDao;
 import io.erm.ees.dao.conn.DBManager;
 import io.erm.ees.dao.conn.UserLibrary;
 import io.erm.ees.dao.exception.NoResultFoundException;
+import io.erm.ees.helper.IdGenerator;
 import io.erm.ees.model.Section;
 
 import java.sql.Connection;
@@ -204,24 +205,25 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
-    public boolean addSection(Section section) {
+    public Section addSection(Section section) {
         try {
             if (dbManager.connect()) {
-                Connection connection = dbManager.getConnection();
+                section.setId(IdGenerator.random(IdGenerator.Range.NORMAL));
 
                 String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _year) VALUES (?, ?, ?);";
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, section.getId());
                 pst.setString(2, section.getName());
                 pst.setInt(3, section.getYear());
                 pst.executeUpdate();
             }
             dbManager.close();
-            return true;
+            return section;
         } catch (SQLException e) {
             e.printStackTrace();
             dbManager.close();
-            return false;
+            section.setId(0);
+            return section;
         }
     }
 

@@ -254,25 +254,25 @@ public class SpecialCurriculumController implements Initializable {
     public Curriculum getCurriculumByYearAndSem(long courseId, int index) {
         switch (index) {
             case 0:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 1, 1);
+                return curriculumDao.getCurriculum(courseId, 1, 1);
             case 1:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 1, 2);
+                return curriculumDao.getCurriculum(courseId, 1, 2);
             case 2:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 2, 1);
+                return curriculumDao.getCurriculum(courseId, 2, 1);
             case 3:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 2, 2);
+                return curriculumDao.getCurriculum(courseId, 2, 2);
             case 4:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 3, 1);
+                return curriculumDao.getCurriculum(courseId, 3, 1);
             case 5:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 4, 2);
+                return curriculumDao.getCurriculum(courseId, 4, 2);
             case 6:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 5, 1);
+                return curriculumDao.getCurriculum(courseId, 5, 1);
             case 7:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 6, 2);
+                return curriculumDao.getCurriculum(courseId, 6, 2);
             case 8:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 7, 1);
+                return curriculumDao.getCurriculum(courseId, 7, 1);
             case 9:
-                return curriculumDao.getCurriculumListByCourseId(courseId, 8, 2);
+                return curriculumDao.getCurriculum(courseId, 8, 2);
         }
         return new Curriculum();
     }

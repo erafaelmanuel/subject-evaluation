@@ -54,14 +54,78 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
     }
 
     @Override
+    public AcademicYear getAcademicYearOpen(long courseId) {
+        try {
+            if (DB_MANAGER.connect()) {
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE status=? AND courseId=? LIMIT 1;";
+
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
+                pst.setBoolean(1, true);
+                pst.setLong(2, courseId);
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    AcademicYear academicYear = new AcademicYear();
+                    academicYear.setId(0);
+                    academicYear.setCode(rs.getLong(2));
+                    academicYear.setName(rs.getString(3));
+                    academicYear.setSemester(rs.getInt(4));
+                    academicYear.setYear(rs.getInt(5));
+                    academicYear.setStatus(rs.getBoolean(6));
+                    academicYear.setCourseId(rs.getLong(7));
+                    DB_MANAGER.close();
+                    return academicYear;
+                }
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return null;
+        }
+    }
+
+    @Override
+    public AcademicYear getAcademicYearOpen(long courseId, int year) {
+        try {
+            if (DB_MANAGER.connect()) {
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE status=? AND courseId=? AND year=? LIMIT 1;";
+
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
+                pst.setBoolean(1, true);
+                pst.setLong(2, courseId);
+                pst.setInt(3, year);
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    AcademicYear academicYear = new AcademicYear();
+                    academicYear.setId(rs.getLong(1));
+                    academicYear.setCode(rs.getLong(2));
+                    academicYear.setName(rs.getString(3));
+                    academicYear.setSemester(rs.getInt(4));
+                    academicYear.setYear(rs.getInt(5));
+                    academicYear.setStatus(rs.getBoolean(6));
+                    academicYear.setCourseId(rs.getLong(7));
+                    DB_MANAGER.close();
+                    return academicYear;
+                }
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return null;
+        }
+    }
+
+    @Override
     public List<AcademicYear> getAcademicYearList() {
         List<AcademicYear> academicYearList = new ArrayList<>();
         try {
             if (DB_MANAGER.connect()) {
-                Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM tblacademicyear GROUP BY code, semester, courseId ORDER BY courseId, code, semester ASC";
 
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
@@ -90,12 +154,11 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
         List<AcademicYear> academicYearList = new ArrayList<>();
         try {
             if (DB_MANAGER.connect()) {
-                Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT TBL_AC.id, TBL_AC.code, TBL_AC.name, TBL_AC.semester, TBL_AC.year, TBL_AC.sta" +
                         "tus, TBL_AC.courseId FROM tblacademicyear AS TBL_AC JOIN tblcreditsubject AS TBL_CS ON TBL_" +
                         "AC.id=TBL_CS.academicId WHERE TBL_CS.studentId=?";
 
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 pst.setLong(1, studentId);
 
                 ResultSet rs = pst.executeQuery();
@@ -126,10 +189,9 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
         List<AcademicYear> academicYearList = new ArrayList<>();
         try {
             if (DB_MANAGER.connect()) {
-                Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE code=? AND semester=?;";
 
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 pst.setLong(1, code);
                 pst.setInt(2, semester);
                 ResultSet rs = pst.executeQuery();
@@ -161,10 +223,9 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
         List<AcademicYear> academicYearList = new ArrayList<>();
         try {
             if (DB_MANAGER.connect()) {
-                Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE status=? AND courseId=?;";
 
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 pst.setBoolean(1, true);
                 pst.setLong(2, courseId);
                 ResultSet rs = pst.executeQuery();
@@ -224,10 +285,9 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
     public void deleteAcademicYearById(long id) {
         try {
             if (DB_MANAGER.connect()) {
-                Connection connection = DB_MANAGER.getConnection();
 
                 String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?;";
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }

@@ -5,12 +5,15 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
 import io.erm.ees.helper.EvaluationHelper;
+import io.erm.ees.helper.SectionHelper;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.model.recursive.Subject;
 import io.erm.ees.model.v2.AcademicYear;
+import io.erm.ees.model.v2.Record;
+import io.erm.ees.model.v2.Remark;
 import io.erm.ees.stage.AdvisingFormStage;
 import io.erm.ees.util.ResourceHelper;
 import io.erm.ees.util.document.AdvisingDoc;
@@ -95,6 +98,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     private final StudentDao studentDao = new StudentDaoImpl();
     private final SuggestionDao suggestionDao = new SuggestionDaoImpl();
     private final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
+    private final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
 
     private Student student;
     private Course course;
@@ -125,18 +129,25 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
 
     @FXML
     protected void onClickEvaluate(ActionEvent event) {
-
-        //Delete the enrolled subject
-        dirtyDao.deleteStudentRecord(student.getId(), "ONGOING");
-
         if (totalYeUnit >= 1 && totalYeUnit <= 30) {
+            final int calYear = sectionDao.getSectionById(student.getSectionId()).getYear();
+            final AcademicYear academicYear = academicYearDao.getAcademicYearOpen(course.getId(), calYear);
+
             for (Subject s : ENROLL_SUBJECT_LIST) {
-                StudentSubjectRecord record = new StudentSubjectRecord();
+                Record record = new Record();
                 record.setDate(new Date().toString());
-                record.setMark("ONGOING");
-                record.setSemester(cbCurSemester.getSelectionModel().getSelectedIndex() + 1);
-                dirtyDao.addStudentRecord(record, s.getId(), student.getId());
+                record.setRemark(Remark.NOTSET.getCode());
+                record.setAcademicId(academicYear.getId());
+                record.setSubjectId(s.getId());
+                record.setStudentId(student.getId());
+                creditSubjectDao.addRecord(s.getId(), academicYear.getId(), student.getId(), record);
             }
+            if(section.getYear() > sectionDao.getSectionById(student.getSectionId()).getYear()) {
+                final long sectionId = sectionDao.addSection(section).getId();
+                student.setSectionId(sectionId);
+            }
+
+            studentDao.updateStudentById(student.getId(), student);
         } else if (totalYeUnit < 1) {
             Platform.runLater(() ->
                     JOptionPane.showMessageDialog(null, "Please add a subject to enroll."));
@@ -159,7 +170,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
 
         new Thread(() -> Platform.runLater(() -> {
             AdvisingFormStage advisingFormStage = new AdvisingFormStage();
-            Platform.runLater(() -> advisingFormStage.showAndWait());
+            Platform.runLater(advisingFormStage::showAndWait);
             advisingFormStage.getController().listener(student, ENROLL_SUBJECT_LIST);
         })).start();
     }
@@ -167,30 +178,26 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     @FXML
     protected void onChooseFilter() {
         final int index = cbAbSubject.getSelectionModel().getSelectedIndex();
+        final List<io.erm.ees.model.Subject> list = new ArrayList<>();
         if(index == -1) return;
 
         showLoading();
-        if (index == 0) {
-            new Thread(() -> {
-                final int year = course.getTotalYear();
+        new Thread(() -> {
+            if (index == 0) {
                 final int semester = academicYear.getSemester();
-                final List<io.erm.ees.model.Subject> list = new ArrayList<>();
-                EvaluationHelper.evaluate(student, year, semester, list);
+                EvaluationHelper.evaluateAll(student, semester, list);
 
                 loadAbItem(list);
                 hideLoading();
-            }).start();
-        } else if (index <= course.getTotalYear()) {
-            new Thread(() -> {
+            } else if (index <= course.getTotalYear()) {
                 final int year = cbAbSubject.getSelectionModel().getSelectedIndex();
                 final int semester = academicYear.getSemester();
-                final List<io.erm.ees.model.Subject> list = new ArrayList<>();
                 EvaluationHelper.evaluate(student, year, semester, list);
 
                 loadAbItem(list);
                 hideLoading();
-            }).start();
-        }
+            }
+        }).start();
     }
 
     @FXML
@@ -437,23 +444,26 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
             this.student = student;
             course = courseDao.getCourseById(student.getCourseId());
             section = sectionDao.getSectionById(student.getSectionId());
-            academicYear = academicYearDao.getAcademicYearListOpen(course.getId()).get(0);
-
-            txAYS.setText(academicYear.getName() + "  ( " + (academicYear.getSemester() == 1 ? "1ST SEMESTER )" :
-                    academicYear.getSemester() == 2 ? "2ND SEMESTER )" : "0/3RD SEMESTER )"));
-
+            academicYear = academicYearDao.getAcademicYearOpen(course.getId());
             student.setStatus("REGULAR");
-            studentDao.updateStudentById(student.getId(), student);
+
+            final int semester = academicYear.getSemester();
+//            EvaluationHelper.calculateStatus(student, course, semester);
+//            EvaluationHelper.calculateYear(student, course, section, academicYear.getSemester());
+            EvaluationHelper.init(student, section, semester);
 
             Platform.runLater(() -> {
                 clearAb();
                 initAbSubject();
 
+                txAYS.setText(academicYear.getName() + "  ( " + (academicYear.getSemester() == 1 ? "1ST SEMESTER )" :
+                        academicYear.getSemester() == 2 ? "2ND SEMESTER )" : "0/3RD SEMESTER )"));
+
                 txStudentNo.setText(student.getStudentNumber() + "");
                 txCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
                 txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
                         student.getMiddleName().substring(0, 1)).toUpperCase());
-                txYear.setText(new SectionDaoImpl().getSectionById(student.getSectionId()).getYear() + "");
+                txYear.setText(SectionHelper.format(section.getYear()));
                 txStatus.setText(student.getStatus());
 
                 int totalYear = course.getTotalYear();
@@ -475,20 +485,12 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                     cbAbSubject.getItems().add("1ST YR");
                     cbAbSubject.getItems().add("2ND YR");
                 }
-
-                final int year = section.getYear() <= course.getTotalYear() ? section.getYear() : 0;
-                final int semester = academicYear.getSemester();
-                final List<io.erm.ees.model.Subject> list = new ArrayList<>();
-                EvaluationHelper.evaluate(student, year, semester, list);
-
+                loadYeSubject(new ArrayList<>());
                 if(student.getStatus().equals("REGULAR")) {
-                    loadYeSubject(list);
                     cbAbSubject.setDisable(true);
                 } else
                     cbAbSubject.setDisable(false);
-                cbAbSubject.getSelectionModel().select(year);
-
-                txStatus.setText(student.getStatus());
+                cbAbSubject.getSelectionModel().select(section.getYear());
             });
         }).start();
     }

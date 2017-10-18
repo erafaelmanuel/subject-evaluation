@@ -164,4 +164,8 @@ public class Student {
                 ", status='" + status + '\'' +
                 '}';
     }
+
+    public enum STATUS {
+        REGULAR, IRREGULAR
+    }
 }

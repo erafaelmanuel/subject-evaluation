@@ -74,7 +74,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setDate(rs.getString(4));
                     record.setRemark(rs.getString(5));
                     record.setSubjectId(rs.getLong(6));
-                    record.setAcademicListId(rs.getLong(7));
+                    record.setAcademicId(rs.getLong(7));
                     record.setStudentId(rs.getLong(8));
 
                     DB_MANAGER.close();
@@ -107,7 +107,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setDate(rs.getString(4));
                     record.setRemark(rs.getString(5));
                     record.setSubjectId(rs.getLong(6));
-                    record.setAcademicListId(rs.getLong(7));
+                    record.setAcademicId(rs.getLong(7));
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
@@ -142,7 +142,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setDate(rs.getString(4));
                     record.setRemark(rs.getString(5));
                     record.setSubjectId(rs.getLong(6));
-                    record.setAcademicListId(rs.getLong(7));
+                    record.setAcademicId(rs.getLong(7));
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
@@ -178,7 +178,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setDate(rs.getString(4));
                     record.setRemark(rs.getString(5));
                     record.setSubjectId(rs.getLong(6));
-                    record.setAcademicListId(rs.getLong(7));
+                    record.setAcademicId(rs.getLong(7));
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
@@ -214,7 +214,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setDate(rs.getString(4));
                     record.setRemark(rs.getString(5));
                     record.setSubjectId(rs.getLong(6));
-                    record.setAcademicListId(rs.getLong(7));
+                    record.setAcademicId(rs.getLong(7));
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
@@ -333,6 +333,60 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 pst.setLong(1, subjectId);
                 pst.setLong(2, academicId);
                 pst.setLong(3, studentId);
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                DB_MANAGER.close();
+                return result;
+            }
+            throw new SQLException("Connection Problem");
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isTaken(long subjectId, long studentId, long courseId,  int year, int semester) {
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM tblcreditsubject as c join tblacademicyear as a on c.academicId=a.id " +
+                        "WHERE c.subjectId=? AND c.studentId=? and a.courseId=? and a.year=? and a.semester=?;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                pst.setLong(3, courseId);
+                pst.setInt(4, year);
+                pst.setInt(5, semester);
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                DB_MANAGER.close();
+                return result;
+            }
+            throw new SQLException("Connection Problem");
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isTaken(long subjectId, long studentId, long courseId) {
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM tblcreditsubject as c join tblacademicyear as a on c.academicId=a.id " +
+                        "WHERE c.subjectId=? AND c.studentId=? and a.courseId=?";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                pst.setLong(3, courseId);
                 ResultSet rs = pst.executeQuery();
 
                 final boolean result = rs.next();

@@ -209,7 +209,7 @@ public class CurriculumDaoImpl implements CurriculumDao {
     }
 
     @Override
-    public Curriculum getCurriculumListByCourseId(long courseId, int year, int semester) {
+    public Curriculum getCurriculum(long courseId, int year, int semester) {
         try {
             if (dbManager.connect()) {
                 Connection connection = dbManager.getConnection();

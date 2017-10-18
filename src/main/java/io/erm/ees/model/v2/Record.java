@@ -8,7 +8,7 @@ public class Record {
     private String date;
     private String remark;
     private long subjectId;
-    private long academicListId;
+    private long academicId;
     private long studentId;
 
     public Record() {
@@ -16,25 +16,25 @@ public class Record {
     }
 
     public Record(long id, double midterm, double finalterm, String date, String remark, long subjectId,
-                  long academicListId, long studentId) {
+                  long academicId, long studentId) {
         this.id = id;
         this.midterm = midterm;
         this.finalterm = finalterm;
         this.date = date;
         this.remark = remark;
         this.subjectId = subjectId;
-        this.academicListId = academicListId;
+        this.academicId = academicId;
         this.studentId = studentId;
     }
 
-    public Record(double midterm, double finalterm, String date, String remark, long subjectId, long academicListId,
+    public Record(double midterm, double finalterm, String date, String remark, long subjectId, long academicId,
                   long studentId) {
         this.midterm = midterm;
         this.finalterm = finalterm;
         this.date = date;
         this.remark = remark;
         this.subjectId = subjectId;
-        this.academicListId = academicListId;
+        this.academicId = academicId;
         this.studentId = studentId;
     }
 
@@ -93,12 +93,12 @@ public class Record {
         this.subjectId = subjectId;
     }
 
-    public long getAcademicListId() {
-        return academicListId;
+    public long getAcademicId() {
+        return academicId;
     }
 
-    public void setAcademicListId(long academicListId) {
-        this.academicListId = academicListId;
+    public void setAcademicId(long academicId) {
+        this.academicId = academicId;
     }
 
     public long getStudentId() {
@@ -118,7 +118,7 @@ public class Record {
                 ", date='" + date + '\'' +
                 ", remark='" + remark + '\'' +
                 ", subjectId=" + subjectId +
-                ", academicListId=" + academicListId +
+                ", academicListId=" + academicId +
                 ", studentId=" + studentId +
                 '}';
     }

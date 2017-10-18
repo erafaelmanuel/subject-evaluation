@@ -11,6 +11,8 @@ public interface CurriculumDao {
 
     Curriculum getCurriculum(String query);
 
+    Curriculum getCurriculum(long courseId, int year, int semester);
+
     List<Curriculum> getCurriculumList();
 
     List<Curriculum> getCurriculumList(String query);
@@ -38,8 +40,6 @@ public interface CurriculumDao {
     boolean deleteCurriculumByCourseId(long courseId);
 
     List<Curriculum> getCurriculumListByCourseId(long courseId);
-
-    Curriculum getCurriculumListByCourseId(long courseId, int year, int semester);
 
     List<Subject> getSubjectList(long courseId, int year, int semester);
 }

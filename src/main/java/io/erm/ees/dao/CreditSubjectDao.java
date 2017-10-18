@@ -38,5 +38,9 @@ public interface CreditSubjectDao {
 
     boolean isSubjectDuplicated(long subjectId, long academicId, long studentId);
 
+    boolean isTaken(long subjectId, long studentId, long courseId,  int year, int semester);
+
+    boolean isTaken(long subjectId, long studentId, long courseId);
+
     void setSubject(long courseId);
 }
