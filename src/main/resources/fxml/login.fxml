@@ -20,7 +20,7 @@
 					<children>
 						<VBox fx:id="plMessage" alignment="CENTER" prefHeight="31.0" prefWidth="522.0" style="-fx-background-color: #f1c40f;">
 							<children>
-								<Label fx:id="lbMessage" alignment="CENTER" prefHeight="27.0" prefWidth="512.0" text="Enrollement Evaluation System" textFill="WHITE">
+								<Label fx:id="lbMessage" alignment="CENTER" prefHeight="27.0" prefWidth="512.0" text="Subject Evaluation System" textFill="WHITE">
 									<font>
 										<Font size="14.0" />
 									</font>
@@ -29,7 +29,7 @@
 						</VBox>
 						<VBox alignment="CENTER" prefHeight="108.0" prefWidth="514.0">
                      <children>
-                        <ImageView fx:id="imgLogo" fitHeight="109.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgLogo" fitHeight="89.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/ccslogo.png" />
                            </image>
@@ -40,7 +40,7 @@
                      </children></VBox>
 						<StackPane prefHeight="49.0" prefWidth="522.0">
 							<children>
-								<Label fx:id="lbTitle" alignment="CENTER" prefHeight="43.0" prefWidth="241.0" text="CCS Registration" textAlignment="CENTER">
+								<Label fx:id="lbTitle" alignment="CENTER" prefHeight="43.0" prefWidth="241.0" text="Subject Evaluation For CCS" textAlignment="CENTER">
 									<font>
 										<Font size="16.0" />
 									</font>
@@ -57,7 +57,7 @@
 								<JFXButton fx:id="bnLogin" buttonType="RAISED" mnemonicParsing="false" onAction="#onClickLogin" prefHeight="36.0" prefWidth="97.0" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Login" textFill="WHITE" />
 							</children>
 							<padding>
-								<Insets left="130.0" right="130.0" />
+								<Insets left="130.0" right="130.0" top="20.0" />
 							</padding>
 						</VBox>
 					</children>

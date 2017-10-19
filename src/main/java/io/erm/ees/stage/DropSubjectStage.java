@@ -1,7 +1,6 @@
 package io.erm.ees.stage;
 
 import io.erm.ees.controller.DropSubjectController;
-import io.erm.ees.controller.EnrollmentController;
 import io.erm.ees.util.ResourceHelper;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

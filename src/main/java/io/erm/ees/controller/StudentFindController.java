@@ -1,12 +1,12 @@
 package io.erm.ees.controller;
 
+import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.StudentDao;
-import io.erm.ees.dao.impl.StudentDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Student;
 import io.erm.ees.stage.StudentResultStage;
 import io.erm.ees.stage.TeacherStage;
 import io.erm.ees.util.ResourceHelper;
-import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,7 +29,7 @@ public class StudentFindController implements Initializable, StudentResultStage.
 
     private TeacherStage teacherStage;
 
-    private final StudentDao studentDao = new StudentDaoImpl();
+    private final StudentDao studentDao = DbFactory.studentFactory();
 
     @FXML
     protected void onClickEnter() {

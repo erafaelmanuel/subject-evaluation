@@ -36,6 +36,14 @@ public interface CreditSubjectDao {
 
     boolean isSubjectPassed(long subjectId, long studentId);
 
+    boolean isSubjectFailed(long subjectId, long studentId);
+
+    boolean isSubjectIncomplete(long subjectId, long studentId);
+
+    boolean isSubjectDropped(long subjectId, long studentId);
+
+    boolean isSubjectNotSet(long subjectId, long studentId);
+
     boolean isSubjectNotPassed(long subjectId, long studentId);
 
     List<Record> getRecordListByMark(long studentId, String remark);

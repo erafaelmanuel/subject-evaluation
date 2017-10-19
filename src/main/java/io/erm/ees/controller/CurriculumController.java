@@ -5,7 +5,6 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.CourseDao;
 import io.erm.ees.dao.CurriculumDao;
 import io.erm.ees.dao.SubjectDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
 import io.erm.ees.dao.impl.CurriculumDaoImpl;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
@@ -72,7 +71,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     private JFXTreeTableView<io.erm.ees.model.recursive.Subject> tblSList;
 
     private final SubjectDao subjectDao = DbFactory.subjectFactory();
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
 
     private io.erm.ees.model.Subject sCurrent;

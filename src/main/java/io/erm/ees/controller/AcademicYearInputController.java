@@ -3,9 +3,9 @@ package io.erm.ees.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import io.erm.ees.dao.AcademicYearDao;
 import io.erm.ees.dao.CourseDao;
-import io.erm.ees.dao.impl.AcademicYearDaoImpl;
-import io.erm.ees.dao.impl.CourseDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.stage.AcademicYearInputStage;
@@ -79,7 +79,8 @@ public class AcademicYearInputController implements Initializable {
     private final List<Course> COURSE_LIST = new ArrayList<>();
     private boolean[] SEM_LIST;
 
-    final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
+    private final AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
 
     private Calendar calendar = Calendar.getInstance();
     private int year = calendar.get(Calendar.YEAR);
@@ -116,7 +117,7 @@ public class AcademicYearInputController implements Initializable {
                         if(SEM_LIST[s-1])
                             continue;
                         AcademicYear academicYear = new AcademicYear(code, name, s, y, false, 0);
-                        new AcademicYearDaoImpl().addAcademicYear(COURSE_LIST.get(index).getId(), academicYear);
+                        academicYearDao.addAcademicYear(COURSE_LIST.get(index).getId(), academicYear);
                     }
                 }
             }
@@ -346,7 +347,7 @@ public class AcademicYearInputController implements Initializable {
             SEM_LIST = new boolean[semester];
             for(int i=1; i<= semester; i++) {
                 SEM_LIST[i-1]=true;
-                if (!new AcademicYearDaoImpl().isAcademicYearIsExist(code, COURSE_LIST.get(index).getId(), i)) {
+                if (!academicYearDao.isAcademicYearIsExist(code, COURSE_LIST.get(index).getId(), i)) {
                     lbStatus.setText("You can still add an academic year on this course");
                     hbMessage.setStyle("-fx-background-color:#95a5a6;");
                     bnSave.setDisable(false);

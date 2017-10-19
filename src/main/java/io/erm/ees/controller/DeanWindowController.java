@@ -3,7 +3,9 @@ package io.erm.ees.controller;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.*;
-import io.erm.ees.dao.impl.*;
+import io.erm.ees.dao.impl.CurriculumDaoImpl;
+import io.erm.ees.dao.impl.DirtyDaoImpl;
+import io.erm.ees.dao.impl.SuggestionDaoImpl;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Curriculum;
@@ -52,8 +54,8 @@ public class DeanWindowController implements Initializable {
 
     private Student student;
 
-    private final CourseDao courseDao = new CourseDaoImpl();
-    private final StudentDao studentDao = new StudentDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
+    private final StudentDao studentDao = DbFactory.studentFactory();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final SuggestionDao suggestionDao = new SuggestionDaoImpl();

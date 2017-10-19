@@ -1,7 +1,7 @@
 package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.CurriculumDao;
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.dao.conn.UserLibrary;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.model.Curriculum;
@@ -20,20 +20,20 @@ public class CurriculumDaoImpl implements CurriculumDao {
     protected static final Logger LOGGER = Logger.getLogger(CurriculumDaoImpl.class.getSimpleName());
     protected static final String TABLE_NAME = "tblcurriculum";
 
-    private DBManager dbManager;
+    private DbManager dbManager;
 
     public CurriculumDaoImpl() {
-        dbManager = new DBManager();
+        dbManager = new DbManager();
         init();
     }
 
-    public CurriculumDaoImpl(DBManager dbManager) {
+    public CurriculumDaoImpl(DbManager dbManager) {
         this.dbManager = dbManager;
         init();
     }
 
     public CurriculumDaoImpl(UserLibrary userLibrary) {
-        dbManager = new DBManager(userLibrary);
+        dbManager = new DbManager(userLibrary);
         init();
     }
 

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface CourseDao {
 
+    String TABLE_NAME = "tblcourse";
+
     Course getCourseById(long id);
 
     Course getCourse(String query);

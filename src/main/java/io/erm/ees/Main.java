@@ -1,7 +1,7 @@
 package io.erm.ees;
 
-import io.erm.ees.dao.conn.DBManager;
-import io.erm.ees.dao.impl.v2.DbSubject;
+import io.erm.ees.dao.conn.DbManager;
+import io.erm.ees.dao.impl.v2.*;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.UserType;
 import io.erm.ees.stage.*;
@@ -14,7 +14,12 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         TeacherStage.OnSignOutListener, AdminStage.OnSignOutListener, DeanStage.OnSignOutListener {
 
     private Stage primaryStage;
+
     private final DbSubject dbSubject = new DbSubject();
+    private final DbCreditSubject dbCreditSubject = new DbCreditSubject();
+    private final DbAcademicYear dbAcademicYear = new DbAcademicYear();
+    private final DbCourse dbCourse = new DbCourse();
+    private final DbStudent dbStudent = new DbStudent();
 
     public static void main(String args[]) throws IOException {
         launch();
@@ -22,19 +27,28 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
 
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        DBManager dbManager = new DBManager();
+        DbManager dbManager = new DbManager();
         if (!dbManager.connect()) {
             showConfig(dbManager);
         } else {
             dbSubject.open();
+            dbCreditSubject.open();
+            dbAcademicYear.open();
+            dbCourse.open();
+            dbStudent.open();
 
             DbFactory.addSubjectFactory(dbSubject);
+            DbFactory.addCreditSubjectFactory(dbCreditSubject);
+            DbFactory.addAcademicYearFactory(dbAcademicYear);
+            DbFactory.addCourseFactory(dbCourse);
+            DbFactory.addStudentFactory(dbStudent);
+
             showLogin(dbManager);
         }
     }
 
     @Override
-    public void onFinish(DBManager dbManager, boolean status) {
+    public void onFinish(DbManager dbManager, boolean status) {
         if (!status)
             primaryStage.close();
         else
@@ -53,13 +67,13 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
             showTeacherWindow();
     }
 
-    private void showConfig(DBManager dbManager) {
+    private void showConfig(DbManager dbManager) {
         ConfigurationStage configurationStage = new ConfigurationStage(dbManager);
         configurationStage.setOnFinishListener(this);
         configurationStage.showAndWait();
     }
 
-    private void showLogin(DBManager dbManager) {
+    private void showLogin(DbManager dbManager) {
         LoginStage loginStage = new LoginStage(dbManager);
         loginStage.setOnLoginListener(this);
         loginStage.showAndWait();
@@ -77,7 +91,7 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         teacherStage.show();
     }
 
-    protected void showDeanWindow() {
+    private void showDeanWindow() {
         DeanStage deanStage = new DeanStage();
         deanStage.setListener(this);
         deanStage.show();

@@ -1,19 +1,18 @@
 package io.erm.ees.controller;
 
-import io.erm.ees.dao.CourseDao;
-import io.erm.ees.dao.SectionDao;
-import io.erm.ees.dao.StudentDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
-import io.erm.ees.dao.impl.SectionDaoImpl;
-import io.erm.ees.dao.impl.StudentDaoImpl;
-import io.erm.ees.model.Section;
-import io.erm.ees.model.recursive.Student;
-import io.erm.ees.stage.StudentResultStage;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import io.erm.ees.dao.CourseDao;
+import io.erm.ees.dao.SectionDao;
+import io.erm.ees.dao.StudentDao;
+import io.erm.ees.dao.impl.SectionDaoImpl;
+import io.erm.ees.helper.DbFactory;
+import io.erm.ees.model.Section;
+import io.erm.ees.model.recursive.Student;
+import io.erm.ees.stage.StudentResultStage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,9 +40,9 @@ public class StudentResultController implements Initializable {
 
     private final ObservableList<Student> OBV_STUDENT_LIST = FXCollections.observableArrayList();
 
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final SectionDao sectionDao = new SectionDaoImpl();
-    private final StudentDao studentDao = new StudentDaoImpl();
+    private final StudentDao studentDao = DbFactory.studentFactory();
 
     @FXML
     protected void onClickItem() {

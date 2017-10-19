@@ -1,8 +1,7 @@
-package io.erm.ees.dao.impl;
+package io.erm.ees.dao.impl.v2;
 
 import io.erm.ees.dao.StudentDao;
 import io.erm.ees.dao.conn.DbManager;
-import io.erm.ees.dao.conn.UserLibrary;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.model.Student;
 
@@ -16,38 +15,24 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-@Deprecated
-public class StudentDaoImpl implements StudentDao {
+public class DbStudent implements StudentDao {
+    public static final Logger LOGGER = Logger.getLogger(DbStudent.class.getSimpleName());
+    private final DbManager dbManager = new DbManager();
 
-    public static final Logger LOGGER = Logger.getLogger(StudentDaoImpl.class.getSimpleName());
-    private static final String TABLE_NAME = "tblstudent";
+    private boolean isConnectable = false;
 
-    private DbManager dbManager;
-
-
-    public StudentDaoImpl() {
-        dbManager = new DbManager();
-        SectionDaoImpl sectionDao = new SectionDaoImpl();
-        sectionDao.init();
-        init();
+    public void open() {
+        isConnectable=dbManager.connect();
     }
 
-    public StudentDaoImpl(DbManager dbManager) {
-        this();
-        this.dbManager = dbManager;
-        init();
+    public void close() {
+        dbManager.close();
+        isConnectable=false;
     }
 
-    public StudentDaoImpl(UserLibrary userLibrary) {
-        this();
-        dbManager = new DbManager(userLibrary);
-        init();
-    }
-
-    private void init() {
-        Connection connection = null;
+    public void init() {
         try {
-            if (dbManager.connect()) {
+            if (isConnectable) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         .concat(TABLE_NAME)
                         .concat("(")
@@ -65,14 +50,11 @@ public class StudentDaoImpl implements StudentDao {
                         .concat("FOREIGN KEY (sectionId) REFERENCES tblsection(id),")
                         .concat("FOREIGN KEY (courseId) REFERENCES tblcourse(id));");
 
-
                 //SQL INFO
                 LOGGER.info("SQL : " + sql);
 
-                connection = dbManager.getConnection();
-                PreparedStatement pst = connection.prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.executeUpdate();
-                connection.close();
             }
         } catch (SQLException e) {
             LOGGER.info("SQLException");
@@ -83,7 +65,7 @@ public class StudentDaoImpl implements StudentDao {
     public Student getStudentById(long id) {
         try {
             Student student = null;
-            if (dbManager.connect()) {
+            if (isConnectable) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? OR studentNumber=? LIMIT 1;";
 
@@ -105,19 +87,15 @@ public class StudentDaoImpl implements StudentDao {
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
                     student.setStatus(rs.getString(11));
-
-                    dbManager.close();
                     return student;
                 }
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             LOGGER.info("Connection error");
-            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            dbManager.close();
             return null;
         }
     }
@@ -126,7 +104,7 @@ public class StudentDaoImpl implements StudentDao {
     public Student getStudent(String query) {
         try {
             Student student = null;
-            if (dbManager.connect()) {
+            if (isConnectable) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM "
                         .concat(TABLE_NAME)
@@ -149,8 +127,6 @@ public class StudentDaoImpl implements StudentDao {
                     student.setSectionId(rs.getLong(9));
                     student.setCourseId(rs.getLong(10));
                     student.setStatus(rs.getString(11));
-
-                    dbManager.close();
                     return student;
                 }
             }
@@ -158,11 +134,9 @@ public class StudentDaoImpl implements StudentDao {
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            dbManager.close();
             return null;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            dbManager.close();
             return null;
         }
     }
@@ -171,7 +145,7 @@ public class StudentDaoImpl implements StudentDao {
     public List<Student> getStudentList() {
         List<Student> studentList = new ArrayList<>();
         try {
-            if (dbManager.connect()) {
+            if (isConnectable) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + ";";
 
@@ -193,19 +167,15 @@ public class StudentDaoImpl implements StudentDao {
                     student.setStatus(rs.getString(11));
                     studentList.add(student);
                 }
-
-                dbManager.close();
                 return studentList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            dbManager.close();
             return studentList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            dbManager.close();
             return studentList;
         }
     }
@@ -214,7 +184,7 @@ public class StudentDaoImpl implements StudentDao {
     public List<Student> getStudentList(String query) {
         List<Student> studentList = new ArrayList<>();
         try {
-            if (dbManager.connect()) {
+            if (isConnectable) {
                 Connection connection = dbManager.getConnection();
                 String sql = "SELECT * FROM "
                         .concat(TABLE_NAME)
@@ -239,18 +209,15 @@ public class StudentDaoImpl implements StudentDao {
                     student.setStatus(rs.getString(11));
                     studentList.add(student);
                 }
-                dbManager.close();
                 return studentList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.info("Connection error");
-            dbManager.close();
             return studentList;
         } catch (NoResultFoundException e) {
             LOGGER.info("NoResultFoundException");
-            dbManager.close();
             return studentList;
         }
     }
@@ -258,7 +225,7 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public boolean addStudent(Student student) {
         try {
-            if (dbManager.connect()) {
+            if (isConnectable) {
                 Connection connection = dbManager.getConnection();
 
                 String sql =
@@ -278,11 +245,9 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setString(11, student.getStatus());
                 pst.executeUpdate();
             }
-            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            dbManager.close();
             return false;
         }
     }
@@ -290,7 +255,7 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public boolean updateStudentById(long id, Student student) {
         try {
-            if (dbManager.connect()) {
+            if (isConnectable) {
                 Connection connection = dbManager.getConnection();
                 String sql = "UPDATE " + TABLE_NAME + " SET firstName=?, lastName=?, middleName=?, age = ?, " +
                         "gender = ?, contactNumber=?, sectionId=?, courseId=?, status=? WHERE id = ? OR studentNumber = ?";
@@ -309,11 +274,9 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setLong(11, student.getStudentNumber());
                 pst.executeUpdate();
             }
-            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            dbManager.close();
             return false;
         }
     }
@@ -326,7 +289,7 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public boolean deleteStudentById(long id) {
         try {
-            if (dbManager.connect()) {
+            if (isConnectable) {
                 Connection connection = dbManager.getConnection();
 
                 String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
@@ -334,11 +297,9 @@ public class StudentDaoImpl implements StudentDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
-            dbManager.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            dbManager.close();
             return false;
         }
     }

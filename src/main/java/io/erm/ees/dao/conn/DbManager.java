@@ -7,9 +7,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-public class DBManager {
+public class DbManager {
 
-    private Logger logger = Logger.getLogger(DBManager.class.getSimpleName());
+    private Logger logger = Logger.getLogger(DbManager.class.getSimpleName());
 
     private UserLibrary userLibrary;
 
@@ -17,12 +17,12 @@ public class DBManager {
 
     private Connection connection;
 
-    public DBManager() {
+    public DbManager() {
         userLibrary = ConnectionHelper.getUserLibrary();
         status = connect(userLibrary);
     }
 
-    public DBManager(UserLibrary userLibrary) {
+    public DbManager(UserLibrary userLibrary) {
         this.userLibrary = userLibrary;
         status = connect(userLibrary);
     }

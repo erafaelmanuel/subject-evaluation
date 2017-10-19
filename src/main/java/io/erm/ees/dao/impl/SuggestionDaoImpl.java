@@ -2,7 +2,7 @@ package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.SubjectDao;
 import io.erm.ees.dao.SuggestionDao;
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Subject;
@@ -18,14 +18,14 @@ import java.util.logging.Logger;
 
 public class SuggestionDaoImpl implements SuggestionDao {
 
-    private DBManager dbManager;
+    private DbManager dbManager;
     private final SubjectDao subjectDao = DbFactory.subjectFactory();
 
     public static final String TABLE_NAME = "tblsuggestion";
     public static final Logger LOGGER = Logger.getLogger(SuggestionDaoImpl.class.getSimpleName());
 
     public SuggestionDaoImpl() {
-        dbManager = new DBManager();
+        dbManager = new DbManager();
     }
 
 

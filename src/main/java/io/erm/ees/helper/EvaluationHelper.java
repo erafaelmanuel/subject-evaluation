@@ -9,18 +9,18 @@ import java.util.List;
 
 public class EvaluationHelper {
 
-    static final CourseDao courseDao = new CourseDaoImpl();
-    static final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
-    static final CurriculumDao curriculumDao = new CurriculumDaoImpl();
-    static final SubjectDao subjectDao = DbFactory.subjectFactory();
-    static final SectionDao sectionDao = new SectionDaoImpl();
-    static final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
+    private static final CourseDao courseDao = DbFactory.courseFactory();
+    private static final AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
+    private static final CurriculumDao curriculumDao = new CurriculumDaoImpl();
+    private static final SubjectDao subjectDao = DbFactory.subjectFactory();
+    private static final SectionDao sectionDao = new SectionDaoImpl();
+    private static final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
 
-    static final List<Subject> AVAILABLE_LIST = new ArrayList<>();
-    static final List<Curriculum> CURRICULUM_LIST = new ArrayList<>();
+    private static final List<Subject> AVAILABLE_LIST = new ArrayList<>();
+    private static final List<Curriculum> CURRICULUM_LIST = new ArrayList<>();
 
-    static final Student STUDENT = new Student();
-    static final Curriculum CURRICULUM = new Curriculum();
+    private static final Student STUDENT = new Student();
+    private static final Curriculum CURRICULUM = new Curriculum();
 
     private static EvaluationHelper evaluationHelper;
     private static int tempYear=1;

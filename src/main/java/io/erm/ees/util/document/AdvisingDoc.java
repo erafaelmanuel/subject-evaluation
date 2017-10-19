@@ -1,14 +1,14 @@
 package io.erm.ees.util.document;
 
-import io.erm.ees.dao.impl.CourseDaoImpl;
-import io.erm.ees.model.Course;
-import io.erm.ees.model.Student;
-import io.erm.ees.model.recursive.Subject;
-import io.erm.ees.util.ResourceHelper;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import io.erm.ees.helper.DbFactory;
+import io.erm.ees.model.Course;
+import io.erm.ees.model.Student;
+import io.erm.ees.model.recursive.Subject;
+import io.erm.ees.util.ResourceHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -138,7 +138,7 @@ public class AdvisingDoc {
         tblBasicInfo.getDefaultCell().setUseDescender(true);
         tblBasicInfo.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-        Course course = new CourseDaoImpl().getCourseById(STUDENT.getCourseId());
+        Course course = DbFactory.courseFactory().getCourseById(STUDENT.getCourseId());
         if(course == null)
             course = new Course();
 

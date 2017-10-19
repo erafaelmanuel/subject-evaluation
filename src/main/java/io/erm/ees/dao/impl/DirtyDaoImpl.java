@@ -1,7 +1,7 @@
 package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.DirtyDao;
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.StudentSubjectRecord;
@@ -18,10 +18,10 @@ public class DirtyDaoImpl implements DirtyDao {
 
     public static final Logger LOGGER = Logger.getLogger(DirtyDaoImpl.class.getSimpleName());
 
-    DBManager dbManager;
+    DbManager dbManager;
 
     public DirtyDaoImpl() {
-        dbManager = new DBManager();
+        dbManager = new DbManager();
     }
 
     private void init() {

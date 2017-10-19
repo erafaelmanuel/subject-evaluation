@@ -1,17 +1,17 @@
 package io.erm.ees.controller;
 
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.CourseDao;
 import io.erm.ees.dao.CurriculumDao;
 import io.erm.ees.dao.SpecialCurriculumDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
 import io.erm.ees.dao.impl.CurriculumDaoImpl;
 import io.erm.ees.dao.impl.SpecialCurriculumDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Curriculum;
 import io.erm.ees.model.SpecialCurriculum;
 import io.erm.ees.model.recursive.Subject;
-import com.jfoenix.controls.*;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,7 +48,7 @@ public class SpecialCurriculumController implements Initializable {
     @FXML
     private JFXTextField txName;
 
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
     private final SpecialCurriculumDao specialCurriculumDao = new SpecialCurriculumDaoImpl();
 

@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
+import io.erm.ees.dao.impl.v2.DbStudent;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Curriculum;
@@ -92,10 +93,10 @@ public class EnrollmentController implements Initializable, AdvisingDoc.Creation
     private final ObservableList<Subject> AVAILABLE_SUBJECT_LIST = FXCollections.observableArrayList();
 
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final SectionDao sectionDao = new SectionDaoImpl();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
-    private final StudentDao studentDao = new StudentDaoImpl();
+    private final StudentDao studentDao = DbFactory.studentFactory();
     private SuggestionDao suggestionDao = new SuggestionDaoImpl();
 
     private Student student;
@@ -571,7 +572,7 @@ public class EnrollmentController implements Initializable, AdvisingDoc.Creation
 
             Platform.runLater(() -> {
                 lbStudentNo.setText(student.getStudentNumber() + "");
-                lbCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
+                lbCourse.setText(courseDao.getCourseById(student.getCourseId()).getDesc());
                 txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
                         student.getMiddleName().substring(0, 1)).toUpperCase());
                 txYear.setText(new SectionDaoImpl().getSectionById(student.getSectionId()).getYear() + "");

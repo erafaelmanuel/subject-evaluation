@@ -1,7 +1,7 @@
 package io.erm.ees.test.dao;
 
 import io.erm.ees.dao.AcademicYearDao;
-import io.erm.ees.dao.impl.AcademicYearDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.v2.AcademicYear;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class AcademicYearDaoImplTest {
 
-    private AcademicYearDao academicYearDao;
+    private AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
 
     private final Logger LOGGER = Logger.getLogger(AcademicYearDaoImplTest.class.getSimpleName());
 
@@ -18,7 +18,7 @@ public class AcademicYearDaoImplTest {
 
     @Before
     public void setup() {
-        academicYearDao = new AcademicYearDaoImpl();
+
     }
 
     @Test

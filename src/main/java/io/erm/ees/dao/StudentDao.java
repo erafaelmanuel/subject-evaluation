@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface StudentDao {
 
+    String TABLE_NAME = "tblstudent";
+
     Student getStudentById(long id);
 
     Student getStudent(String query);

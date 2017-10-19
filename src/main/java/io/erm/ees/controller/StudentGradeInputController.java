@@ -9,8 +9,6 @@ import io.erm.ees.dao.CourseDao;
 import io.erm.ees.dao.CreditSubjectDao;
 import io.erm.ees.dao.DirtyDao;
 import io.erm.ees.dao.SubjectDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
-import io.erm.ees.dao.impl.CreditSubjectDaoImpl;
 import io.erm.ees.dao.impl.DirtyDaoImpl;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Student;
@@ -71,10 +69,10 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
 
     private final Student STUDENT = new Student();
 
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final SubjectDao subjectDao = DbFactory.subjectFactory();
-    private final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
+    private final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
 
     private final GradeInputStage gradeInputStage = new GradeInputStage();
 
@@ -87,11 +85,11 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cbMark.setItems(MARK_TYPE);
-        cbMark.getItems().add("NOTSET");
-        cbMark.getItems().add("INCOMPLETE");
-        cbMark.getItems().add("PASSED");
-        cbMark.getItems().add("FAILED");
-        cbMark.getItems().add("DROPPED");
+        cbMark.getItems().add(Remark.NOTSET.getCode());
+        cbMark.getItems().add(Remark.INCOMPLETE.getCode());
+        cbMark.getItems().add(Remark.PASSED.getCode());
+        cbMark.getItems().add(Remark.FAILED.getCode());
+        cbMark.getItems().add(Remark.DROPPED.getCode());
         cbMark.getSelectionModel().select(0);
 
         Image image = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
@@ -110,11 +108,23 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
         if (cbMark.getSelectionModel().getSelectedIndex() > -1) {
             totalUnit = 0;
             List<Record> recordList = creditSubjectDao.getRecordListByMark(STUDENT.getId(), cbMark.getSelectionModel().getSelectedItem());
-
             MARK_LIST.clear();
             RECORD_LIST.clear();
 
             for (Record record : recordList) {
+                if(record.getRemark().equals(Remark.INCOMPLETE.getCode())) {
+                    if(creditSubjectDao.isSubjectNotSet(record.getSubjectId(), STUDENT.getId())) continue;
+                    if (creditSubjectDao.isSubjectPassed(record.getSubjectId(), STUDENT.getId())) continue;
+                } else if(record.getRemark().equals(Remark.FAILED.getCode())) {
+                    if(creditSubjectDao.isSubjectNotSet(record.getSubjectId(), STUDENT.getId())) continue;
+                    if(creditSubjectDao.isSubjectPassed(record.getSubjectId(), STUDENT.getId())) continue;
+                    if(creditSubjectDao.isSubjectIncomplete(record.getSubjectId(), STUDENT.getId())) continue;
+                } else if(record.getRemark().equals(Remark.DROPPED.getCode())) {
+                    if(creditSubjectDao.isSubjectNotSet(record.getSubjectId(), STUDENT.getId())) continue;
+                    if(creditSubjectDao.isSubjectPassed(record.getSubjectId(), STUDENT.getId())) continue;
+                    if(creditSubjectDao.isSubjectIncomplete(record.getSubjectId(), STUDENT.getId())) continue;
+                    if(creditSubjectDao.isSubjectFailed(record.getSubjectId(), STUDENT.getId())) continue;
+                }
                 Subject subject = subjectDao.getSubjectById(record.getSubjectId());
                 Mark mark = new Mark(subject.getId(), subject.getName(), subject.getDesc(), record.getMidterm(),
                         record.getFinalterm(), record.getRemark());

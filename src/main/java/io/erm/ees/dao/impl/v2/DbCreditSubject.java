@@ -1,4 +1,4 @@
-package io.erm.ees.dao.impl;
+package io.erm.ees.dao.impl.v2;
 
 import io.erm.ees.dao.CreditSubjectDao;
 import io.erm.ees.dao.conn.DbManager;
@@ -16,21 +16,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Deprecated
-public class CreditSubjectDaoImpl implements CreditSubjectDao {
+public class DbCreditSubject implements CreditSubjectDao {
 
     private final DbManager DB_MANAGER = new DbManager();
+    private static final Logger LOGGER = Logger.getLogger(DbCreditSubject.class.getSimpleName());
 
-    private static final Logger LOGGER = Logger.getLogger(CreditSubjectDaoImpl.class.getSimpleName());
+    private boolean isConnectable = false;
 
-    public CreditSubjectDaoImpl() {
-        init();
+    public void open() {
+        isConnectable=DB_MANAGER.connect();
+    }
+
+    public void close() {
+        DB_MANAGER.close();
+        isConnectable=false;
     }
 
     @Override
     public void init() {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         .concat(TABLE_NAME)
                         .concat("(")
@@ -49,18 +54,16 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 LOGGER.info("SQL : " + sql);
                 PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
                 pst.executeUpdate();
-                DB_MANAGER.close();
             }
         } catch (SQLException e) {
             LOGGER.info(e.getMessage());
-            DB_MANAGER.close();
         }
     }
 
     @Override
     public Record getRecordById(long id) {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
 
                 PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
@@ -77,15 +80,12 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setSubjectId(rs.getLong(6));
                     record.setAcademicId(rs.getLong(7));
                     record.setStudentId(rs.getLong(8));
-
-                    DB_MANAGER.close();
                     return record;
                 }
             }
             throw new NoResultFoundException("No result found");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return null;
         }
     }
@@ -94,7 +94,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     public List<Record> getRecordList() {
         List<Record> recordList = new ArrayList<>();
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 String sql = "SELECT * FROM " + TABLE_NAME + ";";
 
                 PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
@@ -112,13 +112,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
-                DB_MANAGER.close();
                 return recordList;
             }
             throw new NoResultFoundException("No result found");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return recordList;
         }
     }
@@ -127,7 +125,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     public List<Record> getRecordList(long studentId) {
         List<Record> recordList = new ArrayList<>();
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM tblcreditsubject WHERE studentId=?;";
 
@@ -147,13 +145,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
-                DB_MANAGER.close();
                 return recordList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return recordList;
         }
     }
@@ -162,7 +158,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     public List<Record> getRecordList(long academicId, long studentId) {
         List<Record> recordList = new ArrayList<>();
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM tblcreditsubject WHERE academicId=? AND studentId=?;";
 
@@ -183,13 +179,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
-                DB_MANAGER.close();
                 return recordList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return recordList;
         }
     }
@@ -198,7 +192,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     public List<Record> getRecordListOfSubject(long subjectId, long studentId) {
         List<Record> recordList = new ArrayList<>();
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM tblcreditsubject WHERE subjectId=? AND studentId=?;";
 
@@ -219,13 +213,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
-                DB_MANAGER.close();
                 return recordList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return recordList;
         }
     }
@@ -237,7 +229,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 throw new SubjectAlreadyPassedException("The subject is already passed");
             if(isSubjectDuplicated(subjectId, academicId, studentId))
                 throw new SubjectDuplicateException("The subject is duplicated");
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 String sql = "INSERT INTO " + TABLE_NAME + "(midterm, finalterm, date, remark, subjectId, " +
                         "academicId, studentId) VALUES (?, ?, ?, ?, ?, ?, ?);";
                 PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
@@ -251,17 +243,15 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 pst.setLong(7, studentId);
                 pst.executeUpdate();
             }
-            DB_MANAGER.close();
         } catch (SQLException | SubjectAlreadyPassedException | SubjectDuplicateException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
         }
     }
 
     @Override
     public void updateRecordById(long id, Record record) {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 String sql = "UPDATE " + TABLE_NAME + " SET midterm=?, finalterm=?, date=?, remark=? WHERE id = ?;";
 
                 PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
@@ -272,17 +262,15 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 pst.setLong(5, id);
                 pst.executeUpdate();
             }
-            DB_MANAGER.close();
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
         }
     }
 
     @Override
     public void deleteRecordById(long id) {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
 
                 String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
@@ -290,10 +278,8 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
-            DB_MANAGER.close();
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
         }
     }
 
@@ -301,9 +287,9 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     public List<Record> getRecordListByMark(long studentId, String remark) {
         List<Record> recordList = new ArrayList<>();
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE studentId=? AND remark=?";
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE studentId=? AND remark=? GROUP BY subjectId ORDER BY date DESC";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, studentId);
@@ -322,13 +308,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                     record.setStudentId(rs.getLong(8));
                     recordList.add(record);
                 }
-                DB_MANAGER.close();
                 return recordList;
             }
             throw new NoResultFoundException("No result found on the user detail table");
         } catch (SQLException | NoResultFoundException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return recordList;
         }
     }
@@ -337,7 +321,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     public boolean isSubjectPassed(long subjectId, long studentId) {
         try {
             final Remark remark = Remark.PASSED;
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
 
@@ -348,41 +332,115 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 final boolean result = rs.next();
-                DB_MANAGER.close();
                 return result;
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return false;
         }
     }
 
     @Override
     public boolean isSubjectFailed(long subjectId, long studentId) {
-        return false;
+        try {
+            final Remark remark = Remark.FAILED;
+            if (isConnectable) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                pst.setString(3, remark.getCode());
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                return result;
+            }
+            throw new SQLException("Connection Problem");
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public boolean isSubjectIncomplete(long subjectId, long studentId) {
-        return false;
-    }
+        try {
+            final Remark remark = Remark.INCOMPLETE;
+            if (isConnectable) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
 
-    @Override
-    public boolean isSubjectDropped(long subjectId, long studentId) {
-        return false;
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                pst.setString(3, remark.getCode());
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                return result;
+            }
+            throw new SQLException("Connection Problem");
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public boolean isSubjectNotSet(long subjectId, long studentId) {
-        return false;
+        try {
+            final Remark remark = Remark.NOTSET;
+            if (isConnectable) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                pst.setString(3, remark.getCode());
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                return result;
+            }
+            throw new SQLException("Connection Problem");
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isSubjectDropped(long subjectId, long studentId) {
+        try {
+            final Remark remark = Remark.DROPPED;
+            if (isConnectable) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                pst.setString(3, remark.getCode());
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                return result;
+            }
+            throw new SQLException("Connection Problem");
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public boolean isSubjectNotPassed(long subjectId, long studentId) {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM tblcreditsubject WHERE subjectId=? AND studentId=? AND remark=(? OR ? OR ?) LIMIT 1";
 
@@ -395,13 +453,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 final boolean result = rs.next();
-                DB_MANAGER.close();
                 return result;
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return false;
         }
     }
@@ -409,7 +465,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     @Override
     public boolean isSubjectDuplicated(long subjectId, long academicId, long studentId) {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND academicId=? AND studentId=? LIMIT 1;";
 
@@ -420,13 +476,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 final boolean result = rs.next();
-                DB_MANAGER.close();
                 return result;
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return false;
         }
     }
@@ -434,7 +488,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     @Override
     public boolean isTaken(long subjectId, long studentId, long courseId,  int year, int semester) {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM tblcreditsubject as c join tblacademicyear as a on c.academicId=a.id " +
                         "WHERE c.subjectId=? AND c.studentId=? and a.courseId=? and a.year=? and a.semester=?;";
@@ -448,13 +502,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 final boolean result = rs.next();
-                DB_MANAGER.close();
                 return result;
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return false;
         }
     }
@@ -462,7 +514,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     @Override
     public boolean isTaken(long subjectId, long studentId, long courseId) {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
                 String sql = "SELECT * FROM tblcreditsubject as c join tblacademicyear as a on c.academicId=a.id " +
                         "WHERE c.subjectId=? AND c.studentId=? and a.courseId=?";
@@ -474,13 +526,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 ResultSet rs = pst.executeQuery();
 
                 final boolean result = rs.next();
-                DB_MANAGER.close();
                 return result;
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
             return false;
         }
     }
@@ -488,7 +538,7 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     @Override
     public void setSubject(long courseId) {
         try {
-            if (DB_MANAGER.connect()) {
+            if (isConnectable) {
                 String sql = "UPDATE tblcreditsubject AS TBL_CS JOIN tblacademicyear AS TBL_AY ON TBL_CS.academicId" +
                         "=TBL_AY.id SET TBL_CS.remark=? WHERE TBL_CS.remark=? AND TBL_AY.courseId=?;";
 
@@ -498,10 +548,8 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 pst.setLong(3, courseId);
                 pst.executeUpdate();
             }
-            DB_MANAGER.close();
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            DB_MANAGER.close();
         }
     }
 }

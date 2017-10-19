@@ -1,6 +1,6 @@
 package io.erm.ees.stage;
 
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.util.ResourceHelper;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +16,12 @@ public class ConfigurationStage extends Stage {
 
     private Logger logger = Logger.getLogger(ConfigurationStage.class.getSimpleName());
 
-    private DBManager dbManager;
+    private DbManager dbManager;
     private boolean status;
 
     private OnFinishListener onFinishListener;
 
-    public ConfigurationStage(DBManager dbManager) {
+    public ConfigurationStage(DbManager dbManager) {
         this.dbManager = dbManager;
         try {
             URL url = ResourceHelper.resourceWithBasePath("fxml/config.fxml");
@@ -39,7 +39,7 @@ public class ConfigurationStage extends Stage {
         }
     }
 
-    public ConfigurationStage(DBManager dbManager, OnFinishListener onFinishListener) {
+    public ConfigurationStage(DbManager dbManager, OnFinishListener onFinishListener) {
         this.dbManager = dbManager;
         this.onFinishListener = onFinishListener;
         try {
@@ -58,7 +58,7 @@ public class ConfigurationStage extends Stage {
         }
     }
 
-    public DBManager getDbManager() {
+    public DbManager getDbManager() {
         return dbManager;
     }
 
@@ -66,7 +66,7 @@ public class ConfigurationStage extends Stage {
         this.onFinishListener = onFinishListener;
     }
 
-    public void callBack(DBManager dbManager, boolean status) {
+    public void callBack(DbManager dbManager, boolean status) {
         this.dbManager = dbManager;
         this.status = status;
         Platform.runLater(() -> {
@@ -77,6 +77,6 @@ public class ConfigurationStage extends Stage {
 
     @FunctionalInterface
     public interface OnFinishListener {
-        void onFinish(DBManager dbManager, boolean status);
+        void onFinish(DbManager dbManager, boolean status);
     }
 }

@@ -6,7 +6,6 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.CourseDao;
 import io.erm.ees.dao.SubjectDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.recursive.Subject;
@@ -61,7 +60,7 @@ public class AdvisingFormController implements Initializable {
 
     private final ObservableList<Subject> SUBJECT_LIST = FXCollections.observableArrayList();
 
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final SubjectDao subjectDao = DbFactory.subjectFactory();
 
     @Override

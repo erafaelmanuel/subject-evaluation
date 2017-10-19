@@ -2,10 +2,10 @@ package io.erm.ees.util;
 
 import io.erm.ees.dao.CurriculumDao;
 import io.erm.ees.dao.DirtyDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
 import io.erm.ees.dao.impl.CurriculumDaoImpl;
 import io.erm.ees.dao.impl.DirtyDaoImpl;
 import io.erm.ees.dao.impl.SectionDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.*;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             for (int year = 1; year <= section.getYear() + 1; year++) {
@@ -74,7 +74,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             for (int year = 1; year <= course.getTotalYear(); year++) {
@@ -125,7 +125,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             for (int year = 1; year <= course.getTotalYear(); year++) {
@@ -180,7 +180,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             for (int year = 1; year <= course.getTotalYear(); year++) {
@@ -231,7 +231,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             for (int year = 1; year <= course.getTotalYear(); year++) {
@@ -287,7 +287,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             List<Subject> currSubList = dirtyDao.getSpecialCurriculumSubjectList(course.getId(), year, 1, type);
@@ -336,7 +336,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             if (year > filterYear)
@@ -391,7 +391,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             List<Subject> currSubList = dirtyDao.getCurriculumSubjectList(course.getId(), cYear, iSem);
@@ -440,7 +440,7 @@ public class AssessmentHelper {
         try {
             final CurriculumDao curriculumDao = new CurriculumDaoImpl();
             final DirtyDao dirtyDao = new DirtyDaoImpl();
-            Course course = new CourseDaoImpl().getCourseById(student.getCourseId());
+            Course course = DbFactory.courseFactory().getCourseById(student.getCourseId());
             Section section = new SectionDaoImpl().getSectionById(student.getSectionId());
 
             if (cYear > filterYear)

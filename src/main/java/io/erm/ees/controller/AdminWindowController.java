@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
+import io.erm.ees.dao.impl.v2.DbCreditSubject;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Student;
@@ -94,7 +95,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private final SpecialCurriculumStage specialCurriculumStage = new SpecialCurriculumStage();
     private final UserInputStage userInputStage = new UserInputStage();
     private final AcademicYearInputStage academicYearInputStage = new AcademicYearInputStage();
-    private final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
+    private final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
 
     private final List<Student> STUDENT_LIST = new ArrayList<>();
     private final List<Course> COURSE_LIST = new ArrayList<>();
@@ -103,9 +104,9 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private final List<AcademicYear> ACADEMIC_YEAR_LIST = new ArrayList<>();
     private final List<UserDetail> USER_LIST = new ArrayList<>();
 
-    private final CourseDao courseDao = new CourseDaoImpl();
-    private final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
-    private final StudentDao studentDao = new StudentDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
+    private final AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
+    private final StudentDao studentDao = DbFactory.studentFactory();
     private final SubjectDao subjectDao = DbFactory.subjectFactory();
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final UserDetailDao userDetailDao = new UserDetailDaoImpl();

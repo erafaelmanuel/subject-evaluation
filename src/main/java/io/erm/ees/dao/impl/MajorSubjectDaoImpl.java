@@ -1,7 +1,7 @@
 package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.MajorSubjectDao;
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.dao.exception.SubjectDuplicateException;
 import io.erm.ees.dao.exception.SubjectNotBelongException;
@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 
 public class MajorSubjectDaoImpl implements MajorSubjectDao {
 
-    private final DBManager DB_MANAGER = new DBManager();
+    private final DbManager DB_MANAGER = new DbManager();
 
-    private static final Logger LOGGER = Logger.getLogger(CreditSubjectDaoImpl.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(MajorSubjectDaoImpl.class.getSimpleName());
 
     public MajorSubjectDaoImpl() {
         init();

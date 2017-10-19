@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.helper.EvaluationHelper;
 import io.erm.ees.helper.SectionHelper;
 import io.erm.ees.model.Course;
@@ -30,7 +31,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.net.URL;
@@ -96,13 +96,13 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     private final ObservableList<Subject> AVAILABLE_SUBJECT_LIST = FXCollections.observableArrayList();
 
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final SectionDao sectionDao = new SectionDaoImpl();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
-    private final StudentDao studentDao = new StudentDaoImpl();
+    private final StudentDao studentDao = DbFactory.studentFactory();
     private final SuggestionDao suggestionDao = new SuggestionDaoImpl();
-    private final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
-    private final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
+    private final AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
+    private final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
 
     private Student student;
     private Course course;
@@ -464,7 +464,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                         academicYear.getSemester() == 2 ? "2ND SEMESTER )" : "0/3RD SEMESTER )"));
 
                 txStudentNo.setText(student.getStudentNumber() + "");
-                txCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
+                txCourse.setText(courseDao.getCourseById(student.getCourseId()).getDesc());
                 txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
                         student.getMiddleName().substring(0, 1)).toUpperCase());
                 txYear.setText(SectionHelper.format(currentYear));

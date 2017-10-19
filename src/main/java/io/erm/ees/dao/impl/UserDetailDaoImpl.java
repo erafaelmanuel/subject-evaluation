@@ -1,7 +1,7 @@
 package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.UserDetailDao;
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.dao.conn.UserLibrary;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.model.UserDetail;
@@ -18,21 +18,21 @@ public class UserDetailDaoImpl implements UserDetailDao {
 
     public static final Logger LOGGER = Logger.getLogger(UserDetailDaoImpl.class.getSimpleName());
 
-    private DBManager dbManager;
+    private DbManager dbManager;
     private static final String TABLE_NAME = "tbluserdetail";
 
     public UserDetailDaoImpl() {
-        dbManager = new DBManager();
+        dbManager = new DbManager();
         init();
     }
 
-    public UserDetailDaoImpl(DBManager dbManager) {
+    public UserDetailDaoImpl(DbManager dbManager) {
         this.dbManager = dbManager;
         init();
     }
 
     public UserDetailDaoImpl(UserLibrary userLibrary) {
-        dbManager = new DBManager(userLibrary);
+        dbManager = new DbManager(userLibrary);
         init();
     }
 

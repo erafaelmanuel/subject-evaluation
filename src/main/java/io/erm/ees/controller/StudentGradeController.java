@@ -4,10 +4,13 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.*;
-import io.erm.ees.dao.impl.*;
-import io.erm.ees.dao.impl.v2.DbSubject;
+import io.erm.ees.dao.impl.DirtyDaoImpl;
+import io.erm.ees.dao.impl.SectionDaoImpl;
 import io.erm.ees.helper.DbFactory;
-import io.erm.ees.model.*;
+import io.erm.ees.model.Course;
+import io.erm.ees.model.Section;
+import io.erm.ees.model.Student;
+import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.model.v2.Record;
 import io.erm.ees.stage.DropSubjectStage;
@@ -87,14 +90,15 @@ public class StudentGradeController implements Initializable, StudentResultStage
     private ObservableList<Object> OBSERVABLE_LIST_RECORD = FXCollections.observableArrayList();
     private final List<Course> COURSE_LIST = new ArrayList<>();
 
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final SectionDao sectionDao = new SectionDaoImpl();
-    private final StudentDao studentDao = new StudentDaoImpl();
-    private final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
-    private final DbSubject subjectDao = DbFactory.subjectFactory();
-
+    private final StudentDao studentDao = DbFactory.studentFactory();
+    private final AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
+    private final SubjectDao subjectDao = DbFactory.subjectFactory();
+    private final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
     private final List<Record> RECORD_LIST = new ArrayList<>();
     private final List<AcademicYear> ACADEMIC_YEAR_LIST = new ArrayList<>();
+
 
 
     @Override
@@ -160,7 +164,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
                 new Thread(() -> {
                     final long aId = ACADEMIC_YEAR_LIST.get(index).getId();
                     RECORD_LIST.clear();
-                    RECORD_LIST.addAll(new CreditSubjectDaoImpl().getRecordList(aId, student.getId()));
+                    RECORD_LIST.addAll(creditSubjectDao.getRecordList(aId, student.getId()));
                     loadRecord(RECORD_LIST);
                 }).start();
             }
@@ -299,7 +303,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
         RECORD_LIST.clear();
         if(cbAY.getItems().size() > 0) {
             cbAY.getSelectionModel().select(0);
-            RECORD_LIST.addAll(new CreditSubjectDaoImpl().getRecordList(ACADEMIC_YEAR_LIST.get(0).getId(), student.getId()));
+            RECORD_LIST.addAll(creditSubjectDao.getRecordList(ACADEMIC_YEAR_LIST.get(0).getId(), student.getId()));
             loadRecord(RECORD_LIST);
         }
     }
@@ -360,7 +364,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
         }
         cbAY.setItems(OBSERVABLE_LIST_ACADEMIC);
         if(cbAY.getItems().size() > 0) {
-            RECORD_LIST.addAll(new CreditSubjectDaoImpl().getRecordList(ACADEMIC_YEAR_LIST.get(0).getId(), student.getId()));
+            RECORD_LIST.addAll(creditSubjectDao.getRecordList(ACADEMIC_YEAR_LIST.get(0).getId(), student.getId()));
             cbAY.getSelectionModel().select(0);
             loadRecord(RECORD_LIST);
         }

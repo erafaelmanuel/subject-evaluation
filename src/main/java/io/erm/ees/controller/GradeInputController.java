@@ -1,15 +1,13 @@
 package io.erm.ees.controller;
 
-import io.erm.ees.dao.CreditSubjectDao;
-import io.erm.ees.dao.DirtyDao;
-import io.erm.ees.dao.impl.CreditSubjectDaoImpl;
-import io.erm.ees.dao.impl.DirtyDaoImpl;
-import io.erm.ees.model.recursive.Mark;
-import io.erm.ees.model.v2.Record;
-import io.erm.ees.model.v2.Remark;
-import io.erm.ees.stage.GradeInputStage;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import io.erm.ees.dao.CreditSubjectDao;
+import io.erm.ees.dao.DirtyDao;
+import io.erm.ees.dao.impl.DirtyDaoImpl;
+import io.erm.ees.helper.DbFactory;
+import io.erm.ees.model.v2.Record;
+import io.erm.ees.stage.GradeInputStage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -46,7 +44,7 @@ public class GradeInputController implements Initializable {
     private Label lbFError;
 
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
-    private final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
+    private final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
 
     private Record record;
 

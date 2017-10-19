@@ -1,7 +1,7 @@
 package io.erm.ees.dao.impl.v2;
 
 import io.erm.ees.dao.SubjectDao;
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.model.Subject;
 
@@ -15,15 +15,15 @@ import java.util.logging.Logger;
 public class DbSubject implements SubjectDao {
 
     protected static final Logger LOGGER = Logger.getLogger(DbSubject.class.getSimpleName());
-    private final DBManager DbManager = new DBManager();
+    private final io.erm.ees.dao.conn.DbManager dbManager = new DbManager();
     private boolean isConnectable = false;
 
     public void open() {
-        isConnectable=DbManager.connect();
+        isConnectable= dbManager.connect();
     }
 
     public void close() {
-        DbManager.close();
+        dbManager.close();
         isConnectable=false;
     }
 
@@ -40,7 +40,7 @@ public class DbSubject implements SubjectDao {
                         .concat("_unitLecture int,")
                         .concat("_unitLaboratory int);");
 
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.executeUpdate();
             }
         } catch (SQLException e) {
@@ -55,7 +55,7 @@ public class DbSubject implements SubjectDao {
             if (isConnectable) {
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? LIMIT 1;";
 
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, id);
                 ResultSet rs = pst.executeQuery();
 
@@ -90,7 +90,7 @@ public class DbSubject implements SubjectDao {
                         .concat(" ")
                         .concat(query.replace(";", " "))
                         .concat("LIMIT 1;");
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
                 if (rs.next()) {
@@ -121,7 +121,7 @@ public class DbSubject implements SubjectDao {
             if (isConnectable) {
                 String sql = "SELECT * FROM " + TABLE_NAME + ";";
 
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
@@ -156,7 +156,7 @@ public class DbSubject implements SubjectDao {
                         .concat(" ")
                         .concat(query.replace(";", " "));
 
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
@@ -189,7 +189,7 @@ public class DbSubject implements SubjectDao {
             if (isConnectable) {
                 String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=? OR _unit=? OR _name LIKE ?;";
 
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, -1L);
                 pst.setInt(2, -1);
                 pst.setString(3, query + "%");
@@ -229,7 +229,7 @@ public class DbSubject implements SubjectDao {
                 final long id = generate();
                 String sql = "INSERT INTO " + TABLE_NAME + "(id, _name, _desc, _unit, _unitLecture, _unitLaboratory) " +
                         "VALUES (?, ?, ?, ?, ?, ?);";
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, id);
                 pst.setString(2, subject.getName());
                 pst.setString(3, subject.getDesc());
@@ -255,7 +255,7 @@ public class DbSubject implements SubjectDao {
                 String sql = "UPDATE " + TABLE_NAME + " SET _name=?, _desc=?, _unit=?, _unitLecture=?, _unitLaboratory=? " +
                         "WHERE id = ?;";
 
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setString(1, subject.getName());
                 pst.setString(2, subject.getDesc());
                 pst.setInt(3, subject.getUnit());
@@ -283,7 +283,7 @@ public class DbSubject implements SubjectDao {
             if (isConnectable) {
 
                 String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setLong(1, id);
                 pst.executeUpdate();
             }
@@ -305,7 +305,7 @@ public class DbSubject implements SubjectDao {
             Subject subject = null;
             if (isConnectable) {
                 String sql = "SELECT * FROM "+ TABLE_NAME +" WHERE _name=? LIMIT 1;";
-                PreparedStatement pst = DbManager.getConnection().prepareStatement(sql);
+                PreparedStatement pst = dbManager.getConnection().prepareStatement(sql);
                 pst.setString(1, name);
                 ResultSet rs = pst.executeQuery();
 

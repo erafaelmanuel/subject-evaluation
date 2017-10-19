@@ -1,7 +1,7 @@
 package io.erm.ees.test.dao;
 
 import io.erm.ees.dao.CreditSubjectDao;
-import io.erm.ees.dao.impl.CreditSubjectDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.v2.Record;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class CreditSubjectDaoImplTest {
 
-    private CreditSubjectDao creditSubjectDao;
+    private CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
 
     private final Logger LOGGER = Logger.getLogger(CreditSubjectDaoImplTest.class.getSimpleName());
 
@@ -20,7 +20,7 @@ public class CreditSubjectDaoImplTest {
 
     @Before
     public void setup() {
-        creditSubjectDao = new CreditSubjectDaoImpl();
+
     }
 
     @Test

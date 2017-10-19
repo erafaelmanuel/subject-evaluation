@@ -1,6 +1,6 @@
 package io.erm.ees.stage;
 
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.model.UserType;
 import io.erm.ees.util.ResourceHelper;
 import javafx.fxml.FXMLLoader;
@@ -16,14 +16,14 @@ public class LoginStage extends Stage {
 
     private Logger logger = Logger.getLogger(LoginStage.class.getSimpleName());
 
-    private DBManager dbManager;
+    private DbManager dbManager;
     private boolean status;
     private UserType userType;
 
     private OnLoginListener onLoginListener;
 
     public LoginStage() {
-        this.dbManager = new DBManager();
+        this.dbManager = new DbManager();
         try {
             URL url = ResourceHelper.resourceWithBasePath("fxml/login.fxml");
             Parent root = FXMLLoader.load(url);
@@ -43,7 +43,7 @@ public class LoginStage extends Stage {
     }
 
 
-    public LoginStage(DBManager dbManager) {
+    public LoginStage(DbManager dbManager) {
         this.dbManager = dbManager;
         try {
             URL url = ResourceHelper.resourceWithBasePath("fxml/login.fxml");
@@ -63,7 +63,7 @@ public class LoginStage extends Stage {
         }
     }
 
-    public LoginStage(DBManager dbManager, OnLoginListener onLoginListener) {
+    public LoginStage(DbManager dbManager, OnLoginListener onLoginListener) {
         this.dbManager = dbManager;
         this.onLoginListener = onLoginListener;
         try {
@@ -85,7 +85,7 @@ public class LoginStage extends Stage {
     }
 
 
-    public DBManager getDbManager() {
+    public DbManager getDbManager() {
         return dbManager;
     }
 

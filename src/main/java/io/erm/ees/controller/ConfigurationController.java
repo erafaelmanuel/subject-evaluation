@@ -1,6 +1,6 @@
 package io.erm.ees.controller;
 
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.dao.conn.UserLibrary;
 import io.erm.ees.stage.ConfigurationStage;
 import io.erm.ees.util.ConnectionHelper;
@@ -51,7 +51,7 @@ public class ConfigurationController extends Stage implements Initializable {
     @FXML
     private Label lbLoading;
 
-    private DBManager dbManager;
+    private DbManager dbManager;
 
     @FXML
     private void onConnectClick(ActionEvent event) {

@@ -1,7 +1,7 @@
 package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.CourseDao;
-import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.conn.DbManager;
 import io.erm.ees.dao.conn.UserLibrary;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.model.Course;
@@ -14,25 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+@Deprecated
 public class CourseDaoImpl implements CourseDao {
 
     protected static final Logger LOGGER = Logger.getLogger(CourseDaoImpl.class.getSimpleName());
-    protected static final String TABLE_NAME = "tblcourse";
-
-    private DBManager dbManager;
+    private DbManager dbManager;
 
     public CourseDaoImpl() {
-        dbManager = new DBManager();
+        dbManager = new DbManager();
         init();
     }
 
-    public CourseDaoImpl(DBManager dbManager) {
+    public CourseDaoImpl(DbManager dbManager) {
         this.dbManager = dbManager;
         init();
     }
 
     public CourseDaoImpl(UserLibrary userLibrary) {
-        dbManager = new DBManager(userLibrary);
+        dbManager = new DbManager(userLibrary);
         init();
     }
 

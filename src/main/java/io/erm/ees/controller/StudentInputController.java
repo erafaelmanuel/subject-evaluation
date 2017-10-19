@@ -1,17 +1,16 @@
 package io.erm.ees.controller;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.CourseDao;
 import io.erm.ees.dao.SectionDao;
 import io.erm.ees.dao.StudentDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
 import io.erm.ees.dao.impl.SectionDaoImpl;
-import io.erm.ees.dao.impl.StudentDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
 import io.erm.ees.stage.StudentInputStage;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,9 +57,9 @@ public class StudentInputController implements Initializable {
     private static final ObservableList<String> OBSERVABLE_LIST_GENDER = FXCollections.observableArrayList();
     private static final ObservableList<String> OBSERVABLE_LIST_SECTION = FXCollections.observableArrayList();
 
-    private final CourseDao courseDao = new CourseDaoImpl();
+    private final CourseDao courseDao = DbFactory.courseFactory();
     private final SectionDao sectionDao = new SectionDaoImpl();
-    private final StudentDao studentDao = new StudentDaoImpl();
+    private final StudentDao studentDao = DbFactory.studentFactory();
 
     private final List<Course> COURSE_LIST = new ArrayList<>();
     private final List<Section> SECTION_LIST = new ArrayList<>();
@@ -91,7 +90,7 @@ public class StudentInputController implements Initializable {
         txCNumber.focusedProperty().addListener((observableValue, focusOut, focusIn) -> {
             if (focusIn) {
                 if (txCNumber.getText().trim().length() <= 3) {
-                    txCNumber.setText("+63 ");
+                    txCNumber.setText(tempHolder);
                 } else {
 
                 }

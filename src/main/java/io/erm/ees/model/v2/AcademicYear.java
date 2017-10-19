@@ -1,6 +1,6 @@
 package io.erm.ees.model.v2;
 
-import io.erm.ees.dao.impl.CourseDaoImpl;
+import io.erm.ees.helper.DbFactory;
 
 public class AcademicYear {
 
@@ -103,7 +103,7 @@ public class AcademicYear {
     }
 
     public String getDisplayCourse() {
-        return new CourseDaoImpl().getCourseById(courseId).getName();
+        return DbFactory.courseFactory().getCourseById(courseId).getName();
     }
 
     public int getStudents() {
