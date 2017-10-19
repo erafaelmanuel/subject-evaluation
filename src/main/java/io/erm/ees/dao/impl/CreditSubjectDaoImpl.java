@@ -298,6 +298,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     }
 
     @Override
+    public void deleteRecordByRemark(long subjectId, long studentId, String remark) {
+
+    }
+
+    @Override
     public List<Record> getRecordListByMark(long studentId, String remark) {
         List<Record> recordList = new ArrayList<>();
         try {

@@ -2,6 +2,7 @@ package io.erm.ees.controller;
 
 import io.erm.ees.model.Student;
 import io.erm.ees.stage.TeacherStage;
+import io.erm.ees.stage.window.AboutWindow;
 import io.erm.ees.stage.window.PopOnExitWindow;
 import io.erm.ees.util.ResourceHelper;
 import javafx.application.Platform;
@@ -82,5 +83,10 @@ public class TeacherWindowController implements Initializable {
         TeacherStage stage = (TeacherStage) menuBar.getScene().getWindow();
         stage.close();
         stage.callBack();
+    }
+
+    @FXML
+    protected void onClickAbout() {
+        AboutWindow.display();
     }
 }

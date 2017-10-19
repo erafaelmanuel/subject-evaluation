@@ -140,8 +140,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-                  <MenuItem mnemonicParsing="false" text="Contact admin" />
+              <MenuItem mnemonicParsing="false" onAction="#onClickAbout" text="About" />
             </items>
           </Menu>
         </menus>

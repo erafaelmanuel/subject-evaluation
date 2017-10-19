@@ -13,9 +13,7 @@ import io.erm.ees.model.Student;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.model.v2.Record;
-import io.erm.ees.stage.DropSubjectStage;
-import io.erm.ees.stage.EvaluationStage;
-import io.erm.ees.stage.StudentResultStage;
+import io.erm.ees.stage.*;
 import io.erm.ees.util.ResourceHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -76,10 +74,13 @@ public class StudentGradeController implements Initializable, StudentResultStage
     private JFXButton bnEvaluation;
 
     @FXML
-    private JFXButton bnAD;
+    private JFXButton bnDropSubject;
 
     @FXML
     private JFXComboBox<String> cbAY;
+
+    @FXML
+    private JFXButton bnAddSubject;
 
     private Student student;
 
@@ -195,7 +196,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
     protected void onClickEvaluation(ActionEvent event) {
         final EvaluationStage evaluationStage = new EvaluationStage();
         new Thread(() -> {
-            Platform.runLater(() -> evaluationStage.showAndWait());
+            Platform.runLater(evaluationStage::showAndWait);
             evaluationStage.getController().listener(student);
             evaluationStage.setListener(this);
             evaluationStage.setOnCloseRequest(e -> onClose());
@@ -203,11 +204,20 @@ public class StudentGradeController implements Initializable, StudentResultStage
     }
 
     @FXML
-    protected void onClickAddDrop(ActionEvent event) {
-        final DropSubjectStage dropSubjectStage = new DropSubjectStage();
+    protected void onClickDropSubject() {
+        final EvaluationDropStage evaluationDropStage = new EvaluationDropStage();
         new Thread(() -> {
-            Platform.runLater(() -> dropSubjectStage.showAndWait());
-            dropSubjectStage.getController().listener(student);
+            Platform.runLater(evaluationDropStage::showAndWait);
+            evaluationDropStage.getController().listener(student);
+        }).start();
+    }
+
+    @FXML
+    protected void onClickAddSubject() {
+        final EvaluationAddStage evaluationAddStage = new EvaluationAddStage();
+        new Thread(() -> {
+            Platform.runLater(evaluationAddStage::showAndWait);
+            evaluationAddStage.getController().listener(student);
         }).start();
     }
 
@@ -312,14 +322,11 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     private void loadRecord(List<Record> recordList) {
         OBSERVABLE_LIST_RECORD.clear();
-        OBSERVABLE_LIST_RECORD.addAll(recordList);
         for(Record record : recordList) {
             record.setSubjectDao(subjectDao);
             OBSERVABLE_LIST_RECORD.add(record);
         }
-        Platform.runLater(()-> {
-            tblRecord.setItems(OBSERVABLE_LIST_RECORD);
-        });
+        Platform.runLater(() -> tblRecord.setItems(OBSERVABLE_LIST_RECORD));
     }
 
     @FXML
@@ -327,8 +334,6 @@ public class StudentGradeController implements Initializable, StudentResultStage
         RECORD_LIST.clear();
         if(cbAY.getItems().size() > 0) {
             cbAY.getSelectionModel().select(0);
-            RECORD_LIST.addAll(creditSubjectDao.getRecordList(ACADEMIC_YEAR_LIST.get(0).getId(), student.getId()));
-            loadRecord(RECORD_LIST);
         }
     }
 
@@ -372,10 +377,12 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
         if(code != 0 && !academicYearDao.isTaken(student.getId(), code, semester)) {
             bnEvaluation.setDisable(false);
-            bnAD.setDisable(true);
+            bnDropSubject.setDisable(true);
+            bnAddSubject.setDisable(true);
         } else {
             bnEvaluation.setDisable(true);
-            bnAD.setDisable(false);
+            bnDropSubject.setDisable(false);
+            bnAddSubject.setDisable(false);
         }
 
         OBSERVABLE_LIST_ACADEMIC.clear();
@@ -396,7 +403,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
     @FXML
     protected void onClickRefresh() {
-        onChooseAcademicYear();
+        listener(student);
     }
 
     @FXML
@@ -539,10 +546,12 @@ public class StudentGradeController implements Initializable, StudentResultStage
 
         if(code != 0 && !academicYearDao.isTaken(student.getId(), code, semester)) {
             bnEvaluation.setDisable(false);
-            bnAD.setDisable(true);
+            bnDropSubject.setDisable(true);
+            bnAddSubject.setDisable(true);
         } else {
             bnEvaluation.setDisable(true);
-            bnAD.setDisable(false);
+            bnDropSubject.setDisable(false);
+            bnAddSubject.setDisable(false);
         }
     }
 }

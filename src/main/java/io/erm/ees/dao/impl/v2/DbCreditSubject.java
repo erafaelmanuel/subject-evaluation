@@ -282,6 +282,23 @@ public class DbCreditSubject implements CreditSubjectDao {
             LOGGER.warning(e.getMessage());
         }
     }
+    @Override
+    public void deleteRecordByRemark(long subjectId, long studentId, String remark) {
+        try {
+            if (isConnectable) {
+
+                String sql = "DELETE FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=?;";
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                pst.setString(3, remark);
+                pst.executeUpdate();
+            }
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+        }
+    }
+
 
     @Override
     public List<Record> getRecordListByMark(long studentId, String remark) {

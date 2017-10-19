@@ -59,25 +59,14 @@
               <MenuItem mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Transaction">
+            <Menu mnemonicParsing="false" text="Service">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#onClickAssess" text="Assesstment" />
-                  <MenuItem mnemonicParsing="false" text="Evalutaion" />
-                  <MenuItem mnemonicParsing="false" text="Grade" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickAssess" text="Evalutaion" />
               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="System">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Settings" />
-                  <MenuItem mnemonicParsing="false" text="Backup and restore" />
-                  <MenuItem mnemonicParsing="false" text="Show status" />
-                  <MenuItem mnemonicParsing="false" text="System reset" />
-               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-                  <MenuItem mnemonicParsing="false" text="Contact admin" />
+              <MenuItem mnemonicParsing="false" onAction="#onClickAbout" text="About" />
             </items>
           </Menu>
         </menus>

@@ -34,6 +34,8 @@ public interface CreditSubjectDao {
 
     void deleteRecordById(long id);
 
+    void deleteRecordByRemark(long subjectId, long studentId, String remark);
+
     boolean isSubjectPassed(long subjectId, long studentId);
 
     boolean isSubjectFailed(long subjectId, long studentId);

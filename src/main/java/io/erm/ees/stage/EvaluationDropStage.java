@@ -1,6 +1,6 @@
 package io.erm.ees.stage;
 
-import io.erm.ees.controller.EvaluationAddController;
+import io.erm.ees.controller.EvaluationDropController;
 import io.erm.ees.util.ResourceHelper;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,16 +10,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class EvaluationAddStage extends Stage {
+public class EvaluationDropStage extends Stage {
 
-    private EvaluationAddController controller;
+    private EvaluationDropController controller;
     private OnCloseListener listener;
 
-    public EvaluationAddStage() {
+    public EvaluationDropStage() {
         try {
-            FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/evaluation_add.fxml"));
+            FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/evaluation_drop.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 940, 690);
+            Scene scene = new Scene(root, 940, 640);
             initModality(Modality.APPLICATION_MODAL);
             setScene(scene);
             setResizable(false);
@@ -35,7 +35,7 @@ public class EvaluationAddStage extends Stage {
         this.listener = listener;
     }
 
-    public EvaluationAddController getController() {
+    public EvaluationDropController getController() {
         return controller;
     }
 

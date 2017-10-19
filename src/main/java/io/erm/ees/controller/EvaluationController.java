@@ -72,9 +72,6 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     private JFXTextField txFullName;
 
     @FXML
-    private JFXComboBox<String> cbCurSemester;
-
-    @FXML
     private Label lbAbUnit;
 
     @FXML
@@ -119,14 +116,6 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     public void initialize(URL location, ResourceBundle resources) {
         lbexceed.setVisible(false);
 
-        cbClass.getItems().add("REGULAR/IRREG CLASSES");
-        cbClass.getItems().add("SUMMER CLASSES");
-        cbClass.getSelectionModel().select(0);
-
-        cbCurSemester.getItems().add("1ST SEMESTER");
-        cbCurSemester.getItems().add("2ND SEMESTER");
-        cbCurSemester.getSelectionModel().select(0);
-
         Image logoLoading = new Image(ResourceHelper.resourceWithBasePath("image/loading.gif").toString());
         imgLoading.setImage(logoLoading);
     }
@@ -134,6 +123,12 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     @FXML
     protected void onClickEvaluate(ActionEvent event) {
         if (totalYeUnit >= 1 && totalYeUnit <= 30) {
+            if(section.getYear() > sectionDao.getSectionById(student.getSectionId()).getYear()) {
+                final long sectionId = sectionDao.addSection(section).getId();
+                student.setSectionId(sectionId);
+            }
+            studentDao.updateStudentById(student.getId(), student);
+
             final int calYear = sectionDao.getSectionById(student.getSectionId()).getYear();
             final AcademicYear academicYear = academicYearDao.getAcademicYearOpen(course.getId(), calYear);
 
@@ -146,12 +141,8 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                 record.setStudentId(student.getId());
                 creditSubjectDao.addRecord(s.getId(), academicYear.getId(), student.getId(), record);
             }
-            if(section.getYear() > sectionDao.getSectionById(student.getSectionId()).getYear()) {
-                final long sectionId = sectionDao.addSection(section).getId();
-                student.setSectionId(sectionId);
-            }
 
-            studentDao.updateStudentById(student.getId(), student);
+
         } else if (totalYeUnit < 1) {
             Platform.runLater(() ->
                     JOptionPane.showMessageDialog(null, "Please add a subject to enroll."));
@@ -201,39 +192,6 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                 hideLoading();
             }
         }).start();
-    }
-
-    @FXML
-    protected void onChooseSemester() {
-        clearYe();
-        final int index = cbAbSubject.getSelectionModel().getSelectedIndex();
-        final List<io.erm.ees.model.Subject> list = new ArrayList<>();
-        if(index == -1) return;
-
-        showLoading();
-        if (index == 0) {
-            new Thread(() -> {
-                final int year = course.getTotalYear();
-                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
-                EvaluationHelper.evaluate(student, year, semester, list);
-
-                loadAbItem(list);
-                hideLoading();
-
-                Platform.runLater(() -> txStatus.setText(student.getStatus()));
-            }).start();
-        } else if (index <= course.getTotalYear()) {
-            new Thread(() -> {
-                final int year = cbAbSubject.getSelectionModel().getSelectedIndex();
-                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
-                EvaluationHelper.evaluate(student, year, semester, list);
-
-                loadAbItem(list);
-                hideLoading();
-
-                Platform.runLater(() -> txStatus.setText(student.getStatus()));
-            }).start();
-        }
     }
 
     @FXML

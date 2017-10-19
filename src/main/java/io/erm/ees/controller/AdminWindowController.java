@@ -12,6 +12,7 @@ import io.erm.ees.model.Subject;
 import io.erm.ees.model.UserDetail;
 import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.stage.*;
+import io.erm.ees.stage.window.AboutWindow;
 import io.erm.ees.stage.window.PopOnExitWindow;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -989,5 +990,10 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         subjectInputStage.setOnItemAddLister(this);
         userInputStage.setOnItemAddLister(this);
         academicYearInputStage.setOnItemAddLister(this);
+    }
+
+    @FXML
+    protected void onClickAbout() {
+        AboutWindow.display();
     }
 }

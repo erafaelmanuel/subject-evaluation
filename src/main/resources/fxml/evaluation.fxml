@@ -35,7 +35,6 @@
                                           <Insets right="10.0" />
                                        </HBox.margin>
                                     </JFXButton>
-                                    <JFXComboBox fx:id="cbCurSemester" onAction="#onChooseSemester" prefHeight="25.0" prefWidth="134.0" promptText="Semester" />
                                  </children>
                                  <padding>
                                     <Insets left="10.0" />

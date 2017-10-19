@@ -18,8 +18,7 @@ import io.erm.ees.model.recursive.Subject;
 import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.model.v2.Record;
 import io.erm.ees.model.v2.Remark;
-import io.erm.ees.stage.AdvisingFormStage;
-import io.erm.ees.stage.EvaluationAddStage;
+import io.erm.ees.stage.EvaluationDropStage;
 import io.erm.ees.util.ResourceHelper;
 import io.erm.ees.util.document.AdvisingDoc;
 import javafx.application.Platform;
@@ -38,11 +37,10 @@ import javafx.scene.layout.VBox;
 import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class EvaluationAddController implements Initializable, AdvisingDoc.CreationListener {
+public class EvaluationDropController implements Initializable, AdvisingDoc.CreationListener {
 
     @FXML
     private JFXTreeTableView<Subject> tblAbSubject;
@@ -92,12 +90,6 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
     @FXML
     private Label lbEnrolledUnit;
 
-    @FXML
-    private Label lbNewUnit;
-
-    @FXML
-    private Label lbTotalUnit;
-
     private final ObservableList<Subject> ENROLL_SUBJECT_LIST = FXCollections.observableArrayList();
     private final ObservableList<Subject> AVAILABLE_SUBJECT_LIST = FXCollections.observableArrayList();
 
@@ -123,16 +115,9 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
     private int totalAbUnit;
     private int totalYeUnit;
 
-    private int eTotalUnit=0;
-    private int nTotalUnit=0;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         lbexceed.setVisible(false);
-
-        cbClass.getItems().add("REGULAR/IRREG CLASSES");
-        cbClass.getItems().add("SUMMER CLASSES");
-        cbClass.getSelectionModel().select(0);
 
         Image logoLoading = new Image(ResourceHelper.resourceWithBasePath("image/loading.gif").toString());
         imgLoading.setImage(logoLoading);
@@ -140,24 +125,14 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
 
     @FXML
     protected void onClickSave(ActionEvent event) {
-        if (totalYeUnit > eTotalUnit && totalYeUnit <= 30) {
+        if (totalYeUnit >= 1 && totalYeUnit <= 30) {
             final int calYear = sectionDao.getSectionById(student.getSectionId()).getYear();
             final AcademicYear academicYear = academicYearDao.getAcademicYearOpen(course.getId(), calYear);
 
             for (Subject s : ENROLL_SUBJECT_LIST) {
-                Record record = new Record();
-                record.setDate(new Date().toString());
-                record.setRemark(Remark.NOTSET.getCode());
-                record.setAcademicId(academicYear.getId());
-                record.setSubjectId(s.getId());
-                record.setStudentId(student.getId());
-                creditSubjectDao.addRecord(s.getId(), academicYear.getId(), student.getId(), record);
+                creditSubjectDao.deleteRecordByRemark(s.getId(), student.getId(), Remark.NOTSET.getCode());
             }
-            if(section.getYear() > sectionDao.getSectionById(student.getSectionId()).getYear()) {
-                final long sectionId = sectionDao.addSection(section).getId();
-                student.setSectionId(sectionId);
-            }
-        } else if (totalYeUnit < eTotalUnit) {
+        } else if (totalYeUnit < 1) {
             Platform.runLater(() ->
                     JOptionPane.showMessageDialog(null, "Please add a subject to enroll."));
             return;
@@ -166,59 +141,15 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
                     JOptionPane.showMessageDialog(null, "The limit of unit is exceeded."));
             return;
         }
-        EvaluationAddStage stage = (EvaluationAddStage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setClose();
 
-        new Thread(() -> {
-            AdvisingDoc advisingDoc = new AdvisingDoc();
-            advisingDoc.addSubject(ENROLL_SUBJECT_LIST);
-            advisingDoc.setStudent(student);
-            advisingDoc.setCreationListener(this);
-            advisingDoc.create();
-        }).start();
-
-        new Thread(() -> Platform.runLater(() -> {
-            AdvisingFormStage advisingFormStage = new AdvisingFormStage();
-            Platform.runLater(advisingFormStage::showAndWait);
-            advisingFormStage.getController().listener(student, ENROLL_SUBJECT_LIST);
-        })).start();
+        EvaluationDropStage stage = (EvaluationDropStage) ((Node) event.getSource()).getScene().getWindow();
+        Platform.runLater(stage::close);
     }
 
     @FXML
     protected void onClickClose(ActionEvent event) {
-        EvaluationAddStage stage = (EvaluationAddStage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setClose();
-    }
-
-    @FXML
-    protected void onChooseFilter() {
-        final int index = cbAbSubject.getSelectionModel().getSelectedIndex();
-        final List<io.erm.ees.model.Subject> list = new ArrayList<>();
-        final List<io.erm.ees.model.Subject> tempList = new ArrayList<>();
-        if(index == -1) return;
-
-        showLoading();
-        new Thread(() -> {
-            if (index == 0) {
-                final int semester = academicYear.getSemester();
-                EvaluationHelper.evaluateAll(student, semester, tempList);
-                for(io.erm.ees.model.Subject subject : tempList) {
-                    if(!creditSubjectDao.isSubjectNotSet(subject.getId(), student.getId())) list.add(subject);
-                }
-
-                loadAbItem(list);
-                hideLoading();
-            } else if (index <= course.getTotalYear()) {
-                final int year = cbAbSubject.getSelectionModel().getSelectedIndex();
-                final int semester = academicYear.getSemester();
-                EvaluationHelper.evaluate(student, year, semester, tempList);
-                for(io.erm.ees.model.Subject subject : tempList) {
-                    if(!creditSubjectDao.isSubjectNotSet(subject.getId(), student.getId())) list.add(subject);
-                }
-                loadAbItem(list);
-                hideLoading();
-            }
-        }).start();
+        EvaluationDropStage stage = (EvaluationDropStage) ((Node) event.getSource()).getScene().getWindow();
+        Platform.runLater(stage::close);
     }
 
     @FXML
@@ -262,11 +193,7 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
                     subject.getUnit(), subject.getUnitDisplay()));
             Platform.runLater(() -> {
                 totalYeUnit+=subject.getUnit();
-                nTotalUnit+=subject.getUnit();
-
                 lbYeUnit.setText(totalYeUnit + "");
-                lbTotalUnit.setText(totalYeUnit+"");
-                lbNewUnit.setText(nTotalUnit + "");
 
                 if (totalYeUnit < 1 || totalYeUnit > 30) {
                     lbYeUnit.setStyle("-fx-text-fill:#c0392b;");
@@ -325,11 +252,7 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
             TreeItem<Subject> root = new RecursiveTreeItem<>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
 
             totalYeUnit += subject.getUnit();
-            nTotalUnit += subject.getUnit();
-
             lbYeUnit.setText(totalYeUnit + "");
-            lbTotalUnit.setText(totalYeUnit+"");
-            lbNewUnit.setText(nTotalUnit + "");
 
             if (totalYeUnit < 1 || totalYeUnit > 30) {
                 lbYeUnit.setStyle("-fx-text-fill:#c0392b;");
@@ -359,11 +282,7 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
                     subject.getUnit(), subject.getUnitDisplay()));
 
             totalYeUnit+=subject.getUnit();
-            nTotalUnit+=subject.getUnit();
-
             lbYeUnit.setText(totalYeUnit + "");
-            lbTotalUnit.setText(totalYeUnit+"");
-            lbNewUnit.setText(nTotalUnit+"");
 
             if (totalYeUnit < 1 || totalYeUnit > 30) {
                 lbYeUnit.setStyle("-fx-text-fill:#c0392b;");
@@ -388,11 +307,7 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
         Subject subject = ENROLL_SUBJECT_LIST.get(tblYeSubject.getSelectionModel().getSelectedIndex());
 
         totalYeUnit-=subject.getUnit();
-        nTotalUnit-=subject.getUnit();
-
         lbYeUnit.setText(totalYeUnit + "");
-        lbTotalUnit.setText(totalYeUnit+"");
-        lbNewUnit.setText(nTotalUnit+"");
 
         if (totalYeUnit < 1 || totalYeUnit > 30) {
             lbYeUnit.setStyle("-fx-text-fill:#c0392b;");
@@ -418,12 +333,8 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
         final List<Subject> templist = new ArrayList<>();
 
         //reset
-        totalYeUnit=eTotalUnit;
-        nTotalUnit=0;
-
+        totalYeUnit=0;
         lbYeUnit.setText(totalYeUnit + "");
-        lbTotalUnit.setText(totalYeUnit+"");
-        lbNewUnit.setText(nTotalUnit+"");
 
         lbYeUnit.setStyle("-fx-text-fill:#c0392b;");
         lbexceed.setVisible(false);
@@ -464,26 +375,17 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
 
             final int semester = academicYear.getSemester();
             final int currentYear=section.getYear();
-            eTotalUnit=0;
-
-            EvaluationHelper.init(student, section, semester);
-
             NOTSET_LIST.clear();
             for(Record record : creditSubjectDao.getRecordListByMark(student.getId(), Remark.NOTSET.getCode())) {
                 io.erm.ees.model.Subject subject = subjectDao.getSubjectById(record.getSubjectId());
                 NOTSET_LIST.add(subject);
-                eTotalUnit+=subject.getUnit();
             }
-            totalYeUnit=eTotalUnit;
 
             Platform.runLater(() -> {
                 clearAb();
                 initAbSubject();
 
-                lbEnrolledUnit.setText(eTotalUnit+"");
                 lbYeUnit.setText(totalYeUnit+"");
-                lbTotalUnit.setText(totalYeUnit+"");
-
                 txAYS.setText(academicYear.getName() + "  ( " + (academicYear.getSemester() == 1 ? "1ST SEMESTER )" :
                         academicYear.getSemester() == 2 ? "2ND SEMESTER )" : "0/3RD SEMESTER )"));
 
@@ -494,34 +396,9 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
                 txYear.setText(SectionHelper.format(currentYear));
                 txStatus.setText(student.getStatus());
 
-                int totalYear = course.getTotalYear();
-                if (totalYear <= 4) {
-                    cbAbSubject.getItems().add("ALL");
-                    cbAbSubject.getItems().add("1ST YR");
-                    cbAbSubject.getItems().add("2ND YR");
-                    cbAbSubject.getItems().add("3RD YR");
-                    cbAbSubject.getItems().add("4TH YR");
-                } else if (totalYear == 5) {
-                    cbAbSubject.getItems().add("ALL");
-                    cbAbSubject.getItems().add("1ST YR");
-                    cbAbSubject.getItems().add("2ND YR");
-                    cbAbSubject.getItems().add("3RD YR");
-                    cbAbSubject.getItems().add("4TH YR");
-                    cbAbSubject.getItems().add("5TH YR");
-                } else {
-                    cbAbSubject.getItems().add("ALL");
-                    cbAbSubject.getItems().add("1ST YR");
-                    cbAbSubject.getItems().add("2ND YR");
-                }
-                loadYeSubject(new ArrayList<>());
-                if(student.getStatus().equals("REGULAR")) {
-                    cbAbSubject.setDisable(true);
-                } else
-                    cbAbSubject.setDisable(false);
-                cbAbSubject.getSelectionModel().select(section.getYear());
 
-                if(student.getStatus().equals("REGULAR")) cbAbSubject.setDisable(true);
-                else cbAbSubject.setDisable(false);
+                loadYeSubject(new ArrayList<>());
+                loadAbItem(NOTSET_LIST);
             });
         }).start();
     }

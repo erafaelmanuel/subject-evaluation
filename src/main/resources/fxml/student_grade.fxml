@@ -40,8 +40,9 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #bdc3c7;">
                            <children>
                               <JFXButton fx:id="bnEvaluation" alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-4.0" layoutY="3.0" onAction="#onClickEvaluation" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="  Evaluation" textFill="WHITE" />
-                              <JFXButton fx:id="bnAD" alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-4.0" layoutY="31.0" onAction="#onClickAddDrop" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="  Add / Drop" textFill="WHITE" />
-                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="59.0" onAction="#onClickCreditSubject" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #2980b9;" text="  Credit Subject" textFill="WHITE" />
+                              <JFXButton fx:id="bnDropSubject" alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-4.0" layoutY="31.0" onAction="#onClickDropSubject" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="  Drop Subject" textFill="WHITE" />
+                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="87.0" onAction="#onClickCreditSubject" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #2980b9;" text="  Credit Subject" textFill="WHITE" />
+                              <JFXButton fx:id="bnAddSubject" alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="59.0" onAction="#onClickAddSubject" prefHeight="25.0" prefWidth="191.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="  Add Subject" textFill="WHITE" />
                            </children>
                         </AnchorPane>
                   </content>
