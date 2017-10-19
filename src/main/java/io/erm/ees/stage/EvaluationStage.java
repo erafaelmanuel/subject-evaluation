@@ -13,6 +13,7 @@ import java.io.IOException;
 public class EvaluationStage extends Stage {
 
     private EvaluationController controller;
+    private OnCloseListener listener;
 
     public EvaluationStage() {
         try {
@@ -28,7 +29,22 @@ public class EvaluationStage extends Stage {
         }
     }
 
+    public void setListener(OnCloseListener listener) {
+        this.listener = listener;
+    }
+
     public EvaluationController getController() {
         return controller;
+    }
+
+    public void setClose() {
+        if(listener != null)
+            listener.onClose();
+        close();
+    }
+
+    @FunctionalInterface
+    public interface OnCloseListener {
+        void onClose();
     }
 }

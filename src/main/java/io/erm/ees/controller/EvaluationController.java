@@ -15,6 +15,7 @@ import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.model.v2.Record;
 import io.erm.ees.model.v2.Remark;
 import io.erm.ees.stage.AdvisingFormStage;
+import io.erm.ees.stage.EvaluationStage;
 import io.erm.ees.util.ResourceHelper;
 import io.erm.ees.util.document.AdvisingDoc;
 import javafx.application.Platform;
@@ -88,6 +89,9 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     @FXML
     private VBox pnScreen;
 
+    @FXML
+    private JFXTextField txToYear;
+
     private final ObservableList<Subject> ENROLL_SUBJECT_LIST = FXCollections.observableArrayList();
     private final ObservableList<Subject> AVAILABLE_SUBJECT_LIST = FXCollections.observableArrayList();
 
@@ -157,8 +161,8 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                     JOptionPane.showMessageDialog(null, "The limit of unit is exceeded."));
             return;
         }
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        EvaluationStage stage = (EvaluationStage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setClose();
 
         new Thread(() -> {
             AdvisingDoc advisingDoc = new AdvisingDoc();
@@ -448,8 +452,8 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
             student.setStatus("REGULAR");
 
             final int semester = academicYear.getSemester();
-//            EvaluationHelper.calculateStatus(student, course, semester);
-//            EvaluationHelper.calculateYear(student, course, section, academicYear.getSemester());
+            final int currentYear=section.getYear();
+
             EvaluationHelper.init(student, section, semester);
 
             Platform.runLater(() -> {
@@ -463,7 +467,8 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                 txCourse.setText(new CourseDaoImpl().getCourseById(student.getCourseId()).getDesc());
                 txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
                         student.getMiddleName().substring(0, 1)).toUpperCase());
-                txYear.setText(SectionHelper.format(section.getYear()));
+                txYear.setText(SectionHelper.format(currentYear));
+                txToYear.setText(SectionHelper.format(section.getYear()));
                 txStatus.setText(student.getStatus());
 
                 int totalYear = course.getTotalYear();

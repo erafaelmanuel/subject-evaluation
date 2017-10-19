@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.Subject;
@@ -105,7 +106,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     private final CourseDao courseDao = new CourseDaoImpl();
     private final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
     private final StudentDao studentDao = new StudentDaoImpl();
-    private final SubjectDao subjectDao = new SubjectDaoImpl();
+    private final SubjectDao subjectDao = DbFactory.subjectFactory();
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final UserDetailDao userDetailDao = new UserDetailDaoImpl();
 

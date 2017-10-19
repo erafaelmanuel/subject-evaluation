@@ -185,6 +185,43 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
     }
 
     @Override
+    public List<AcademicYear> getAcademicYearList(long studentId, long courseId) {
+        List<AcademicYear> academicYearList = new ArrayList<>();
+        try {
+            if (DB_MANAGER.connect()) {
+                String sql = "SELECT TBL_AC.id, TBL_AC.code, TBL_AC.name, TBL_AC.semester, TBL_AC.year, TBL_AC.sta" +
+                        "tus, TBL_AC.courseId FROM tblacademicyear AS TBL_AC JOIN tblcreditsubject AS TBL_CS ON TBL" +
+                        "_AC.id=TBL_CS.academicId WHERE TBL_CS.studentId=? AND TBL_AC.courseId=? GROUP BY TBL_AC.id" +
+                        " ORDER BY TBL_AC.code, TBL_AC.semester;";
+
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
+                pst.setLong(1, studentId);
+                pst.setLong(2, courseId);
+
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    AcademicYear academicYear = new AcademicYear();
+                    academicYear.setId(rs.getLong(1));
+                    academicYear.setCode(rs.getLong(2));
+                    academicYear.setName(rs.getString(3));
+                    academicYear.setSemester(rs.getInt(4));
+                    academicYear.setYear(rs.getInt(5));
+                    academicYear.setStatus(rs.getBoolean(6));
+                    academicYear.setCourseId(rs.getLong(7));
+                    academicYearList.add(academicYear);
+                }
+                DB_MANAGER.close();
+                return academicYearList;
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return academicYearList;
+        }
+    }
+
+    @Override
     public List<AcademicYear> getAcademicYearList(long code, int semester) {
         List<AcademicYear> academicYearList = new ArrayList<>();
         try {

@@ -25,6 +25,8 @@ public interface AcademicYearDao {
 
     List<AcademicYear> getAcademicYearList(long studentId);
 
+    List<AcademicYear> getAcademicYearList(long studentId, long courseId);
+
     List<AcademicYear> getAcademicYearList(long code, int semester);
 
     List<AcademicYear> getAcademicYearListOpen(long courseId);

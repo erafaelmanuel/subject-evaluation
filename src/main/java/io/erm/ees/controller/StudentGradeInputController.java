@@ -1,22 +1,25 @@
 package io.erm.ees.controller;
 
-import io.erm.ees.dao.CourseDao;
-import io.erm.ees.dao.DirtyDao;
-import io.erm.ees.dao.SubjectDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
-import io.erm.ees.dao.impl.DirtyDaoImpl;
-import io.erm.ees.dao.impl.SubjectDaoImpl;
-import io.erm.ees.model.Student;
-import io.erm.ees.model.StudentSubjectRecord;
-import io.erm.ees.model.Subject;
-import io.erm.ees.model.recursive.Mark;
-import io.erm.ees.stage.GradeInputStage;
-import io.erm.ees.util.ResourceHelper;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import io.erm.ees.dao.CourseDao;
+import io.erm.ees.dao.CreditSubjectDao;
+import io.erm.ees.dao.DirtyDao;
+import io.erm.ees.dao.SubjectDao;
+import io.erm.ees.dao.impl.CourseDaoImpl;
+import io.erm.ees.dao.impl.CreditSubjectDaoImpl;
+import io.erm.ees.dao.impl.DirtyDaoImpl;
+import io.erm.ees.helper.DbFactory;
+import io.erm.ees.model.Student;
+import io.erm.ees.model.Subject;
+import io.erm.ees.model.recursive.Mark;
+import io.erm.ees.model.v2.Record;
+import io.erm.ees.model.v2.Remark;
+import io.erm.ees.stage.GradeInputStage;
+import io.erm.ees.util.ResourceHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +35,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -69,19 +73,21 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
 
     private final CourseDao courseDao = new CourseDaoImpl();
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
-    private final SubjectDao subjectDao = new SubjectDaoImpl();
+    private final SubjectDao subjectDao = DbFactory.subjectFactory();
+    private final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
 
     private final GradeInputStage gradeInputStage = new GradeInputStage();
 
     private final ObservableList<String> MARK_TYPE = FXCollections.observableArrayList();
     private final ObservableList<Mark> MARK_LIST = FXCollections.observableArrayList();
 
+    private final List<Record> RECORD_LIST = new ArrayList<>();
     private int totalUnit;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cbMark.setItems(MARK_TYPE);
-        cbMark.getItems().add("ONGOING");
+        cbMark.getItems().add("NOTSET");
         cbMark.getItems().add("INCOMPLETE");
         cbMark.getItems().add("PASSED");
         cbMark.getItems().add("FAILED");
@@ -103,17 +109,18 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
     protected void onChooseMark() {
         if (cbMark.getSelectionModel().getSelectedIndex() > -1) {
             totalUnit = 0;
-            List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(STUDENT.getId(),
-                    cbMark.getSelectionModel().getSelectedItem());
+            List<Record> recordList = creditSubjectDao.getRecordListByMark(STUDENT.getId(), cbMark.getSelectionModel().getSelectedItem());
 
             MARK_LIST.clear();
+            RECORD_LIST.clear();
 
-            for (StudentSubjectRecord record : recordList) {
+            for (Record record : recordList) {
                 Subject subject = subjectDao.getSubjectById(record.getSubjectId());
                 Mark mark = new Mark(subject.getId(), subject.getName(), subject.getDesc(), record.getMidterm(),
-                        record.getFinalterm(), record.getMark());
+                        record.getFinalterm(), record.getRemark());
                 totalUnit += subject.getUnit();
                 MARK_LIST.add(mark);
+                RECORD_LIST.add(record);
             }
 
             lbUnit.setText(totalUnit + "");
@@ -132,9 +139,9 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
     protected void onClickInput() {
         final int index = tblMark.getSelectionModel().getSelectedIndex();
         if (index > -1) {
-            Mark mark = MARK_LIST.get(index);
+            Record record = RECORD_LIST.get(index);
             Platform.runLater(() -> gradeInputStage.showAndWait());
-            gradeInputStage.getController().listening(mark, STUDENT.getId());
+            gradeInputStage.getController().listening(record, STUDENT.getId());
         }
     }
 
@@ -142,9 +149,9 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
     protected void onClickDrop() {
         final int index = tblMark.getSelectionModel().getSelectedIndex();
         if (index > -1) {
-            dirtyDao.updateStudentRecord(MARK_LIST.get(index).getSubjectId(),
-                    STUDENT.getId(), 0, 0, "DROPPED");
-
+            Record record = RECORD_LIST.get(index);
+            record.setRemark(Remark.DROPPED.getCode());
+            creditSubjectDao.updateRecordById(record.getId(), record);
             onAddMark();
         }
     }
@@ -220,15 +227,19 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
         lbSNumber.setText(STUDENT.getStudentNumber() + "");
         lbCourse.setText(courseDao.getCourseById(STUDENT.getCourseId()).getDesc());
 
-        List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(STUDENT.getId(),
-                "ONGOING");
+        cbMark.getSelectionModel().select(0);
+        List<Record> recordList = creditSubjectDao.getRecordListByMark(STUDENT.getId(), cbMark.getSelectionModel().getSelectedItem());
+
         MARK_LIST.clear();
-        for (StudentSubjectRecord record : recordList) {
+        RECORD_LIST.clear();
+        for (Record record : recordList) {
             Subject subject = subjectDao.getSubjectById(record.getSubjectId());
             Mark mark = new Mark(subject.getId(), subject.getName(), subject.getDesc(), record.getMidterm(),
-                    record.getFinalterm(), record.getMark());
+                    record.getFinalterm(), record.getRemark());
             totalUnit += subject.getUnit();
+
             MARK_LIST.add(mark);
+            RECORD_LIST.add(record);
         }
 
         lbUnit.setText(totalUnit + "");
@@ -247,17 +258,18 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
         new Thread(() -> {
             showLoading();
             totalUnit = 0;
-            List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(STUDENT.getId(),
-                    cbMark.getSelectionModel().getSelectedItem());
+            List<Record> recordList = creditSubjectDao.getRecordListByMark(STUDENT.getId(), cbMark.getSelectionModel().getSelectedItem());
 
             MARK_LIST.clear();
+            RECORD_LIST.clear();
 
-            for (StudentSubjectRecord record : recordList) {
+            for (Record record : recordList) {
                 Subject subject = subjectDao.getSubjectById(record.getSubjectId());
                 Mark mark = new Mark(subject.getId(), subject.getName(), subject.getDesc(), record.getMidterm(),
-                        record.getFinalterm(), record.getMark());
+                        record.getFinalterm(), record.getRemark());
                 totalUnit += subject.getUnit();
                 MARK_LIST.add(mark);
+                RECORD_LIST.add(record);
             }
 
             try {

@@ -1,14 +1,14 @@
 package io.erm.ees.controller;
 
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.DirtyDao;
 import io.erm.ees.dao.SubjectDao;
 import io.erm.ees.dao.impl.DirtyDaoImpl;
-import io.erm.ees.dao.impl.SubjectDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.recursive.Subject;
 import io.erm.ees.stage.SubjectInputStage;
 import io.erm.ees.stage.SubjectListStage;
-import com.jfoenix.controls.*;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,8 +50,8 @@ public class SubjectInputController implements Initializable, SubjectListStage.O
     private final ObservableList<Subject> SUBJECT_LIST = FXCollections.observableArrayList();
     private final io.erm.ees.model.Subject SUBJECT = new io.erm.ees.model.Subject();
 
-    final DirtyDao dirtyDao = new DirtyDaoImpl();
-    final SubjectDao subjectDao = new SubjectDaoImpl();
+    private final DirtyDao dirtyDao = new DirtyDaoImpl();
+    private final SubjectDao subjectDao = DbFactory.subjectFactory();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

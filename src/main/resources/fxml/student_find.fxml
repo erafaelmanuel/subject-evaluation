@@ -21,7 +21,7 @@
                      </VBox.margin>
                   </ImageView>
                   <VBox prefHeight="22.0" prefWidth="226.0" />
-                  <JFXTextField fx:id="txStudentNumber" focusColor="#c35f0d" promptText="Enter a student detail" />
+                  <JFXTextField fx:id="txStudentNumber" focusColor="#c35f0d" labelFloat="true" onAction="#onActionEnter" promptText="Enter a student" unFocusColor="#c35f0d" />
                   <VBox prefHeight="17.0" prefWidth="226.0" />
                   <JFXButton buttonType="RAISED" onAction="#onClickEnter" prefHeight="29.0" prefWidth="226.0" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Enter" textFill="WHITE" />
                </children>

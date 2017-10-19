@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface SubjectDao {
 
+    String TABLE_NAME = "tblsubject";
+
     Subject getSubjectById(long id);
 
     Subject getSubject(String query);

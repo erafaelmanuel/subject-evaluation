@@ -12,7 +12,7 @@ public class EvaluationHelper {
     static final CourseDao courseDao = new CourseDaoImpl();
     static final AcademicYearDao academicYearDao = new AcademicYearDaoImpl();
     static final CurriculumDao curriculumDao = new CurriculumDaoImpl();
-    static final SubjectDao subjectDao = new SubjectDaoImpl();
+    static final SubjectDao subjectDao = DbFactory.subjectFactory();
     static final SectionDao sectionDao = new SectionDaoImpl();
     static final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
 
@@ -63,8 +63,17 @@ public class EvaluationHelper {
         return true;
     }
 
+    private static boolean isDataFailed(Student student, Course course, int year, int semester) {
+        List<Subject> list = curriculumDao.getSubjectList(course.getId(), year, semester);
+        for (Subject subject : list) {
+            boolean isFailed = creditSubjectDao.isSubjectNotPassed(subject.getId(), student.getId());
+            boolean isTaken = creditSubjectDao.isTaken(subject.getId(), student.getId(), course.getId());
+            if(isTaken && isFailed) return true;
+        }
+        return false;
+    }
+
     public static void evaluate(Student student, int _year, int _semester, List<Subject> subjectList) {
-        clear();
 
         final Course course = courseDao.getCourseById(student.getCourseId());
         List<Subject> list = curriculumDao.getSubjectList(course.getId(), _year, _semester);
@@ -80,11 +89,10 @@ public class EvaluationHelper {
         }
 
         subjectList.addAll(AVAILABLE_LIST);
+        clear();
     }
 
     public static void evaluateAll(Student student, int _semester, List<Subject> subjectList) {
-        clear();
-
         final Course course = courseDao.getCourseById(student.getCourseId());
         for (int y = 1; y <= course.getTotalYear(); y++) {
             for (int s = 1; s <= course.getTotalSemester(); s++) {
@@ -105,6 +113,7 @@ public class EvaluationHelper {
             }
         }
         subjectList.addAll(AVAILABLE_LIST);
+        clear();
     }
 
     public static void init(Student student, Section section, int semester) {
@@ -114,14 +123,21 @@ public class EvaluationHelper {
                 student.setStatus(tempStatus);
                 section.setYear(tempYear);
             } else {
-                student.setStatus("IRREGULAR");
+                student.setStatus(tempStatus);
+                if(irregular1stSemester(student, course)) {
+                    irregularYearAnalyzer(student, course);
+                    section.setYear(tempYear);
+                }
             }
         } else if(semester==2) {
             if(regular2ndSemester(student, course)) {
                 student.setStatus(tempStatus);
                 section.setYear(tempYear);
             } else {
-                student.setStatus("IRREGULAR");
+
+                irregularYearAnalyzer(student, course);
+                student.setStatus(tempStatus);
+                section.setYear(tempYear);
             }
         }
     }
@@ -132,31 +148,31 @@ public class EvaluationHelper {
         for(int i=1; i<=total; i++) {
             switch(i) {
                 case 1:
-                    if(isDataNoContent(student, course, 1, 1) && isDataNoContent(student, course, 1, 2)) {
+                    if((isDataNoContent(student, course, 1, 1) && isDataClean(student, course, 1, 1)) && isDataClean(student, course,1, 2)) {
                         if(total==1) {
                             tempYear=1;
                             tempStatus="REGULAR";
                             return true;
                         }
-                        if(isDataNoContent(student, course, 2, 1) && isDataNoContent(student, course, 2, 2)) {
+                        if((isDataNoContent(student, course, 2, 1) && isDataClean(student, course, 2, 1)) && (isDataNoContent(student, course, 2, 2) && isDataClean(student, course,2, 2))) {
                             if(total==2) {
                                 tempYear=1;
                                 tempStatus="REGULAR";
                                 return true;
                             }
-                            if(isDataNoContent(student, course, 3, 1) && isDataNoContent(student, course, 3, 2)) {
+                            if((isDataNoContent(student, course, 3, 1) && isDataClean(student, course, 3, 1)) && (isDataNoContent(student, course, 3, 2) && isDataClean(student, course,3, 2))) {
                                 if(total==3) {
                                     tempYear=1;
                                     tempStatus="REGULAR";
                                     return true;
                                 }
-                                if(isDataNoContent(student, course, 4, 1) && isDataNoContent(student, course, 4, 2)) {
+                                if((isDataNoContent(student, course, 4, 1) && isDataClean(student, course, 4, 1)) && (isDataNoContent(student, course, 4, 2) && isDataClean(student, course,4, 2))) {
                                     if(total==4) {
                                         tempYear=1;
                                         tempStatus="REGULAR";
                                         return true;
                                     }
-                                    if(isDataNoContent(student, course, 5, 1) && isDataNoContent(student, course, 5, 2)) {
+                                    if((isDataNoContent(student, course, 5, 1) && isDataClean(student, course,5, 1)) && (isDataNoContent(student, course, 5, 2) && isDataClean(student, course,5, 2))) {
                                         if(total==5) {
                                             tempYear=1;
                                             tempStatus="REGULAR";
@@ -175,25 +191,25 @@ public class EvaluationHelper {
                             tempStatus="REGULAR";
                             return true;
                         }
-                        if(isDataNoContent(student, course, 2, 1) && isDataNoContent(student, course, 2, 2)) {
+                        if((isDataNoContent(student, course, 2, 1) && isDataClean(student, course, 2, 1)) && isDataClean(student, course,2, 2)) {
                             if(total==2) {
                                 tempYear=2;
                                 tempStatus="REGULAR";
                                 return true;
                             }
-                            if(isDataNoContent(student, course, 3, 1) && isDataNoContent(student, course, 3, 2)) {
+                            if((isDataNoContent(student, course, 3, 1) && isDataClean(student, course, 3, 1)) && (isDataNoContent(student, course, 3, 2) && isDataClean(student, course,3, 2))) {
                                 if(total==3) {
                                     tempYear=2;
                                     tempStatus="REGULAR";
                                     return true;
                                 }
-                                if(isDataNoContent(student, course, 4, 1) && isDataNoContent(student, course, 4, 2)) {
+                                if((isDataNoContent(student, course, 4, 1) && isDataClean(student, course, 4, 1)) && (isDataNoContent(student, course, 4, 2) && isDataClean(student, course,4, 2))) {
                                     if(total==4) {
                                         tempYear=2;
                                         tempStatus="REGULAR";
                                         return true;
                                     }
-                                    if(isDataNoContent(student, course, 5, 1) && isDataNoContent(student, course, 5, 2)) {
+                                    if((isDataNoContent(student, course, 5, 1) && isDataClean(student, course,5, 1)) && (isDataNoContent(student, course, 5, 2) && isDataClean(student, course,5, 2))) {
                                         if(total==5) {
                                             tempYear=2;
                                             tempStatus="REGULAR";
@@ -219,13 +235,13 @@ public class EvaluationHelper {
                                 tempStatus="REGULAR";
                                 return true;
                             }
-                            if(isDataNoContent(student, course, 3, 1) && isDataNoContent(student, course, 3, 2)) {
+                            if((isDataNoContent(student, course, 3, 1) && isDataClean(student, course, 3, 1)) && isDataClean(student, course,3, 2)) {
                                 if(total==3) {
                                     tempYear=3;
                                     tempStatus="REGULAR";
                                     return true;
                                 }
-                                if(isDataNoContent(student, course, 4, 1) && isDataNoContent(student, course, 4, 2)) {
+                                if((isDataNoContent(student, course, 4, 1) && isDataClean(student, course, 4, 1)) && (isDataNoContent(student, course, 4, 2) && isDataClean(student, course,4, 2))) {
                                     if(total==4) {
                                         tempYear=3;
                                         tempStatus="REGULAR";
@@ -255,13 +271,13 @@ public class EvaluationHelper {
                                     tempStatus="REGULAR";
                                     return true;
                                 }
-                                if(isDataNoContent(student, course, 4, 1) && isDataNoContent(student, course, 4, 2)) {
+                                if((isDataNoContent(student, course, 4, 1) && isDataClean(student, course, 4, 1)) && isDataClean(student, course,4, 2)) {
                                     if(total==4) {
                                         tempYear=4;
                                         tempStatus="REGULAR";
                                         return true;
                                     }
-                                    if(isDataNoContent(student, course, 5, 1) && isDataNoContent(student, course, 5, 2)) {
+                                    if((isDataNoContent(student, course, 5, 1) && isDataClean(student, course,5, 1)) && (isDataNoContent(student, course, 5, 2) && isDataClean(student, course,5, 2))) {
                                         if(total==5) {
                                             tempYear=4;
                                             tempStatus="REGULAR";
@@ -298,7 +314,7 @@ public class EvaluationHelper {
                                         tempStatus="REGULAR";
                                         return true;
                                     }
-                                    if(isDataNoContent(student, course, 5, 1) && isDataNoContent(student, course, 5, 2)) {
+                                    if((isDataNoContent(student, course, 5, 1) && isDataClean(student, course,5, 1)) &&  isDataClean(student, course,5, 2)) {
                                         if(total==5) {
                                             tempYear=5;
                                             tempStatus="REGULAR";
@@ -510,6 +526,234 @@ public class EvaluationHelper {
         }
 
         return isValid;
+    }
+
+    private static boolean irregular1stSemester(Student student, Course course) {
+        final boolean isValid = false;
+        final int total = course.getTotalYear();
+        for(int i=1; i<=total; i++) {
+            switch(i) {
+                case 1:
+                    if(isDataNoContent(student, course, 1, 1) && isDataFailed(student, course, 1, 2)) {
+                        if(total==1) {
+                            tempYear=1;
+                            tempStatus="IRREGULAR";
+                            return true;
+                        }
+                        if(isDataNoContent(student, course, 2, 1) && isDataNoContent(student, course, 2, 2)) {
+                            if(total==2) {
+                                tempYear=1;
+                                tempStatus="IRREGULAR";
+                                return true;
+                            }
+                            if(isDataNoContent(student, course, 3, 1) && isDataNoContent(student, course, 3, 2)) {
+                                if(total==3) {
+                                    tempYear=1;
+                                    tempStatus="IRREGULAR";
+                                    return true;
+                                }
+                                if(isDataNoContent(student, course, 4, 1) && isDataNoContent(student, course, 4, 2)) {
+                                    if(total==4) {
+                                        tempYear=1;
+                                        tempStatus="IRREGULAR";
+                                        return true;
+                                    }
+                                    if(isDataNoContent(student, course, 5, 1) && isDataNoContent(student, course, 5, 2)) {
+                                        if(total==5) {
+                                            tempYear=1;
+                                            tempStatus="IRREGULAR";
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    break;
+                case 2:
+                    if(isDataComplete(student, course, 1, 1) && isDataComplete(student, course, 1, 2)) {
+                        if(total==1) {
+                            tempYear=2;
+                            tempStatus="IRREGULAR";
+                            return true;
+                        }
+                        if(isDataNoContent(student, course, 2, 1) && isDataFailed(student, course, 2, 2)) {
+                            if(total==2) {
+                                tempYear=2;
+                                tempStatus="IRREGULAR";
+                                return true;
+                            }
+                            if(isDataNoContent(student, course, 3, 1) && isDataNoContent(student, course, 3, 2)) {
+                                if(total==3) {
+                                    tempYear=2;
+                                    tempStatus="IRREGULAR";
+                                    return true;
+                                }
+                                if(isDataNoContent(student, course, 4, 1) && isDataNoContent(student, course, 4, 2)) {
+                                    if(total==4) {
+                                        tempYear=2;
+                                        tempStatus="IRREGULAR";
+                                        return true;
+                                    }
+                                    if(isDataNoContent(student, course, 5, 1) && isDataNoContent(student, course, 5, 2)) {
+                                        if(total==5) {
+                                            tempYear=2;
+                                            tempStatus="IRREGULAR";
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    break;
+                case 3:
+                    if(isDataComplete(student, course, 1, 1) && isDataComplete(student, course, 1, 2)) {
+                        if(total==1) {
+                            tempYear=3;
+                            tempStatus="IRREGULAR";
+                            return true;
+                        }
+                        if(isDataComplete(student, course, 2, 1) && isDataComplete(student, course, 2, 2)) {
+                            if(total==2) {
+                                tempYear=3;
+                                tempStatus="IRREGULAR";
+                                return true;
+                            }
+                            if(isDataNoContent(student, course, 3, 1) && isDataFailed(student, course, 3, 2)) {
+                                if(total==3) {
+                                    tempYear=3;
+                                    tempStatus="IRREGULAR";
+                                    return true;
+                                }
+                                if(isDataNoContent(student, course, 4, 1) && isDataNoContent(student, course, 4, 2)) {
+                                    if(total==4) {
+                                        tempYear=3;
+                                        tempStatus="IRREGULAR";
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 4:
+                    if(isDataComplete(student, course, 1, 1) && isDataComplete(student, course, 1, 2)) {
+                        if(total==1) {
+                            tempYear=4;
+                            tempStatus="IRREGULAR";
+                            return true;
+                        }
+                        if(isDataComplete(student, course, 2, 1) && isDataComplete(student, course, 2, 2)) {
+                            if(total==2) {
+                                tempYear=4;
+                                tempStatus="IRREGULAR";
+                                return true;
+                            }
+                            if(isDataComplete(student, course, 3, 1) && isDataComplete(student, course, 3, 2)) {
+                                if(total==3) {
+                                    tempYear=4;
+                                    tempStatus="IRREGULAR";
+                                    return true;
+                                }
+                                if(isDataNoContent(student, course, 4, 1) && isDataFailed(student, course, 4, 2)) {
+                                    if(total==4) {
+                                        tempYear=4;
+                                        tempStatus="IRREGULAR";
+                                        return true;
+                                    }
+                                    if(isDataNoContent(student, course, 5, 1) && isDataNoContent(student, course, 5, 2)) {
+                                        if(total==5) {
+                                            tempYear=4;
+                                            tempStatus="IRREGULAR";
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 5:
+                    if(isDataComplete(student, course, 1, 1) && isDataComplete(student, course, 1, 2)) {
+                        if(total==1) {
+                            tempYear=5;
+                            tempStatus="IRREGULAR";
+                            return true;
+                        }
+                        if(isDataComplete(student, course, 2, 1) && isDataComplete(student, course, 2, 2)) {
+                            if(total==2) {
+                                tempYear=5;
+                                tempStatus="IRREGULAR";
+                                return true;
+                            }
+                            if(isDataComplete(student, course, 3, 1) && isDataComplete(student, course, 3, 2)) {
+                                if(total==3) {
+                                    tempYear=5;
+                                    tempStatus="IRREGULAR";
+                                    return true;
+                                }
+                                if(isDataComplete(student, course, 4, 1) && isDataComplete(student, course, 4, 2)) {
+                                    if(total==4) {
+                                        tempYear=5;
+                                        tempStatus="IRREGULAR";
+                                        return true;
+                                    }
+                                    if(isDataNoContent(student, course, 5, 1) && isDataFailed(student, course, 5, 2)) {
+                                        if(total==5) {
+                                            tempYear=5;
+                                            tempStatus="IRREGULAR";
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+        return isValid;
+    }
+
+    private static void irregularYearAnalyzer(Student student, Course course) {
+        int year=1;
+        int n[] = new int[course.getTotalYear()];
+        for(int i=0; i<course.getTotalYear(); i++) {
+            if(!isDataNoContent(student, course, i+1, 1) && !isDataComplete(student, course, i+1, 1)) {
+                List<Subject> list = curriculumDao.getSubjectList(course.getId(), i+1, 1);
+                for (Subject subject : list) {
+                    boolean isTaken = creditSubjectDao.isTaken(subject.getId(), student.getId(), course.getId());
+                    if(isTaken) n[i]++;
+                }
+            }
+            if(!isDataNoContent(student, course, i+1, 2) && !isDataComplete(student, course, i+1, 2)) {
+                List<Subject> list = curriculumDao.getSubjectList(course.getId(), i+1, 2);
+                for (Subject subject : list) {
+                    boolean isTaken = creditSubjectDao.isTaken(subject.getId(), student.getId(), course.getId());
+                    if(isTaken) n[i]++;
+                }
+            }
+            if(isDataComplete(student, course, i+1, 1) && isDataComplete(student, course, i+1, 2)) {
+                year=i+1;
+            }
+        }
+
+        System.out.println("year:" + year);
+        for(int i=0; i<n.length-1; i++) {
+            System.out.println(n[i]);
+            if (n[i + 1] >= n[i]) {
+                if (i + 2 > year) year = i + 2;
+            } else {
+                n[i + 1] = n[i];
+            }
+        }
+
+        System.out.println("year:" + year);
+        tempYear=year;
+        tempStatus="IRREGULAR";
     }
 
     public static List<Subject> list() {

@@ -28,7 +28,7 @@ public class LoginStage extends Stage {
             URL url = ResourceHelper.resourceWithBasePath("fxml/login.fxml");
             Parent root = FXMLLoader.load(url);
             Scene scene = new Scene(root, 520, 390);
-            scene.getStylesheets().add(ResourceHelper.resourceWithBasePath("css/login.css").toString());
+            //scene.getStylesheets().add(ResourceHelper.resourceWithBasePath("css/login.css").toString());
 
             this.setTitle("Login");
             this.setScene(scene);

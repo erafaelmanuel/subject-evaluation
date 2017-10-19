@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Curriculum;
 import io.erm.ees.model.Student;
@@ -18,7 +19,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -27,8 +27,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import javax.swing.*;
 import java.net.URL;
@@ -648,7 +646,7 @@ public class EnrollmentController implements Initializable, AdvisingDoc.Creation
             List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
 
             for (StudentSubjectRecord record : recordList) {
-                io.erm.ees.model.Subject subject = new SubjectDaoImpl().getSubjectById(record.getSubjectId());
+                io.erm.ees.model.Subject subject = DbFactory.subjectFactory().getSubjectById(record.getSubjectId());
                 subjectList.add(subject);
             }
 

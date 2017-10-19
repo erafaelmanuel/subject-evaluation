@@ -1,7 +1,7 @@
 package io.erm.ees.test.util.document;
 
 import io.erm.ees.dao.impl.StudentDaoImpl;
-import io.erm.ees.dao.impl.SubjectDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Student;
 import io.erm.ees.model.Subject;
 import io.erm.ees.util.document.AdvisingDoc;
@@ -15,7 +15,7 @@ public class AdvisingDocTest implements AdvisingDoc.CreationListener {
 
     private AdvisingDoc advisingDoc;
     private final Student STUDENT = new StudentDaoImpl().getStudentById(20178925375L);
-    private final List<Subject> SUBJECT_LIST = new SubjectDaoImpl().getSubjectListBySearch("3");
+    private final List<Subject> SUBJECT_LIST = DbFactory.subjectFactory().getSubjectListBySearch("3");
 
     static final Logger LOGGER = Logger.getLogger(AdvisingDocTest.class.getSimpleName());
 

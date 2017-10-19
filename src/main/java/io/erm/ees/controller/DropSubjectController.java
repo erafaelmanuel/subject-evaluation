@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Curriculum;
 import io.erm.ees.model.Student;
@@ -648,7 +649,7 @@ public class DropSubjectController implements Initializable, AdvisingDoc.Creatio
             List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
 
             for (StudentSubjectRecord record : recordList) {
-                io.erm.ees.model.Subject subject = new SubjectDaoImpl().getSubjectById(record.getSubjectId());
+                io.erm.ees.model.Subject subject = DbFactory.subjectFactory().getSubjectById(record.getSubjectId());
                 subjectList.add(subject);
             }
 

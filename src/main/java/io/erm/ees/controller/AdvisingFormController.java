@@ -1,16 +1,16 @@
 package io.erm.ees.controller;
 
-import io.erm.ees.dao.CourseDao;
-import io.erm.ees.dao.SubjectDao;
-import io.erm.ees.dao.impl.CourseDaoImpl;
-import io.erm.ees.dao.impl.SubjectDaoImpl;
-import io.erm.ees.model.Student;
-import io.erm.ees.model.recursive.Subject;
-import io.erm.ees.util.ResourceHelper;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import io.erm.ees.dao.CourseDao;
+import io.erm.ees.dao.SubjectDao;
+import io.erm.ees.dao.impl.CourseDaoImpl;
+import io.erm.ees.helper.DbFactory;
+import io.erm.ees.model.Student;
+import io.erm.ees.model.recursive.Subject;
+import io.erm.ees.util.ResourceHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,6 +62,7 @@ public class AdvisingFormController implements Initializable {
     private final ObservableList<Subject> SUBJECT_LIST = FXCollections.observableArrayList();
 
     private final CourseDao courseDao = new CourseDaoImpl();
+    private final SubjectDao subjectDao = DbFactory.subjectFactory();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,8 +75,6 @@ public class AdvisingFormController implements Initializable {
     }
 
     private void initTable() {
-        final SubjectDao subjectDao = new SubjectDaoImpl();
-
         for (io.erm.ees.model.Subject s : subjectDao.getSubjectList())
             SUBJECT_LIST.add(new Subject(s.getId(), s.getName(), s.getDesc(), s.getUnit()));
 

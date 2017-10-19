@@ -1,6 +1,8 @@
 package io.erm.ees;
 
 import io.erm.ees.dao.conn.DBManager;
+import io.erm.ees.dao.impl.v2.DbSubject;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.UserType;
 import io.erm.ees.stage.*;
 import javafx.application.Application;
@@ -12,19 +14,23 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         TeacherStage.OnSignOutListener, AdminStage.OnSignOutListener, DeanStage.OnSignOutListener {
 
     private Stage primaryStage;
+    private final DbSubject dbSubject = new DbSubject();
 
     public static void main(String args[]) throws IOException {
         launch();
     }
 
     public void start(Stage primaryStage) throws Exception {
-
         this.primaryStage = primaryStage;
         DBManager dbManager = new DBManager();
         if (!dbManager.connect()) {
             showConfig(dbManager);
-        } else
+        } else {
+            dbSubject.open();
+
+            DbFactory.addSubjectFactory(dbSubject);
             showLogin(dbManager);
+        }
     }
 
     @Override

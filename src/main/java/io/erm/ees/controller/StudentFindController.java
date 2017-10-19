@@ -64,14 +64,20 @@ public class StudentFindController implements Initializable, StudentResultStage.
                     onSelect(studentList.get(0));
 
                 }
-                txStudentNumber.setPromptText("Enter a student name, number");
-                txStudentNumber.setStyle("-fx-prompt-text-fill:#000000");
+                txStudentNumber.setPromptText("Enter a student");
+                txStudentNumber.setStyle("-fx-prompt-text-fill:#d35400");
             } else {
                 txStudentNumber.setText("");
                 txStudentNumber.setPromptText("Invalid input");
-                txStudentNumber.setStyle("-fx-prompt-text-fill:#d35400");
+                txStudentNumber.setStyle("-fx-prompt-text-fill:#f39c12");
             }
         }
+    }
+
+
+    @FXML
+    protected void onActionEnter() {
+        onClickEnter();
     }
 
     @Override

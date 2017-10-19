@@ -237,7 +237,7 @@
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label prefHeight="25.0" prefWidth="34.0" text="Year : " />
-                              <JFXTextField />
+                              <JFXTextField fx:id="txToYear" />
                            </children>
                            <padding>
                               <Insets bottom="5.0" />

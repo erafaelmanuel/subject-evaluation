@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.*;
 import io.erm.ees.dao.impl.*;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Curriculum;
 import io.erm.ees.model.Student;
@@ -56,7 +57,7 @@ public class DeanWindowController implements Initializable {
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final SuggestionDao suggestionDao = new SuggestionDaoImpl();
-    private final SubjectDao subjectDao = new SubjectDaoImpl();
+    private final SubjectDao subjectDao = DbFactory.subjectFactory();
 
     private ObservableList<String> OBSERVABLE_LIST_CURRICULUM = FXCollections.observableArrayList();
     private final ObservableList<io.erm.ees.model.v2.Subject> SUBJECT_LIST = FXCollections.observableArrayList();

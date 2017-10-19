@@ -1,8 +1,12 @@
 package io.erm.ees.controller;
 
+import io.erm.ees.dao.CreditSubjectDao;
 import io.erm.ees.dao.DirtyDao;
+import io.erm.ees.dao.impl.CreditSubjectDaoImpl;
 import io.erm.ees.dao.impl.DirtyDaoImpl;
 import io.erm.ees.model.recursive.Mark;
+import io.erm.ees.model.v2.Record;
+import io.erm.ees.model.v2.Remark;
 import io.erm.ees.stage.GradeInputStage;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
@@ -42,14 +46,17 @@ public class GradeInputController implements Initializable {
     private Label lbFError;
 
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
+    private final CreditSubjectDao creditSubjectDao = new CreditSubjectDaoImpl();
 
-    private Mark mark;
+    private Record record;
 
     private long studentId;
 
     private String status = "INCOMPLETE";
 
     private boolean isValid = true;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -85,12 +92,12 @@ public class GradeInputController implements Initializable {
         });
     }
 
-    public void listening(Mark mark, long studentId) {
-        this.mark = mark;
+    public void listening(Record record, long studentId) {
+        this.record = record;
         this.studentId = studentId;
 
-        txMidterm.setText(mark.getMidterm() + "");
-        txFinalterm.setText(mark.getFinalterm() + "");
+        txMidterm.setText(record.getMidterm() + "");
+        txFinalterm.setText(record.getFinalterm() + "");
     }
 
     @FXML
@@ -118,7 +125,11 @@ public class GradeInputController implements Initializable {
 
             final double midterm = Double.parseDouble(txMidterm.getText().trim());
             final double finalterm = Double.parseDouble(txFinalterm.getText().trim());
-            dirtyDao.updateStudentRecord(mark.getSubjectId(), studentId, midterm, finalterm, status);
+
+            record.setMidterm(midterm);
+            record.setFinalterm(finalterm);
+            record.setRemark(status);
+            creditSubjectDao.updateRecordById(record.getId(), record);
 
             stage.callBack();
         } else {

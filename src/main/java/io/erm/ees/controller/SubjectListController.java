@@ -1,14 +1,14 @@
 package io.erm.ees.controller;
 
-import io.erm.ees.dao.SubjectDao;
-import io.erm.ees.dao.impl.SubjectDaoImpl;
-import io.erm.ees.model.recursive.Subject;
-import io.erm.ees.stage.SubjectListStage;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import io.erm.ees.dao.SubjectDao;
+import io.erm.ees.helper.DbFactory;
+import io.erm.ees.model.recursive.Subject;
+import io.erm.ees.stage.SubjectListStage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +30,7 @@ public class SubjectListController implements Initializable {
 
     private final ObservableList<Subject> SUBJECT_LIST = FXCollections.observableArrayList();
 
-    private final SubjectDao subjectDao = new SubjectDaoImpl();
+    private final SubjectDao subjectDao = DbFactory.subjectFactory();
 
     @FXML
     private JFXTextField txSearch;

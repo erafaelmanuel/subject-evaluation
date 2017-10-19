@@ -1,19 +1,19 @@
 package io.erm.ees.controller;
 
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.CourseDao;
 import io.erm.ees.dao.CurriculumDao;
 import io.erm.ees.dao.SubjectDao;
 import io.erm.ees.dao.impl.CourseDaoImpl;
 import io.erm.ees.dao.impl.CurriculumDaoImpl;
-import io.erm.ees.dao.impl.SubjectDaoImpl;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Curriculum;
 import io.erm.ees.stage.CurriculumStage;
 import io.erm.ees.stage.SubjectInputStage;
 import io.erm.ees.stage.SubjectListStage;
 import io.erm.ees.util.ResourceHelper;
-import com.jfoenix.controls.*;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,7 +71,7 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
     @FXML
     private JFXTreeTableView<io.erm.ees.model.recursive.Subject> tblSList;
 
-    private final SubjectDao subjectDao = new SubjectDaoImpl();
+    private final SubjectDao subjectDao = DbFactory.subjectFactory();
     private final CourseDao courseDao = new CourseDaoImpl();
     private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
 

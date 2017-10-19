@@ -3,6 +3,7 @@ package io.erm.ees.dao.impl;
 import io.erm.ees.dao.DirtyDao;
 import io.erm.ees.dao.conn.DBManager;
 import io.erm.ees.dao.exception.NoResultFoundException;
+import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.model.Subject;
 
@@ -219,7 +220,7 @@ public class DirtyDaoImpl implements DirtyDao {
                 pst.setLong(1, subjectId);
                 ResultSet rs = pst.executeQuery();
                 while (rs.next()) {
-                    Subject subject = new SubjectDaoImpl().getSubjectById(rs.getLong(1));
+                    Subject subject = DbFactory.subjectFactory().getSubjectById(rs.getLong(1));
                     subjectList.add(subject);
                 }
                 dbManager.close();

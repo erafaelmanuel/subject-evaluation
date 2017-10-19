@@ -1,5 +1,7 @@
 package io.erm.ees.model.v2;
 
+import io.erm.ees.dao.SubjectDao;
+
 public class Record {
 
     private long id;
@@ -10,6 +12,7 @@ public class Record {
     private long subjectId;
     private long academicId;
     private long studentId;
+    private SubjectDao subjectDao;
 
     public Record() {
         super();
@@ -107,6 +110,24 @@ public class Record {
 
     public void setStudentId(long studentId) {
         this.studentId = studentId;
+    }
+
+    public void setSubjectDao(SubjectDao subjectDao) {
+        this.subjectDao=subjectDao;
+    }
+
+    public String getSubjectName() {
+        String name="Unspecified";
+        if(subjectDao!=null)
+            name=subjectDao.getSubjectById(subjectId).getName();
+        return name;
+    }
+
+    public String getSubjectDesc() {
+        String desc="Unspecified";
+        if(subjectDao!=null)
+            desc=subjectDao.getSubjectById(subjectId).getDesc();
+        return desc;
     }
 
     @Override

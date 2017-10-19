@@ -297,6 +297,42 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     }
 
     @Override
+    public List<Record> getRecordListByMark(long studentId, String remark) {
+        List<Record> recordList = new ArrayList<>();
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE studentId=? AND remark=?";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, studentId);
+                pst.setString(2, remark);
+                ResultSet rs = pst.executeQuery();
+
+                while (rs.next()) {
+                    Record record = new Record();
+                    record.setId(rs.getLong(1));
+                    record.setMidterm(rs.getDouble(2));
+                    record.setFinalterm(rs.getDouble(3));
+                    record.setDate(rs.getString(4));
+                    record.setRemark(rs.getString(5));
+                    record.setSubjectId(rs.getLong(6));
+                    record.setAcademicId(rs.getLong(7));
+                    record.setStudentId(rs.getLong(8));
+                    recordList.add(record);
+                }
+                DB_MANAGER.close();
+                return recordList;
+            }
+            throw new NoResultFoundException("No result found on the user detail table");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return recordList;
+        }
+    }
+
+    @Override
     public boolean isSubjectPassed(long subjectId, long studentId) {
         try {
             final Remark remark = Remark.PASSED;
@@ -308,6 +344,33 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
                 pst.setLong(1, subjectId);
                 pst.setLong(2, studentId);
                 pst.setString(3, remark.getCode());
+                ResultSet rs = pst.executeQuery();
+
+                final boolean result = rs.next();
+                DB_MANAGER.close();
+                return result;
+            }
+            throw new SQLException("Connection Problem");
+        } catch (SQLException e) {
+            LOGGER.warning(e.getMessage());
+            DB_MANAGER.close();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isSubjectNotPassed(long subjectId, long studentId) {
+        try {
+            if (DB_MANAGER.connect()) {
+                Connection connection = DB_MANAGER.getConnection();
+                String sql = "SELECT * FROM tblcreditsubject WHERE subjectId=? AND studentId=? AND remark=(? OR ? OR ?) LIMIT 1";
+
+                PreparedStatement pst = connection.prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                pst.setString(3, Remark.FAILED.getCode());
+                pst.setString(4, Remark.DROPPED.getCode());
+                pst.setString(5, Remark.INCOMPLETE.getCode());
                 ResultSet rs = pst.executeQuery();
 
                 final boolean result = rs.next();

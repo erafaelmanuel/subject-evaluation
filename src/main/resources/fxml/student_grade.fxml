@@ -108,10 +108,12 @@
                   <AnchorPane prefHeight="42.0" prefWidth="884.0" style="-fx-background-color: #bdc3c7;" BorderPane.alignment="CENTER">
                      <children>
                         <JFXButton buttonType="RAISED" layoutX="803.0" layoutY="7.0" onAction="#onClickRefresh" prefHeight="18.0" prefWidth="67.0" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="Refresh" textFill="WHITE" />
-                        <Label layoutX="238.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" text="Year / Semester :" />
-                        <JFXComboBox fx:id="cbYearSem" layoutX="331.0" layoutY="7.0" onAction="#onChoose" prefHeight="25.0" prefWidth="186.0" />
+                        <Label layoutX="521.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" text="Year / Semester :" visible="false" />
+                        <JFXComboBox fx:id="cbYearSem" layoutX="614.0" layoutY="7.0" onAction="#onChoose" prefHeight="25.0" prefWidth="186.0" visible="false" />
                         <JFXTextField fx:id="txSearch" layoutX="28.0" layoutY="7.0" onAction="#onActionSearch" promptText="Enter a student number" />
                         <JFXButton buttonType="RAISED" layoutX="168.0" layoutY="8.0" onAction="#onClickSearch" prefHeight="25.0" prefWidth="52.0" ripplerFill="WHITE" style="-fx-background-color: #9b59b6;" text="Search" textFill="WHITE" />
+                        <JFXComboBox fx:id="cbAY" layoutX="357.0" layoutY="7.0" onAction="#onChooseAcademicYear" prefHeight="25.0" prefWidth="230.0" />
+                        <Label layoutX="265.0" layoutY="13.0" text="Academic Year : " />
                      </children>
                   </AnchorPane>
                </top>
