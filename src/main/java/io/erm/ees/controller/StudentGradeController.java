@@ -99,8 +99,6 @@ public class StudentGradeController implements Initializable, StudentResultStage
     private final List<Record> RECORD_LIST = new ArrayList<>();
     private final List<AcademicYear> ACADEMIC_YEAR_LIST = new ArrayList<>();
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Image image = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
@@ -161,16 +159,36 @@ public class StudentGradeController implements Initializable, StudentResultStage
         try {
             final int index = cbAY.getSelectionModel().getSelectedIndex();
             if(index > -1) {
-                new Thread(() -> {
+                //new Thread(() -> {
                     final long aId = ACADEMIC_YEAR_LIST.get(index).getId();
                     RECORD_LIST.clear();
                     RECORD_LIST.addAll(creditSubjectDao.getRecordList(aId, student.getId()));
                     loadRecord(RECORD_LIST);
-                }).start();
+                //}).start();
             }
         } catch (Exception e) {
             new Thread(()->JOptionPane.showMessageDialog(null, "Please try again"));
         }
+    }
+
+    @FXML
+    private void onClickNext() {
+        final int index = cbAY.getSelectionModel().getSelectedIndex();
+        final int max = OBSERVABLE_LIST_ACADEMIC.size();
+        if(index < max-1 && index > -1) {
+            cbAY.getSelectionModel().select(index+1);
+            onChooseAcademicYear();
+        }
+    }
+
+    @FXML
+    private void onClickPrevious() {
+        final int index = cbAY.getSelectionModel().getSelectedIndex();
+        if(index > 0) {
+            cbAY.getSelectionModel().select(index-1);
+            onChooseAcademicYear();
+        }
+
     }
 
     @FXML
@@ -251,31 +269,37 @@ public class StudentGradeController implements Initializable, StudentResultStage
             sName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
             sName.setResizable(false);
             sName.setPrefWidth(200);
+            sName.setSortable(false);
 
             TableColumn<Object, String> sDesc = new TableColumn<>("Description");
             sDesc.setCellValueFactory(new PropertyValueFactory<>("subjectDesc"));
             sDesc.setResizable(false);
             sDesc.setPrefWidth(300);
+            sDesc.setSortable(false);
 
             TableColumn<Object, String> date = new TableColumn<>("Date");
             date.setCellValueFactory(new PropertyValueFactory<>("date"));
             date.setResizable(false);
             date.setPrefWidth(120);
+            date.setSortable(false);
 
             TableColumn<Object, String> midterm = new TableColumn<>("Midterm");
             midterm.setCellValueFactory(new PropertyValueFactory<>("midterm"));
             midterm.setResizable(false);
             midterm.setPrefWidth(80);
+            midterm.setSortable(false);
 
             TableColumn<Object, String> finalterm = new TableColumn<>("Finalterm");
             finalterm.setCellValueFactory(new PropertyValueFactory<>("finalterm"));
             finalterm.setResizable(false);
             finalterm.setPrefWidth(80);
+            finalterm.setSortable(false);
 
             TableColumn<Object, String> mark = new TableColumn<>("Remark");
             mark.setCellValueFactory(new PropertyValueFactory<>("remark"));
             mark.setResizable(false);
             mark.setPrefWidth(80);
+            mark.setSortable(false);
 
             tblRecord.getColumns().add(sName);
             tblRecord.getColumns().add(sDesc);
@@ -287,13 +311,13 @@ public class StudentGradeController implements Initializable, StudentResultStage
     }
 
     private void loadRecord(List<Record> recordList) {
+        OBSERVABLE_LIST_RECORD.clear();
+        OBSERVABLE_LIST_RECORD.addAll(recordList);
+        for(Record record : recordList) {
+            record.setSubjectDao(subjectDao);
+            OBSERVABLE_LIST_RECORD.add(record);
+        }
         Platform.runLater(()-> {
-            OBSERVABLE_LIST_RECORD.clear();
-            OBSERVABLE_LIST_RECORD.addAll(recordList);
-            for(Record record : recordList) {
-                record.setSubjectDao(subjectDao);
-                OBSERVABLE_LIST_RECORD.add(record);
-            }
             tblRecord.setItems(OBSERVABLE_LIST_RECORD);
         });
     }

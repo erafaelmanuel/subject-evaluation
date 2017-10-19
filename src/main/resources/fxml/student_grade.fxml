@@ -125,14 +125,14 @@
             </TableView>
             <BorderPane prefHeight="54.0" prefWidth="399.0" style="-fx-background-color: #bdc3c7;">
                <right>
-                  <JFXButton buttonType="RAISED" prefHeight="31.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Next" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <JFXButton buttonType="RAISED" onAction="#onClickNext" prefHeight="31.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Next" textFill="WHITE" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>
                   </JFXButton>
                </right>
                <left>
-                  <JFXButton buttonType="RAISED" prefHeight="29.0" prefWidth="109.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Previous" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <JFXButton buttonType="RAISED" onAction="#onClickPrevious" prefHeight="29.0" prefWidth="109.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Previous" textFill="WHITE" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>

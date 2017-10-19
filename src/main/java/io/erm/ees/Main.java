@@ -6,6 +6,7 @@ import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.UserType;
 import io.erm.ees.stage.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -82,7 +83,8 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
     private void showAdminWindow() {
         AdminStage adminStage = new AdminStage();
         adminStage.setListener(this);
-        adminStage.show();
+        Platform.runLater(adminStage::show);
+        adminStage.getController().listener();
     }
 
     private void showTeacherWindow() {

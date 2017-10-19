@@ -7,16 +7,12 @@ import io.erm.ees.dao.impl.*;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.helper.EvaluationHelper;
 import io.erm.ees.helper.SectionHelper;
-import io.erm.ees.model.Course;
-import io.erm.ees.model.Section;
-import io.erm.ees.model.Student;
-import io.erm.ees.model.StudentSubjectRecord;
+import io.erm.ees.model.*;
 import io.erm.ees.model.recursive.Subject;
 import io.erm.ees.model.v2.AcademicYear;
-import io.erm.ees.model.v2.Record;
-import io.erm.ees.model.v2.Remark;
 import io.erm.ees.stage.AdvisingFormStage;
-import io.erm.ees.stage.EvaluationStage;
+import io.erm.ees.stage.EnrollmentStage;
+import io.erm.ees.util.AssessmentHelper;
 import io.erm.ees.util.ResourceHelper;
 import io.erm.ees.util.document.AdvisingDoc;
 import javafx.application.Platform;
@@ -39,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class EvaluationController implements Initializable, AdvisingDoc.CreationListener {
+public class EvaluationAddController implements Initializable, AdvisingDoc.CreationListener {
 
     @FXML
     private JFXTreeTableView<Subject> tblAbSubject;
@@ -54,13 +50,13 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     private JFXComboBox<String> cbClass;
 
     @FXML
-    private JFXTextField txStudentNo;
+    private JFXComboBox<String> cbMaxYear;
 
     @FXML
-    private JFXTextField txCourse;
+    private Label lbStudentNo;
 
     @FXML
-    private JFXTextField txAYS;
+    private Label lbCourse;
 
     @FXML
     private JFXTextField txYear;
@@ -70,9 +66,6 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
 
     @FXML
     private JFXTextField txFullName;
-
-    @FXML
-    private JFXComboBox<String> cbCurSemester;
 
     @FXML
     private Label lbAbUnit;
@@ -88,9 +81,6 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
 
     @FXML
     private VBox pnScreen;
-
-    @FXML
-    private JFXTextField txToYear;
 
     private final ObservableList<Subject> ENROLL_SUBJECT_LIST = FXCollections.observableArrayList();
     private final ObservableList<Subject> AVAILABLE_SUBJECT_LIST = FXCollections.observableArrayList();
@@ -123,35 +113,23 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
         cbClass.getItems().add("SUMMER CLASSES");
         cbClass.getSelectionModel().select(0);
 
-        cbCurSemester.getItems().add("1ST SEMESTER");
-        cbCurSemester.getItems().add("2ND SEMESTER");
-        cbCurSemester.getSelectionModel().select(0);
-
         Image logoLoading = new Image(ResourceHelper.resourceWithBasePath("image/loading.gif").toString());
         imgLoading.setImage(logoLoading);
     }
 
     @FXML
-    protected void onClickEvaluate(ActionEvent event) {
+    protected void onClickEnroll(ActionEvent event) {
+
+        //Delete the enrolled subject
+        dirtyDao.deleteStudentRecord(student.getId(), "ONGOING");
+
         if (totalYeUnit >= 1 && totalYeUnit <= 30) {
-            final int calYear = sectionDao.getSectionById(student.getSectionId()).getYear();
-            final AcademicYear academicYear = academicYearDao.getAcademicYearOpen(course.getId(), calYear);
-
             for (Subject s : ENROLL_SUBJECT_LIST) {
-                Record record = new Record();
+                StudentSubjectRecord record = new StudentSubjectRecord();
                 record.setDate(new Date().toString());
-                record.setRemark(Remark.NOTSET.getCode());
-                record.setAcademicId(academicYear.getId());
-                record.setSubjectId(s.getId());
-                record.setStudentId(student.getId());
-                creditSubjectDao.addRecord(s.getId(), academicYear.getId(), student.getId(), record);
+                record.setMark("ONGOING");
+                dirtyDao.addStudentRecord(record, s.getId(), student.getId());
             }
-            if(section.getYear() > sectionDao.getSectionById(student.getSectionId()).getYear()) {
-                final long sectionId = sectionDao.addSection(section).getId();
-                student.setSectionId(sectionId);
-            }
-
-            studentDao.updateStudentById(student.getId(), student);
         } else if (totalYeUnit < 1) {
             Platform.runLater(() ->
                     JOptionPane.showMessageDialog(null, "Please add a subject to enroll."));
@@ -161,7 +139,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
                     JOptionPane.showMessageDialog(null, "The limit of unit is exceeded."));
             return;
         }
-        EvaluationStage stage = (EvaluationStage) ((Node) event.getSource()).getScene().getWindow();
+        EnrollmentStage stage = (EnrollmentStage) ((Node) event.getSource()).getScene().getWindow();
         stage.setClose();
 
         new Thread(() -> {
@@ -174,7 +152,7 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
 
         new Thread(() -> Platform.runLater(() -> {
             AdvisingFormStage advisingFormStage = new AdvisingFormStage();
-            Platform.runLater(advisingFormStage::showAndWait);
+            Platform.runLater(() -> advisingFormStage.showAndWait());
             advisingFormStage.getController().listener(student, ENROLL_SUBJECT_LIST);
         })).start();
     }
@@ -183,57 +161,31 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     protected void onChooseFilter() {
         final int index = cbAbSubject.getSelectionModel().getSelectedIndex();
         final List<io.erm.ees.model.Subject> list = new ArrayList<>();
+        final List<io.erm.ees.model.Subject> tempList = new ArrayList<>();
         if(index == -1) return;
 
         showLoading();
         new Thread(() -> {
             if (index == 0) {
                 final int semester = academicYear.getSemester();
-                EvaluationHelper.evaluateAll(student, semester, list);
+                EvaluationHelper.evaluateAll(student, semester, tempList);
+                for(io.erm.ees.model.Subject subject : tempList) {
+                    if(!creditSubjectDao.isSubjectNotSet(subject.getId(), student.getId())) list.add(subject);
+                }
+
                 loadAbItem(list);
                 hideLoading();
             } else if (index <= course.getTotalYear()) {
                 final int year = cbAbSubject.getSelectionModel().getSelectedIndex();
                 final int semester = academicYear.getSemester();
-                EvaluationHelper.evaluate(student, year, semester, list);
-
+                EvaluationHelper.evaluate(student, year, semester, tempList);
+                for(io.erm.ees.model.Subject subject : tempList) {
+                    if(!creditSubjectDao.isSubjectNotSet(subject.getId(), student.getId())) list.add(subject);
+                }
                 loadAbItem(list);
                 hideLoading();
             }
         }).start();
-    }
-
-    @FXML
-    protected void onChooseSemester() {
-        clearYe();
-        final int index = cbAbSubject.getSelectionModel().getSelectedIndex();
-        final List<io.erm.ees.model.Subject> list = new ArrayList<>();
-        if(index == -1) return;
-
-        showLoading();
-        if (index == 0) {
-            new Thread(() -> {
-                final int year = course.getTotalYear();
-                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
-                EvaluationHelper.evaluate(student, year, semester, list);
-
-                loadAbItem(list);
-                hideLoading();
-
-                Platform.runLater(() -> txStatus.setText(student.getStatus()));
-            }).start();
-        } else if (index <= course.getTotalYear()) {
-            new Thread(() -> {
-                final int year = cbAbSubject.getSelectionModel().getSelectedIndex();
-                final int semester = cbCurSemester.getSelectionModel().getSelectedIndex() + 1;
-                EvaluationHelper.evaluate(student, year, semester, list);
-
-                loadAbItem(list);
-                hideLoading();
-
-                Platform.runLater(() -> txStatus.setText(student.getStatus()));
-            }).start();
-        }
     }
 
     @FXML
@@ -292,25 +244,25 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
         Platform.runLater(() -> {
             JFXTreeTableColumn<Subject, Long> idCol = new JFXTreeTableColumn<>("ID");
             idCol.setResizable(false);
-            idCol.setPrefWidth(80);
+            idCol.setPrefWidth(75);
             idCol.setCellValueFactory(param -> param.getValue().getValue().idProperty().asObject());
             idCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> nameCol = new JFXTreeTableColumn<>("Subject");
             nameCol.setResizable(false);
-            nameCol.setPrefWidth(130);
+            nameCol.setPrefWidth(105);
             nameCol.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
             nameCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> descCol = new JFXTreeTableColumn<>("Description");
             descCol.setResizable(false);
-            descCol.setPrefWidth(210);
+            descCol.setPrefWidth(195);
             descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
             descCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> unitCol = new JFXTreeTableColumn<>("Unit");
             unitCol.setResizable(false);
-            unitCol.setPrefWidth(80);
+            unitCol.setPrefWidth(75);
             unitCol.setCellValueFactory(param -> param.getValue().getValue().unitDisplayProperty());
             unitCol.setSortable(false);
 
@@ -452,27 +404,26 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
             course = courseDao.getCourseById(student.getCourseId());
             section = sectionDao.getSectionById(student.getSectionId());
             academicYear = academicYearDao.getAcademicYearOpen(course.getId());
-            student.setStatus("REGULAR");
 
             final int semester = academicYear.getSemester();
             final int currentYear=section.getYear();
 
-            EvaluationHelper.init(student, section, semester);
+            EvaluationHelper.init(student, section, 2);
 
             Platform.runLater(() -> {
                 clearAb();
                 initAbSubject();
 
-                txAYS.setText(academicYear.getName() + "  ( " + (academicYear.getSemester() == 1 ? "1ST SEMESTER )" :
-                        academicYear.getSemester() == 2 ? "2ND SEMESTER )" : "0/3RD SEMESTER )"));
-
-                txStudentNo.setText(student.getStudentNumber() + "");
-                txCourse.setText(courseDao.getCourseById(student.getCourseId()).getDesc());
-                txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
-                        student.getMiddleName().substring(0, 1)).toUpperCase());
-                txYear.setText(SectionHelper.format(currentYear));
-                txToYear.setText(SectionHelper.format(section.getYear()));
-                txStatus.setText(student.getStatus());
+//                txAYS.setText(academicYear.getName() + "  ( " + (academicYear.getSemester() == 1 ? "1ST SEMESTER )" :
+//                        academicYear.getSemester() == 2 ? "2ND SEMESTER )" : "0/3RD SEMESTER )"));
+//
+//                txStudentNo.setText(student.getStudentNumber() + "");
+//                txCourse.setText(courseDao.getCourseById(student.getCourseId()).getDesc());
+//                txFullName.setText(String.format("%s, %s %s.", student.getLastName(), student.getFirstName(),
+//                        student.getMiddleName().substring(0, 1)).toUpperCase());
+//                txYear.setText(SectionHelper.format(currentYear));
+//                txToYear.setText(SectionHelper.format(section.getYear()));
+//                txStatus.setText(student.getStatus());
 
                 int totalYear = course.getTotalYear();
                 if (totalYear <= 4) {
@@ -641,7 +592,6 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
     }
 
     private void loadAbItem(List<io.erm.ees.model.Subject> subjectList) {
-
         //reset the total unit
         totalAbUnit = 0;
 
@@ -666,25 +616,25 @@ public class EvaluationController implements Initializable, AdvisingDoc.Creation
         Platform.runLater(() -> {
             JFXTreeTableColumn<Subject, Long> idCol = new JFXTreeTableColumn<>("ID");
             idCol.setResizable(false);
-            idCol.setPrefWidth(80);
+            idCol.setPrefWidth(75);
             idCol.setCellValueFactory(param -> param.getValue().getValue().idProperty().asObject());
             idCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> nameCol = new JFXTreeTableColumn<>("Subject");
             nameCol.setResizable(false);
-            nameCol.setPrefWidth(130);
+            nameCol.setPrefWidth(105);
             nameCol.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
             nameCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> descCol = new JFXTreeTableColumn<>("Description");
             descCol.setResizable(false);
-            descCol.setPrefWidth(210);
+            descCol.setPrefWidth(195);
             descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
             descCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> unitCol = new JFXTreeTableColumn<>("Unit");
             unitCol.setResizable(false);
-            unitCol.setPrefWidth(80);
+            unitCol.setPrefWidth(75);
             unitCol.setCellValueFactory(param -> param.getValue().getValue().unitDisplayProperty());
             unitCol.setSortable(false);
 

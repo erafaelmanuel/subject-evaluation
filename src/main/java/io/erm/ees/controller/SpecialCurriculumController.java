@@ -193,16 +193,19 @@ public class SpecialCurriculumController implements Initializable {
         idCol.setResizable(false);
         idCol.setPrefWidth(80);
         idCol.setCellValueFactory(param -> param.getValue().getValue().idProperty().asObject());
+        idCol.setSortable(false);
 
         JFXTreeTableColumn<Subject, String> nameCol = new JFXTreeTableColumn<>("Subject");
         nameCol.setResizable(false);
         nameCol.setPrefWidth(130);
         nameCol.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
+        nameCol.setSortable(false);
 
         JFXTreeTableColumn<Subject, Integer> unitCol = new JFXTreeTableColumn<>("Unit");
         unitCol.setResizable(false);
         unitCol.setPrefWidth(80);
         unitCol.setCellValueFactory(param -> param.getValue().getValue().unitProperty().asObject());
+        unitCol.setSortable(false);
 
         tblFrom.getColumns().add(idCol);
         tblFrom.getColumns().add(nameCol);
@@ -219,16 +222,19 @@ public class SpecialCurriculumController implements Initializable {
         idCol.setResizable(false);
         idCol.setPrefWidth(80);
         idCol.setCellValueFactory(param -> param.getValue().getValue().idProperty().asObject());
+        idCol.setSortable(false);
 
         JFXTreeTableColumn<Subject, String> nameCol = new JFXTreeTableColumn<>("Subject");
         nameCol.setResizable(false);
         nameCol.setPrefWidth(130);
         nameCol.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
+        nameCol.setSortable(false);
 
         JFXTreeTableColumn<Subject, Integer> unitCol = new JFXTreeTableColumn<>("Unit");
         unitCol.setResizable(false);
         unitCol.setPrefWidth(80);
         unitCol.setCellValueFactory(param -> param.getValue().getValue().unitProperty().asObject());
+        unitCol.setSortable(false);
 
         tblTo.getColumns().add(idCol);
         tblTo.getColumns().add(nameCol);

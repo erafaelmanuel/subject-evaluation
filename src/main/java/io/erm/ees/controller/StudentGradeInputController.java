@@ -181,31 +181,37 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
             idCol.setResizable(false);
             idCol.setPrefWidth(80);
             idCol.setCellValueFactory(param -> param.getValue().getValue().subjectIdProperty().asObject());
+            idCol.setSortable(false);
 
             JFXTreeTableColumn<Mark, String> nameCol = new JFXTreeTableColumn<>("Subject");
             nameCol.setResizable(false);
             nameCol.setPrefWidth(130);
             nameCol.setCellValueFactory(param -> param.getValue().getValue().subjectNameProperty());
+            nameCol.setSortable(false);
 
             JFXTreeTableColumn<Mark, String> descCol = new JFXTreeTableColumn<>("Description");
             descCol.setResizable(false);
             descCol.setPrefWidth(210);
             descCol.setCellValueFactory(param -> param.getValue().getValue().subjectDescProperty());
+            descCol.setSortable(false);
 
             JFXTreeTableColumn<Mark, Double> midCol = new JFXTreeTableColumn<>("Midterm");
             midCol.setResizable(false);
             midCol.setPrefWidth(80);
             midCol.setCellValueFactory(param -> param.getValue().getValue().midtermProperty().asObject());
+            midCol.setSortable(false);
 
             JFXTreeTableColumn<Mark, Double> finalCol = new JFXTreeTableColumn<>("Finalterm");
             finalCol.setResizable(false);
             finalCol.setPrefWidth(80);
             finalCol.setCellValueFactory(param -> param.getValue().getValue().finaltermProperty().asObject());
+            finalCol.setSortable(false);
 
             JFXTreeTableColumn<Mark, String> markCol = new JFXTreeTableColumn<>("Mark");
             markCol.setResizable(false);
             markCol.setPrefWidth(100);
             markCol.setCellValueFactory(param -> param.getValue().getValue().markProperty());
+            markCol.setSortable(false);
 
             tblMark.getColumns().add(idCol);
             tblMark.getColumns().add(nameCol);

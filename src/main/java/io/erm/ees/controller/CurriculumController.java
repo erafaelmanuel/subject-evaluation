@@ -322,21 +322,25 @@ public class CurriculumController implements Initializable, SubjectListStage.OnA
         idCol.setResizable(false);
         idCol.setPrefWidth(80);
         idCol.setCellValueFactory(param -> param.getValue().getValue().idProperty().asObject());
+        idCol.setSortable(false);
 
         JFXTreeTableColumn<io.erm.ees.model.recursive.Subject, String> nameCol = new JFXTreeTableColumn<>("Subject");
         nameCol.setResizable(false);
         nameCol.setPrefWidth(130);
         nameCol.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
+        nameCol.setSortable(false);
 
         JFXTreeTableColumn<io.erm.ees.model.recursive.Subject, String> descCol = new JFXTreeTableColumn<>("Description");
         descCol.setResizable(false);
         descCol.setPrefWidth(210);
         descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
+        descCol.setSortable(false);
 
         JFXTreeTableColumn<io.erm.ees.model.recursive.Subject, String> unitCol = new JFXTreeTableColumn<>("Unit");
         unitCol.setResizable(false);
         unitCol.setPrefWidth(80);
         unitCol.setCellValueFactory(param -> param.getValue().getValue().unitDisplayProperty());
+        unitCol.setSortable(false);
 
         tblSList.getColumns().add(idCol);
         tblSList.getColumns().add(nameCol);

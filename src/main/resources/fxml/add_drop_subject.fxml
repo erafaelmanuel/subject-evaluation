@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -23,121 +22,24 @@
          <top>
             <BorderPane prefHeight="71.0" prefWidth="600.0" style="-fx-background-color: #bdc3c7;" BorderPane.alignment="CENTER">
                <right>
-                  <VBox alignment="CENTER" prefHeight="82.0" prefWidth="159.0" BorderPane.alignment="TOP_LEFT">
-                     <children>
-                        <JFXComboBox fx:id="cbCurSemester" onAction="#onChooseSemester" prefHeight="25.0" prefWidth="134.0" promptText="Semester" />
-                        <JFXButton buttonType="RAISED" onAction="#onClickEnroll" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #8e44ad;" text="Save" textFill="WHITE">
-                           <VBox.margin>
-                              <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                     </children>
-                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="82.0" prefWidth="159.0" BorderPane.alignment="TOP_LEFT" />
                </right>
-               <left>
-                  <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="628.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <HBox.margin>
-                              <Insets right="16.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <VBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="593.0">
-                           <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label prefHeight="17.0" prefWidth="76.0" text="Student No. : " />
-                                    <Label fx:id="lbStudentNo" text="/-/">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label prefHeight="17.0" prefWidth="47.0" text="Course : " />
-                                    <Label fx:id="lbCourse" text="-/-">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-               </left>
                <top>
                   <BorderPane prefHeight="78.0" prefWidth="700.0" style="-fx-background-color: #2980b9;" BorderPane.alignment="CENTER">
                      <center>
                         <VBox prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #ecf0f1;" BorderPane.alignment="CENTER">
                            <children>
                               <VBox alignment="CENTER" prefHeight="36.0" prefWidth="900.0" style="-fx-background-color: #2980b9;" />
+                              <JFXButton buttonType="RAISED" onAction="#onClickEnroll" prefHeight="25.0" prefWidth="153.0" ripplerFill="WHITE" style="-fx-background-color: #8e44ad;" text="Save" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                                 </VBox.margin>
+                              </JFXButton>
                            </children>
                         </VBox>
                      </center>
                   </BorderPane>
                </top>
-               <bottom>
-                  <BorderPane prefHeight="55.0" prefWidth="700.0" style="-fx-background-color: #ecf0f1;" BorderPane.alignment="CENTER">
-                     <top>
-                        <VBox prefHeight="47.0" prefWidth="700.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <HBox prefHeight="7.0" prefWidth="900.0">
-                                 <children>
-                                    <Label text="FULL NAME  :">
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <JFXTextField fx:id="txFullName" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Name of student" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets left="16.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label text="YEAR  :           ">
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <JFXTextField fx:id="txYear" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Year of student" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets left="16.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label text="STATUS :        ">
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <JFXTextField fx:id="txStatus" editable="false" prefHeight="25.0" prefWidth="150.0" promptText="Status of student" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets left="16.0" />
-                                 </VBox.margin>
-                              </HBox>
-                           </children>
-                           <BorderPane.margin>
-                              <Insets top="10.0" />
-                           </BorderPane.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="50.0" />
-                           </padding>
-                        </VBox>
-                     </top>
-                  </BorderPane>
-               </bottom>
             </BorderPane>
          </top>
          <center>
@@ -152,7 +54,7 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label text="AVAILABLE SUBJECT :">
+                        <Label text="* YOUR ADDING :">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
@@ -191,12 +93,12 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="+ Add" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="BLACK" style="-fx-background-color: #7f8c8d;" text="+ Add" textFill="#202020">
                                  <FlowPane.margin>
                                     <Insets left="20.0" />
                                  </FlowPane.margin>
                               </JFXButton>
-                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickAddAll" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="+ Add All" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickAddAll" ripplerFill="WHITE" style="-fx-background-color: #16a085;" text="+ Add All" textFill="WHITE">
                                  <FlowPane.margin>
                                     <Insets left="5.0" />
                                  </FlowPane.margin>
@@ -210,7 +112,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
-                        <Label text="YOUR ENROLLING :">
+                        <Label text="* YOUR DROPPING :">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
@@ -226,16 +128,6 @@
                                     <Insets bottom="5.0" />
                                  </HBox.margin>
                               </JFXComboBox>
-                              <JFXButton buttonType="RAISED" onAction="#onClickRefresh" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Refresh" textFill="WHITE">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                              <JFXButton buttonType="RAISED" onAction="#onClickUndo" ripplerFill="WHITE" style="-fx-background-color: #7f8c8d;" text="Undo drop" textFill="WHITE">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </JFXButton>
                            </children>
                         </HBox>
                         <JFXTreeTableView fx:id="tblYeSubject" prefWidth="350.0" />
@@ -252,12 +144,12 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <JFXButton buttonType="RAISED" onAction="#onClickRemove" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="- Remove" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" onAction="#onClickRemove" ripplerFill="BLACK" style="-fx-background-color: #7f8c8d;" text="- Drop" textFill="#202020">
                                  <FlowPane.margin>
                                     <Insets left="20.0" />
                                  </FlowPane.margin>
                               </JFXButton>
-                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickRemoveAll" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="- Remove All" textFill="WHITE">
+                              <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickRemoveAll" ripplerFill="WHITE" style="-fx-background-color: #c0392b;" text="- Drop All" textFill="WHITE">
                                  <FlowPane.margin>
                                     <Insets left="5.0" />
                                  </FlowPane.margin>

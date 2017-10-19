@@ -239,24 +239,29 @@ public class DeanWindowController implements Initializable {
         TableColumn<io.erm.ees.model.v2.Subject, Long> sId = new TableColumn<>("Subject ID");
         sId.setCellValueFactory(new PropertyValueFactory<>("id"));
         sId.setPrefWidth(80);
+        sId.setSortable(false);
 
         TableColumn<io.erm.ees.model.v2.Subject, String> sName = new TableColumn<>("Subject");
         sName.setCellValueFactory(new PropertyValueFactory<>("name"));
         sName.setPrefWidth(180);
+        sName.setSortable(false);
 
         TableColumn<io.erm.ees.model.v2.Subject, String> sDesc = new TableColumn<>("Description");
         sDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
         sDesc.setPrefWidth(300);
+        sDesc.setSortable(false);
 
         TableColumn<io.erm.ees.model.v2.Subject, String> remark = new TableColumn<>("Remark");
         remark.setCellValueFactory(new PropertyValueFactory<>("remark"));
         remark.setPrefWidth(100);
         remark.setResizable(false);
+        remark.setSortable(false);
 
         TableColumn<io.erm.ees.model.v2.Subject, String> isSuggest = new TableColumn<>("Suggest");
         isSuggest.setCellValueFactory(new PropertyValueFactory<>("suggest"));
         isSuggest.setPrefWidth(100);
         isSuggest.setResizable(false);
+        isSuggest.setSortable(false);
 
         tblList.getColumns().add(sId);
         tblList.getColumns().add(sName);

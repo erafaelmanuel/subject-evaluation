@@ -85,21 +85,25 @@ public class StudentResultController implements Initializable {
         numberCol.setResizable(false);
         numberCol.setPrefWidth(120);
         numberCol.setCellValueFactory(param -> param.getValue().getValue().numberProperty().asObject());
+        numberCol.setSortable(false);
 
         JFXTreeTableColumn<Student, String> nameCol = new JFXTreeTableColumn<>("Name");
         nameCol.setResizable(false);
         nameCol.setPrefWidth(180);
         nameCol.setCellValueFactory(param -> param.getValue().getValue().fullNameProperty());
+        nameCol.setSortable(false);
 
         JFXTreeTableColumn<Student, String> courseCol = new JFXTreeTableColumn<>("Course");
         courseCol.setResizable(false);
         courseCol.setPrefWidth(80);
         courseCol.setCellValueFactory(param -> param.getValue().getValue().courseProperty());
+        courseCol.setSortable(false);
 
         JFXTreeTableColumn<Student, String> sectionCol = new JFXTreeTableColumn<>("Section");
         sectionCol.setResizable(false);
         sectionCol.setPrefWidth(70);
         sectionCol.setCellValueFactory(param -> param.getValue().getValue().sectionProperty());
+        sectionCol.setSortable(false);
 
         tblResult.getColumns().add(numberCol);
         tblResult.getColumns().add(nameCol);

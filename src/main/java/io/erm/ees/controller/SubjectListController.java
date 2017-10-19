@@ -92,21 +92,25 @@ public class SubjectListController implements Initializable {
             idCol.setResizable(false);
             idCol.setPrefWidth(100);
             idCol.setCellValueFactory(param -> param.getValue().getValue().idProperty().asObject());
+            idCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> nameCol = new JFXTreeTableColumn<>("Subject");
             nameCol.setResizable(false);
             nameCol.setPrefWidth(130);
             nameCol.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
+            nameCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> descCol = new JFXTreeTableColumn<>("Description");
             descCol.setResizable(false);
             descCol.setPrefWidth(250);
             descCol.setCellValueFactory(param -> param.getValue().getValue().descProperty());
+            descCol.setSortable(false);
 
             JFXTreeTableColumn<Subject, String> unitCol = new JFXTreeTableColumn<>("Unit");
             unitCol.setResizable(false);
             unitCol.setPrefWidth(100);
             unitCol.setCellValueFactory(param -> param.getValue().getValue().unitDisplayProperty());
+            unitCol.setSortable(false);
 
             tblSubject.getColumns().add(idCol);
             tblSubject.getColumns().add(nameCol);

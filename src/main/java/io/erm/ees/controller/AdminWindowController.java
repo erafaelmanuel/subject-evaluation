@@ -3,8 +3,8 @@ package io.erm.ees.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.*;
-import io.erm.ees.dao.impl.*;
-import io.erm.ees.dao.impl.v2.DbCreditSubject;
+import io.erm.ees.dao.impl.DirtyDaoImpl;
+import io.erm.ees.dao.impl.UserDetailDaoImpl;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Student;
@@ -115,6 +115,7 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     public void initialize(URL location, ResourceBundle resources) {
         tblData.setItems(OBSERVABLE_LIST);
 
+        clear();
         loadStudent();
 
         lbTitle.setText("Student List");
@@ -744,18 +745,22 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         TableColumn<Object, String> suId = new TableColumn<>("Id");
         suId.setCellValueFactory(new PropertyValueFactory<>("id"));
         suId.setPrefWidth(200);
+        suId.setSortable(false);
 
         TableColumn<Object, String> suName = new TableColumn<>("Name");
         suName.setCellValueFactory(new PropertyValueFactory<>("name"));
         suName.setPrefWidth(200);
+        suName.setSortable(false);
 
         TableColumn<Object, String> suDesc = new TableColumn<>("Description");
         suDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
         suDesc.setPrefWidth(200);
+        suDesc.setSortable(false);
 
         TableColumn<Object, String> suUnit = new TableColumn<>("Unit");
         suUnit.setCellValueFactory(new PropertyValueFactory<>("unitDisplay"));
         suUnit.setPrefWidth(200);
+        suUnit.setSortable(false);
 
         tblData.getColumns().add(suId);
         tblData.getColumns().add(suName);
@@ -773,18 +778,22 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         TableColumn<Object, String> suId = new TableColumn<>("Id");
         suId.setCellValueFactory(new PropertyValueFactory<>("id"));
         suId.setPrefWidth(200);
+        suId.setSortable(false);
 
         TableColumn<Object, String> suName = new TableColumn<>("Name");
         suName.setCellValueFactory(new PropertyValueFactory<>("name"));
         suName.setPrefWidth(200);
+        suName.setSortable(false);
 
         TableColumn<Object, String> suDesc = new TableColumn<>("Description");
         suDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
         suDesc.setPrefWidth(200);
+        suName.setSortable(false);
 
         TableColumn<Object, String> suUnit = new TableColumn<>("Unit");
         suUnit.setCellValueFactory(new PropertyValueFactory<>("unitDisplay"));
         suUnit.setPrefWidth(200);
+        suUnit.setSortable(false);
 
         tblData.getColumns().add(suId);
         tblData.getColumns().add(suName);
@@ -803,16 +812,19 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         suId.setCellValueFactory(new PropertyValueFactory<>("id"));
         suId.setPrefWidth(100);
         suId.setResizable(false);
+        suId.setSortable(false);
 
         TableColumn<Object, String> suName = new TableColumn<>("Name");
         suName.setCellValueFactory(new PropertyValueFactory<>("name"));
         suName.setPrefWidth(190);
         suName.setResizable(false);
+        suName.setSortable(false);
 
         TableColumn<Object, String> suUnit = new TableColumn<>("Unit");
         suUnit.setCellValueFactory(new PropertyValueFactory<>("unitDisplay"));
         suUnit.setPrefWidth(80);
         suUnit.setResizable(false);
+        suUnit.setSortable(false);
 
         tblSubData.getColumns().add(suId);
         tblSubData.getColumns().add(suName);
@@ -829,22 +841,27 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         TableColumn<Object, String> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         idCol.setPrefWidth(200);
+        idCol.setSortable(false);
 
         TableColumn<Object, String> nameCol = new TableColumn<>("Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameCol.setPrefWidth(200);
+        nameCol.setSortable(false);
 
         TableColumn<Object, String> descCol = new TableColumn<>("Description");
         descCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
         descCol.setPrefWidth(400);
+        descCol.setSortable(false);
 
         TableColumn<Object, String> tYearCol = new TableColumn<>("Number of Year");
         tYearCol.setCellValueFactory(new PropertyValueFactory<>("totalYear"));
         tYearCol.setPrefWidth(200);
+        tYearCol.setSortable(false);
 
         TableColumn<Object, String> tSemCol = new TableColumn<>("Number of Semester");
         tSemCol.setCellValueFactory(new PropertyValueFactory<>("totalSemester"));
         tSemCol.setPrefWidth(200);
+        tSemCol.setSortable(false);
 
         tblData.getColumns().add(idCol);
         tblData.getColumns().add(nameCol);
@@ -863,27 +880,32 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
         TableColumn<Object, Long> uId = new TableColumn<>("ID");
         uId.setCellValueFactory(new PropertyValueFactory<>("id"));
         uId.setPrefWidth(200);
+        uId.setSortable(false);
 
         TableColumn<Object, String> uUser = new TableColumn<>("Username");
         uUser.setCellValueFactory(new PropertyValueFactory<>("username"));
         uUser.setPrefWidth(200);
+        uUser.setSortable(false);
 
         TableColumn<Object, String> uPass = new TableColumn<>("Password");
         uPass.setCellValueFactory(new PropertyValueFactory<>("password"));
         uPass.setPrefWidth(200);
+        uPass.setSortable(false);
 
         TableColumn<Object, String> uType = new TableColumn<>("Type");
         uType.setCellValueFactory(new PropertyValueFactory<>("userType"));
         uType.setPrefWidth(200);
+        uType.setSortable(false);
 
         TableColumn<Object, String> uIA = new TableColumn<>("Activated");
         uIA.setCellValueFactory(new PropertyValueFactory<>("activated"));
         uIA.setPrefWidth(200);
+        uIA.setSortable(false);
 
         TableColumn<Object, String> uDate = new TableColumn<>("Registration Date");
         uDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
         uDate.setPrefWidth(200);
-
+        uDate.setSortable(false);
 
         tblData.getColumns().add(uId);
         tblData.getColumns().add(uUser);
@@ -939,5 +961,33 @@ public class AdminWindowController implements Initializable, StudentInputStage.O
     public void onAddAcademicYear() {
         clear();
         loadAcademicYear();
+    }
+
+    public void listener() {
+        clear();
+        loadStudent();
+
+        lbTitle.setText("Student List");
+
+        miSpecial.setVisible(false);
+
+        miActivate.setVisible(false);
+        miDeactivate.setVisible(false);
+
+        miOpen.setVisible(false);
+        miClose.setVisible(false);
+
+        bnSearch.setVisible(false);
+        txSearch.setVisible(false);
+
+        tblSubData.setPlaceholder(new Label("No Subject Prerequisite"));
+        tblSubData.setVisible(false);
+        tblSubData.setPrefWidth(0);
+
+        studentInputStage.setOnItemAddLister(this);
+        courseStage.getCurriculumStage().setOnItemAddLister(this);
+        subjectInputStage.setOnItemAddLister(this);
+        userInputStage.setOnItemAddLister(this);
+        academicYearInputStage.setOnItemAddLister(this);
     }
 }

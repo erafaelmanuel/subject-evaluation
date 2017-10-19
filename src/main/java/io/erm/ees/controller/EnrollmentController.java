@@ -3,8 +3,10 @@ package io.erm.ees.controller;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.*;
-import io.erm.ees.dao.impl.*;
-import io.erm.ees.dao.impl.v2.DbStudent;
+import io.erm.ees.dao.impl.CurriculumDaoImpl;
+import io.erm.ees.dao.impl.DirtyDaoImpl;
+import io.erm.ees.dao.impl.SectionDaoImpl;
+import io.erm.ees.dao.impl.SuggestionDaoImpl;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Curriculum;
@@ -36,6 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@Deprecated
 public class EnrollmentController implements Initializable, AdvisingDoc.CreationListener {
 
     @FXML
