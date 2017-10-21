@@ -119,6 +119,8 @@ public class StudentGradeController implements Initializable, StudentResultStage
         Image image = new Image(ResourceHelper.resourceWithBasePath("image/studentlogo.png").toString());
         imgvLogo.setImage(image);
 
+        tblRecord.setStyle("-fx-table-cell-border-color: transparent;");
+
         OBSERVABLE_LIST_COURSE.clear();
         for (Course course : courseDao.getCourseList()) {
             OBSERVABLE_LIST_COURSE.add(course.getName());
@@ -152,7 +154,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
                         } else if (creditSubjectDao.isSubjectDropped(subject.getId(), student.getId())) {
                             RECORD_LIST.add(creditSubjectDao.getRecordBySubjectId(subject.getId(), student.getId()));
                         } else {
-                            RECORD_LIST.add(new Record(0.0, 0.0, "", "", subject.getId(), student.getId(), 0));
+                            RECORD_LIST.add(new Record(0.0, 0.0, "--/--/--", "--", subject.getId(), student.getId(), 0));
                         }
                     }
                     loadGrade(RECORD_LIST);
@@ -301,7 +303,7 @@ public class StudentGradeController implements Initializable, StudentResultStage
                 } else if (creditSubjectDao.isSubjectDropped(subject.getId(), student.getId())) {
                     RECORD_LIST.add(creditSubjectDao.getRecordBySubjectId(subject.getId(), student.getId()));
                 } else {
-                    RECORD_LIST.add(new Record(0.0, 0.0, "", "", subject.getId(), student.getId(), 0));
+                    RECORD_LIST.add(new Record(0.0, 0.0, "--/--/--", "--", subject.getId(), student.getId(), 0));
                 }
             }
             cbAY.getSelectionModel().select(0);

@@ -11,6 +11,7 @@ import io.erm.ees.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class AssessmentHelper {
 
     @Deprecated

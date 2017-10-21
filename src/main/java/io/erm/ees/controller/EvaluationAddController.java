@@ -12,7 +12,6 @@ import io.erm.ees.helper.SectionHelper;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Section;
 import io.erm.ees.model.Student;
-import io.erm.ees.model.StudentSubjectRecord;
 import io.erm.ees.model.recursive.Subject;
 import io.erm.ees.model.v2.AcademicYear;
 import io.erm.ees.model.v2.Record;
@@ -99,7 +98,6 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
     private final ObservableList<Subject> ENROLL_SUBJECT_LIST = FXCollections.observableArrayList();
     private final ObservableList<Subject> AVAILABLE_SUBJECT_LIST = FXCollections.observableArrayList();
 
-    private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final CourseDao courseDao = DbFactory.courseFactory();
     private final SectionDao sectionDao = new SectionDaoImpl();
     private final AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
@@ -111,8 +109,6 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
     private Section section;
     private AcademicYear academicYear;
 
-    private final List<io.erm.ees.model.Subject> ENROLLED_LIST_REMOVE = new ArrayList<>();
-    private final List<io.erm.ees.model.Subject> ENROLLED_LIST = new ArrayList<>();
     private final List<io.erm.ees.model.Subject> NOTSET_LIST = new ArrayList<>();
 
     private int totalAbUnit;
@@ -135,7 +131,7 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
 
     @FXML
     protected void onClickSave(ActionEvent event) {
-        if (totalYeUnit > eTotalUnit && totalYeUnit <= 30) {
+        if ((totalYeUnit > eTotalUnit && totalYeUnit <= 30) || ENROLL_SUBJECT_LIST.size() > 0) {
             final int calYear = sectionDao.getSectionById(student.getSectionId()).getYear();
             final AcademicYear academicYear = academicYearDao.getAcademicYearOpen(course.getId(), calYear);
 
@@ -224,10 +220,6 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
 
             //add to remove table
             addYeSubject(subject);
-
-            //remove to drop subject list
-            if (ENROLLED_LIST.size() > 0)
-                removeToRemoveList(subject);
         }
     }
 
@@ -250,7 +242,6 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
             removeAllYeSubject();
     }
 
-    @Deprecated
     private void loadYeSubject(List<io.erm.ees.model.Subject> subjectList) {
         for (io.erm.ees.model.Subject subject : subjectList) {
             ENROLL_SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(),
@@ -342,10 +333,8 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
     }
 
     private void addYeSubjectAll() {
-        int size = AVAILABLE_SUBJECT_LIST.size();
         first:
-        for (int i = 0; i < size; i++) {
-            Subject subject = AVAILABLE_SUBJECT_LIST.get(i);
+        for (Subject subject : AVAILABLE_SUBJECT_LIST) {
             for (Subject s : ENROLL_SUBJECT_LIST) {
                 if (s.getId() == subject.getId())
                     continue first;
@@ -369,14 +358,10 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
                 lbexceed.setVisible(false);
             }
         }
-        TreeItem<Subject> root = new RecursiveTreeItem<Subject>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
+        TreeItem<Subject> root = new RecursiveTreeItem<>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
 
         tblYeSubject.setRoot(root);
         tblYeSubject.setShowRoot(false);
-
-        //Remove from the table
-        if (ENROLLED_LIST.size() > 0)
-            removeToRemoveList(ENROLL_SUBJECT_LIST);
     }
 
     private void removeYeSubject() {
@@ -403,15 +388,9 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
 
         tblYeSubject.setRoot(root);
         tblYeSubject.setShowRoot(false);
-
-        if (ENROLLED_LIST.size() > 0)
-            addToRemoveList(subject);
     }
 
     private void removeAllYeSubject() {
-
-        final List<Subject> templist = new ArrayList<>();
-
         //reset
         totalYeUnit=eTotalUnit;
         nTotalUnit=0;
@@ -424,16 +403,12 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
         lbexceed.setVisible(false);
 
         while (ENROLL_SUBJECT_LIST.size() > 0) {
-            templist.add(ENROLL_SUBJECT_LIST.get(0));
             ENROLL_SUBJECT_LIST.remove(0);
         }
-        TreeItem<Subject> root = new RecursiveTreeItem<Subject>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
+        TreeItem<Subject> root = new RecursiveTreeItem<>(ENROLL_SUBJECT_LIST, RecursiveTreeObject::getChildren);
 
         tblYeSubject.setRoot(root);
         tblYeSubject.setShowRoot(false);
-
-        if (ENROLLED_LIST.size() > 0)
-            addToRemoveList(templist);
     }
 
     private void clearAb() {
@@ -519,130 +494,6 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
                 else cbAbSubject.setDisable(false);
             });
         }).start();
-    }
-
-    private void addToRemoveList(Subject subject) {
-        final List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
-
-        for (StudentSubjectRecord record : recordList) {
-            if (subject.getId() == record.getSubjectId()) {
-                ENROLLED_LIST_REMOVE.add(new io.erm.ees.model.Subject(subject.getId(), subject.getName(),
-                        subject.getDesc(), subject.getUnit()));
-                break;
-            }
-        }
-
-        showLoading();
-        Platform.runLater(() -> cbAbSubject.getSelectionModel().select("DROP"));
-        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
-                //Remove list
-                loadRemoveList(list);
-
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        }
-    }
-
-    private void addToRemoveList(List<Subject> subjects) {
-        final List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
-
-        for (Subject subject : subjects) {
-            child:
-            for (StudentSubjectRecord record : recordList) {
-                if (subject.getId() == record.getSubjectId()) {
-                    ENROLLED_LIST_REMOVE.add(new io.erm.ees.model.Subject(subject.getId(), subject.getName(),
-                            subject.getDesc(), subject.getUnit()));
-                    break child;
-                }
-            }
-        }
-
-        showLoading();
-        Platform.runLater(() -> cbAbSubject.getSelectionModel().select("DROP"));
-        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
-                //Remove list
-                loadRemoveList(list);
-
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        }
-    }
-
-    private void removeToRemoveList(Subject subject) {
-        final List<io.erm.ees.model.Subject> subjectList = new ArrayList<>();
-        final List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
-
-        for (StudentSubjectRecord record : recordList) {
-            if (subject.getId() == record.getSubjectId()) {
-                inner:
-                for (io.erm.ees.model.Subject s : ENROLLED_LIST_REMOVE) {
-                    if (s.getId() == subject.getId()) {
-                        ENROLLED_LIST_REMOVE.remove(s);
-                        break inner;
-                    }
-                }
-                break;
-            }
-        }
-
-        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-            showLoading();
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
-                //Remove list
-                loadRemoveList(list);
-
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        }
-    }
-
-    private void removeToRemoveList(List<Subject> subjects) {
-        final List<io.erm.ees.model.Subject> subjectList = new ArrayList<>();
-        final List<StudentSubjectRecord> recordList = dirtyDao.getStudentSubjectRecordByMark(student.getId(), "ONGOING");
-
-        for (Subject subject : subjects) {
-            child1:
-            for (StudentSubjectRecord record : recordList) {
-                if (subject.getId() == record.getSubjectId()) {
-                    child2:
-                    for (io.erm.ees.model.Subject s : ENROLLED_LIST_REMOVE) {
-                        if (s.getId() == subject.getId()) {
-                            ENROLLED_LIST_REMOVE.remove(s);
-                            break child2;
-                        }
-                    }
-                    break child1;
-                }
-            }
-        }
-
-        if (cbAbSubject.getSelectionModel().getSelectedItem().equalsIgnoreCase("DROP")) {
-            showLoading();
-            new Thread(() -> {
-                List<io.erm.ees.model.Subject> list = new ArrayList<>();
-
-                //Remove list
-                loadRemoveList(list);
-
-                loadAbItem(list);
-                hideLoading();
-            }).start();
-        }
-    }
-
-    private void loadRemoveList(List<io.erm.ees.model.Subject> list) {
-        list.addAll(ENROLLED_LIST_REMOVE);
     }
 
     private void showLoading() {

@@ -63,7 +63,7 @@ public class EvaluationHelper {
         return true;
     }
 
-    private static boolean isDataFailed(Student student, Course course, int year, int semester) {
+    private static boolean isDataHasFailed(Student student, Course course, int year, int semester) {
         List<Subject> list = curriculumDao.getSubjectList(course.getId(), year, semester);
         for (Subject subject : list) {
             boolean isFailed = creditSubjectDao.isSubjectNotPassed(subject.getId(), student.getId());
@@ -71,6 +71,17 @@ public class EvaluationHelper {
             if(isTaken && isFailed) return true;
         }
         return false;
+    }
+
+    private static boolean isDataAllFailed(Student student, Course course, int year, int semester) {
+        List<Subject> list = curriculumDao.getSubjectList(course.getId(), year, semester);
+        for (Subject subject : list) {
+            boolean isFailed = creditSubjectDao.isSubjectNotPassed(subject.getId(), student.getId());
+            boolean isPassed = creditSubjectDao.isSubjectPassed(subject.getId(), student.getId());
+            boolean isTaken = creditSubjectDao.isTaken(subject.getId(), student.getId(), course.getId());
+            if(isTaken && (!isFailed || isPassed)) return false;
+        }
+        return true;
     }
 
     public static void evaluate(Student student, int _year, int _semester, List<Subject> subjectList) {
@@ -123,9 +134,9 @@ public class EvaluationHelper {
                 student.setStatus(tempStatus);
                 section.setYear(tempYear);
             } else {
-                student.setStatus(tempStatus);
-                if(irregular1stSemester(student, course)) {
+                if(!irregular1stSemester(student, course)) {
                     irregularYearAnalyzer(student, course);
+                    student.setStatus(tempStatus);
                     section.setYear(tempYear);
                 }
             }
@@ -148,7 +159,7 @@ public class EvaluationHelper {
         for(int i=1; i<=total; i++) {
             switch(i) {
                 case 1:
-                    if((isDataNoContent(student, course, 1, 1) && isDataClean(student, course, 1, 1)) && isDataClean(student, course,1, 2)) {
+                    if((isDataNoContent(student, course, 1, 1) && isDataClean(student, course, 1, 1) || isDataAllFailed(student, course, 1, 1)) && isDataClean(student, course,1, 2)) {
                         if(total==1) {
                             tempYear=1;
                             tempStatus="REGULAR";
@@ -191,7 +202,7 @@ public class EvaluationHelper {
                             tempStatus="REGULAR";
                             return true;
                         }
-                        if((isDataNoContent(student, course, 2, 1) && isDataClean(student, course, 2, 1)) && isDataClean(student, course,2, 2)) {
+                        if((isDataNoContent(student, course, 2, 1) && isDataClean(student, course, 2, 1) || isDataAllFailed(student, course, 2, 1)) && isDataClean(student, course,2, 2)) {
                             if(total==2) {
                                 tempYear=2;
                                 tempStatus="REGULAR";
@@ -235,7 +246,7 @@ public class EvaluationHelper {
                                 tempStatus="REGULAR";
                                 return true;
                             }
-                            if((isDataNoContent(student, course, 3, 1) && isDataClean(student, course, 3, 1)) && isDataClean(student, course,3, 2)) {
+                            if((isDataNoContent(student, course, 3, 1) && isDataClean(student, course, 3, 1) || isDataAllFailed(student, course, 3, 1)) && isDataClean(student, course,3, 2)) {
                                 if(total==3) {
                                     tempYear=3;
                                     tempStatus="REGULAR";
@@ -271,7 +282,7 @@ public class EvaluationHelper {
                                     tempStatus="REGULAR";
                                     return true;
                                 }
-                                if((isDataNoContent(student, course, 4, 1) && isDataClean(student, course, 4, 1)) && isDataClean(student, course,4, 2)) {
+                                if((isDataNoContent(student, course, 4, 1) && isDataClean(student, course, 4, 1) || isDataAllFailed(student, course, 4, 1)) && isDataClean(student, course,4, 2)) {
                                     if(total==4) {
                                         tempYear=4;
                                         tempStatus="REGULAR";
@@ -314,7 +325,7 @@ public class EvaluationHelper {
                                         tempStatus="REGULAR";
                                         return true;
                                     }
-                                    if((isDataNoContent(student, course, 5, 1) && isDataClean(student, course,5, 1)) &&  isDataClean(student, course,5, 2)) {
+                                    if((isDataNoContent(student, course, 5, 1) && isDataClean(student, course,5, 1) || isDataAllFailed(student, course, 5, 1)) &&  isDataClean(student, course,5, 2)) {
                                         if(total==5) {
                                             tempYear=5;
                                             tempStatus="REGULAR";
@@ -534,7 +545,7 @@ public class EvaluationHelper {
         for(int i=1; i<=total; i++) {
             switch(i) {
                 case 1:
-                    if(isDataNoContent(student, course, 1, 1) && isDataFailed(student, course, 1, 2)) {
+                    if(isDataNoContent(student, course, 1, 1) && isDataHasFailed(student, course, 1, 2)) {
                         if(total==1) {
                             tempYear=1;
                             tempStatus="IRREGULAR";
@@ -578,7 +589,7 @@ public class EvaluationHelper {
                             tempStatus="IRREGULAR";
                             return true;
                         }
-                        if(isDataNoContent(student, course, 2, 1) && isDataFailed(student, course, 2, 2)) {
+                        if(isDataNoContent(student, course, 2, 1) && isDataHasFailed(student, course, 2, 2)) {
                             if(total==2) {
                                 tempYear=2;
                                 tempStatus="IRREGULAR";
@@ -622,7 +633,7 @@ public class EvaluationHelper {
                                 tempStatus="IRREGULAR";
                                 return true;
                             }
-                            if(isDataNoContent(student, course, 3, 1) && isDataFailed(student, course, 3, 2)) {
+                            if(isDataNoContent(student, course, 3, 1) && isDataHasFailed(student, course, 3, 2)) {
                                 if(total==3) {
                                     tempYear=3;
                                     tempStatus="IRREGULAR";
@@ -658,7 +669,7 @@ public class EvaluationHelper {
                                     tempStatus="IRREGULAR";
                                     return true;
                                 }
-                                if(isDataNoContent(student, course, 4, 1) && isDataFailed(student, course, 4, 2)) {
+                                if(isDataNoContent(student, course, 4, 1) && isDataHasFailed(student, course, 4, 2)) {
                                     if(total==4) {
                                         tempYear=4;
                                         tempStatus="IRREGULAR";
@@ -701,7 +712,7 @@ public class EvaluationHelper {
                                         tempStatus="IRREGULAR";
                                         return true;
                                     }
-                                    if(isDataNoContent(student, course, 5, 1) && isDataFailed(student, course, 5, 2)) {
+                                    if(isDataNoContent(student, course, 5, 1) && isDataHasFailed(student, course, 5, 2)) {
                                         if(total==5) {
                                             tempYear=5;
                                             tempStatus="IRREGULAR";
@@ -741,7 +752,6 @@ public class EvaluationHelper {
             }
         }
 
-        System.out.println("year:" + year);
         for(int i=0; i<n.length-1; i++) {
             System.out.println(n[i]);
             if (n[i + 1] >= n[i]) {
@@ -750,8 +760,6 @@ public class EvaluationHelper {
                 n[i + 1] = n[i];
             }
         }
-
-        System.out.println("year:" + year);
         tempYear=year;
         tempStatus="IRREGULAR";
     }

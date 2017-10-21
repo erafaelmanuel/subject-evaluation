@@ -43,14 +43,6 @@
                      <children>
                         <VBox prefHeight="200.0" prefWidth="420.0">
                            <children>
-                              <Label>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
                               <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="420.0">
                                  <children>
                                     <Label layoutX="200.0" layoutY="10.0" prefHeight="25.0" prefWidth="40.0" text="Type : " />
@@ -101,14 +93,6 @@
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                            <children>
-                              <Label prefWidth="114.0">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <Label prefHeight="25.0" prefWidth="34.0" text="Year : " visible="false" />
@@ -167,7 +151,13 @@
          <top>
             <AnchorPane prefHeight="202.0" prefWidth="903.0" style="-fx-border-color: #bdc3c7; -fx-border-width: 0 0 3 0; -fx-border-style: dashed;" BorderPane.alignment="CENTER">
                <children>
-                  <VBox layoutX="-3.0" layoutY="-3.0" prefHeight="33.0" prefWidth="959.0" style="-fx-background-color: #7f8c8d;" />
+                  <VBox alignment="CENTER" layoutX="-3.0" layoutY="-3.0" prefHeight="33.0" prefWidth="959.0" style="-fx-background-color: #ecf0f1;">
+                     <children>
+                        <Label text="Add Subject">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font></Label>
+                     </children></VBox>
                   <JFXButton buttonType="RAISED" layoutX="667.0" layoutY="40.0" prefHeight="139.0" prefWidth="258.0" ripplerFill="#7f8c8d" style="-fx-background-color: #7f8c8d;" text=" " />
                   <VBox alignment="CENTER_LEFT" layoutX="692.0" layoutY="48.0" prefHeight="141.0" prefWidth="116.0">
                      <children>
@@ -196,8 +186,8 @@
                   <HBox layoutX="800.0" layoutY="79.0" prefHeight="89.0" prefWidth="13.0" style="-fx-border-color: #bdc3c7; -fx-border-width: 0 1 0 0;" />
                   <VBox layoutX="688.0" layoutY="97.0" prefHeight="11.0" prefWidth="190.0" style="-fx-border-color: #bdc3c7; -fx-border-width: 1 0 0 0;" />
                   <JFXButton layoutX="667.0" layoutY="40.0" prefHeight="27.0" prefWidth="258.0" ripplerFill="#e67e22" style="-fx-background-color: #e67e22;" text=" " textFill="#bdc3c7" />
-                  <JFXButton layoutX="17.0" layoutY="41.0" prefHeight="139.0" prefWidth="637.0" ripplerFill="#7f8c8d" style="-fx-background-color: #bdc3c7;" text=" " />
-                  <JFXButton layoutX="17.0" layoutY="39.0" prefHeight="27.0" prefWidth="636.0" ripplerFill="#e67e22" style="-fx-background-color: #e67e22;" text=" " textFill="#bdc3c7" />
+                  <JFXButton layoutX="17.0" layoutY="41.0" prefHeight="139.0" prefWidth="637.0" ripplerFill="#bdc3c7" style="-fx-background-color: #bdc3c7;" text=" " />
+                  <JFXButton layoutX="17.0" layoutY="41.0" prefHeight="27.0" prefWidth="637.0" ripplerFill="#e67e22" style="-fx-background-color: #e67e22;" text=" " textFill="#bdc3c7" />
                   <HBox layoutX="19.0" layoutY="56.0" prefHeight="111.0" prefWidth="633.0">
                      <children>
                         <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="91.0" prefWidth="340.0">

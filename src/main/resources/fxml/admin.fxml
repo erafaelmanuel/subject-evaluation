@@ -61,12 +61,12 @@
                <left>
                   <HBox prefHeight="45.0" prefWidth="179.0" BorderPane.alignment="CENTER">
                      <children>
-                        <JFXButton fx:id="bnAdd" onAction="#onClickAdd" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #2980b9;" text="Add" textFill="WHITE">
+                        <JFXButton fx:id="bnAdd" buttonType="RAISED" onAction="#onClickAdd" prefHeight="40.0" prefWidth="80.0" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="+ New" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </JFXButton>
-                        <JFXButton onAction="#onClickRefresh" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #bdc3c7;" text="Refresh" textFill="WHITE" />
+                        <JFXButton buttonType="RAISED" onAction="#onClickRefresh" prefHeight="40.0" prefWidth="80.0" ripplerFill="BLACK" style="-fx-background-color: #bdc3c7;" text="Refresh" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

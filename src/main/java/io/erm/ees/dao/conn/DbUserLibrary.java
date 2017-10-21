@@ -2,9 +2,9 @@ package io.erm.ees.dao.conn;
 
 import java.util.logging.Logger;
 
-public class UserLibrary {
+public class DbUserLibrary {
 
-    private Logger logger = Logger.getLogger(UserLibrary.class.getSimpleName());
+    private Logger logger = Logger.getLogger(DbUserLibrary.class.getSimpleName());
 
     private String host;
     private String port;
@@ -14,7 +14,7 @@ public class UserLibrary {
     private String catalog;
     private String protocol;
 
-    public UserLibrary() {
+    public DbUserLibrary() {
         super();
     }
 

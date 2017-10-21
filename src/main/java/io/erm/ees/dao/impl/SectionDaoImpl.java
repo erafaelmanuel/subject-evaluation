@@ -2,7 +2,7 @@ package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.SectionDao;
 import io.erm.ees.dao.conn.DbManager;
-import io.erm.ees.dao.conn.UserLibrary;
+import io.erm.ees.dao.conn.DbUserLibrary;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.helper.IdGenerator;
 import io.erm.ees.model.Section;
@@ -32,8 +32,8 @@ public class SectionDaoImpl implements SectionDao {
         init();
     }
 
-    public SectionDaoImpl(UserLibrary userLibrary) {
-        dbManager = new DbManager(userLibrary);
+    public SectionDaoImpl(DbUserLibrary dbUserLibrary) {
+        dbManager = new DbManager(dbUserLibrary);
         init();
     }
 

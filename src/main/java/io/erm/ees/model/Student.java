@@ -1,5 +1,8 @@
 package io.erm.ees.model;
 
+import io.erm.ees.dao.CourseDao;
+import io.erm.ees.dao.SectionDao;
+
 public class Student {
 
     private long id;
@@ -13,6 +16,8 @@ public class Student {
     private long sectionId;
     private long courseId;
     private String status;
+    private CourseDao courseDao;
+    private SectionDao sectionDao;
 
     public Student() {
         super();
@@ -146,6 +151,29 @@ public class Student {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDisplayCourse() {
+        return courseDao.getCourseById(courseId).getName();
+    }
+
+    public String getDisplaySection() {
+        final Section section = sectionDao.getSectionById(sectionId);
+        return section.getYear() + "-" +section.getName();
+    }
+
+    public String getDisplayContactNumber() {
+        return "+63 " + String.valueOf(contactNumber).substring(0,3)+"-"+
+                String.valueOf(contactNumber).substring(3,7)+"-"+
+                String.valueOf(contactNumber).substring(7);
+    }
+
+    public void setCourseDao(CourseDao courseDao) {
+        this.courseDao=courseDao;
+    }
+
+    public void setSectionDao(SectionDao sectionDao) {
+        this.sectionDao=sectionDao;
     }
 
     @Override

@@ -171,8 +171,6 @@
                         </Label>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="420.0">
                            <children>
-                              <Label layoutX="200.0" layoutY="10.0" prefHeight="25.0" prefWidth="40.0" text="Type : " />
-                              <JFXComboBox fx:id="cbClass" layoutX="257.0" layoutY="10.0" prefHeight="25.0" prefWidth="190.0" promptText="Class" />
                               <Label prefHeight="25.0" prefWidth="57.0" text="Filter by :">
                                  <HBox.margin>
                                     <Insets left="10.0" />

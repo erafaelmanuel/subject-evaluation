@@ -17,19 +17,19 @@
                <children>
                   <Pane prefHeight="51.0" prefWidth="600.0" style="-fx-background-color: #2980b9;" />
                   <Label layoutX="36.0" layoutY="62.0" text="Student Name : " />
-                  <JFXTextField fx:id="txFName" layoutX="39.0" layoutY="89.0" prefHeight="25.0" prefWidth="160.0" promptText="First Name" />
-                  <JFXTextField fx:id="txLName" layoutX="227.0" layoutY="89.0" prefHeight="25.0" prefWidth="160.0" promptText="Last Name" />
-                  <JFXTextField fx:id="txMName" layoutX="414.0" layoutY="89.0" prefHeight="25.0" prefWidth="160.0" promptText="Middle Name" />
-                  <Label layoutX="47.0" layoutY="136.0" text="Age :" />
-                  <Label layoutX="39.0" layoutY="177.0" text="Gender :" />
-                  <Label layoutX="41.0" layoutY="219.0" text="Contact No. :" />
-                  <Label layoutX="40.0" layoutY="264.0" text="Course :" />
-                  <Label layoutX="38.0" layoutY="306.0" text="Section :" />
-                  <JFXTextField fx:id="txAge" layoutX="132.0" layoutY="132.0" prefHeight="25.0" prefWidth="202.0" />
-                  <JFXComboBox fx:id="cbGender" layoutX="136.0" layoutY="173.0" prefHeight="25.0" prefWidth="200.0" promptText="Gender" />
-                  <JFXTextField fx:id="txCNumber" layoutX="134.0" layoutY="215.0" onKeyPressed="#onKeyCN" onKeyReleased="#onKeyCN" prefHeight="25.0" prefWidth="198.0" promptText="Contact Number" />
-                  <JFXComboBox fx:id="cbCourse" layoutX="134.0" layoutY="260.0" prefHeight="25.0" prefWidth="198.0" />
-                  <JFXComboBox fx:id="cbSection" layoutX="132.0" layoutY="302.0" prefHeight="25.0" prefWidth="201.0" />
+                  <JFXTextField fx:id="txFName" focusColor="#d35400" labelFloat="true" layoutX="39.0" layoutY="109.0" prefHeight="25.0" prefWidth="160.0" promptText="First Name" />
+                  <JFXTextField fx:id="txLName" focusColor="#d35400" labelFloat="true" layoutX="227.0" layoutY="109.0" prefHeight="25.0" prefWidth="160.0" promptText="Last Name" />
+                  <JFXTextField fx:id="txMName" focusColor="#d35400" labelFloat="true" layoutX="414.0" layoutY="109.0" prefHeight="25.0" prefWidth="160.0" promptText="Middle Name" />
+                  <Label layoutX="47.0" layoutY="156.0" text="Age :" />
+                  <Label layoutX="39.0" layoutY="197.0" text="Gender :" />
+                  <Label layoutX="41.0" layoutY="239.0" text="Contact No. :" />
+                  <Label layoutX="40.0" layoutY="284.0" text="Course :" />
+                  <Label layoutX="38.0" layoutY="326.0" text="Section :" />
+                  <JFXTextField fx:id="txAge" focusColor="#d35400" labelFloat="true" layoutX="132.0" layoutY="152.0" prefHeight="25.0" prefWidth="202.0" promptText="Please enter an age" />
+                  <JFXComboBox fx:id="cbGender" layoutX="136.0" layoutY="193.0" prefHeight="25.0" prefWidth="200.0" promptText="Gender" />
+                  <JFXTextField fx:id="txCNumber" focusColor="#d35400" labelFloat="true" layoutX="134.0" layoutY="235.0" onKeyPressed="#onKeyCN" onKeyReleased="#onKeyCN" prefHeight="25.0" prefWidth="198.0" promptText="Please enter a contact number" />
+                  <JFXComboBox fx:id="cbCourse" layoutX="134.0" layoutY="280.0" prefHeight="25.0" prefWidth="198.0" />
+                  <JFXComboBox fx:id="cbSection" layoutX="132.0" layoutY="322.0" prefHeight="25.0" prefWidth="201.0" />
                   <JFXButton buttonType="RAISED" layoutX="494.0" layoutY="362.0" onAction="#onClickCancel" prefHeight="13.0" prefWidth="80.0" ripplerFill="WHITE" style="-fx-background-color: #c0392b;" text="Cancel" textFill="WHITE" />
                   <JFXButton buttonType="RAISED" layoutX="403.0" layoutY="362.0" onAction="#onClickSave" prefHeight="14.0" prefWidth="80.0" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="Save" textFill="WHITE" />
                </children>

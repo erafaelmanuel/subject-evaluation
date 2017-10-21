@@ -1,7 +1,7 @@
 package io.erm.ees.controller;
 
 import io.erm.ees.dao.conn.DbManager;
-import io.erm.ees.dao.conn.UserLibrary;
+import io.erm.ees.dao.conn.DbUserLibrary;
 import io.erm.ees.stage.ConfigurationStage;
 import io.erm.ees.util.ConnectionHelper;
 import javafx.application.Platform;
@@ -55,15 +55,14 @@ public class ConfigurationController extends Stage implements Initializable {
 
     @FXML
     private void onConnectClick(ActionEvent event) {
-        dbManager =
-                ((ConfigurationStage) ((Stage) ((Node) event.getSource()).getScene().getWindow())).getDbManager();
-        UserLibrary userLibrary = ConnectionHelper.getUserLibrary();
+        dbManager = ((ConfigurationStage) ((Node) event.getSource()).getScene().getWindow()).getDbManager();
+        DbUserLibrary dbUserLibrary = ConnectionHelper.getUserLibrary();
 
-        userLibrary.setHost(txHost.getText());
-        userLibrary.setPort(txPort.getText());
-        userLibrary.setUsername(txUsername.getText());
-        userLibrary.setPassword(txPassword.getText());
-        userLibrary.setCatalog(txCatalog.getText());
+        dbUserLibrary.setHost(txHost.getText());
+        dbUserLibrary.setPort(txPort.getText());
+        dbUserLibrary.setUsername(txUsername.getText());
+        dbUserLibrary.setPassword(txPassword.getText());
+        dbUserLibrary.setCatalog(txCatalog.getText());
 
         Platform.runLater(() -> {
             lbLoading.setVisible(true);
@@ -77,7 +76,12 @@ public class ConfigurationController extends Stage implements Initializable {
         });
 
         new Thread(() -> {
-            if (!dbManager.connect(userLibrary)) {
+            dbUserLibrary.setHost(txHost.getText());
+            dbUserLibrary.setPort(txPort.getText());
+            dbUserLibrary.setUsername(txUsername.getText());
+            dbUserLibrary.setPassword(txPassword.getText());
+            dbUserLibrary.setCatalog(txCatalog.getText());
+            if (!dbManager.connect(dbUserLibrary)) {
                 Platform.runLater(() -> {
                     plMessage.setStyle("-fx-background-color:#e74c3c");
                     lbMessage.setText("ERROR : Bad connection. Please try again");
@@ -113,19 +117,19 @@ public class ConfigurationController extends Stage implements Initializable {
     @FXML
     private void onClickSave(ActionEvent event) {
         ConfigurationStage configurationStage = (ConfigurationStage) ((Node) event.getSource()).getScene().getWindow();
-        ConnectionHelper.setUserLibrary(dbManager.getUserLibrary());
+        ConnectionHelper.setUserLibrary(dbManager.getDbUserLibrary());
         configurationStage.callBack(dbManager, true);
     }
 
     private void init() {
         try {
-            UserLibrary userLibrary = ConnectionHelper.getUserLibrary();
-            if (userLibrary != null) {
-                String host = userLibrary.getHost() != null ? userLibrary.getHost() : "";
-                String port = userLibrary.getPort() != null ? userLibrary.getPort() : "";
-                String username = userLibrary.getUsername() != null ? userLibrary.getUsername() : "";
-                String password = userLibrary.getPassword() != null ? userLibrary.getPassword() : "";
-                String catalog = userLibrary.getCatalog() != null ? userLibrary.getCatalog() : "";
+            DbUserLibrary dbUserLibrary = ConnectionHelper.getUserLibrary();
+            if (dbUserLibrary != null) {
+                String host = dbUserLibrary.getHost() != null ? dbUserLibrary.getHost() : "";
+                String port = dbUserLibrary.getPort() != null ? dbUserLibrary.getPort() : "";
+                String username = dbUserLibrary.getUsername() != null ? dbUserLibrary.getUsername() : "";
+                String password = dbUserLibrary.getPassword() != null ? dbUserLibrary.getPassword() : "";
+                String catalog = dbUserLibrary.getCatalog() != null ? dbUserLibrary.getCatalog() : "";
 
                 txHost.setText(host);
                 txPort.setText(port);

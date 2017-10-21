@@ -12,34 +12,26 @@ public class ResourceHelper {
     }
 
     public static URL resource(final String path) {
-        if (path != null) {
-            URL url = ResourceHelper.class.getClass().getResource(path);
-            return url;
-        }
+        if (path != null)
+           return ResourceHelper.class.getClass().getResource(path);
         return ResourceHelper.class.getClass().getResource("");
     }
 
     public static URL resourceWithBasePath(final String path) {
-        if (path != null) {
-            URL url = ResourceHelper.class.getClass().getResource(BASE_PATH + path);
-            return url;
-        }
+        if (path != null)
+            return ResourceHelper.class.getClass().getResource(BASE_PATH + path);
         return ResourceHelper.class.getClass().getResource("");
     }
 
     public static InputStream resourceAsStream(final String path) {
-        if (path != null) {
-            InputStream inputStream = ResourceHelper.class.getClass().getResourceAsStream(path);
-            return inputStream;
-        }
+        if (path != null)
+            return ResourceHelper.class.getClass().getResourceAsStream(path);
         return ResourceHelper.class.getClass().getResourceAsStream("");
     }
 
     public static InputStream resourceAsStreamWithBasePath(final String path) {
-        if (path != null) {
-            InputStream inputStream = ResourceHelper.class.getClass().getResourceAsStream(BASE_PATH + path);
-            return inputStream;
-        }
+        if (path != null)
+            return ResourceHelper.class.getClass().getResourceAsStream(BASE_PATH + path);
         return ResourceHelper.class.getClass().getResourceAsStream("");
     }
 

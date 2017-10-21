@@ -2,7 +2,7 @@ package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.SpecialCurriculumDao;
 import io.erm.ees.dao.conn.DbManager;
-import io.erm.ees.dao.conn.UserLibrary;
+import io.erm.ees.dao.conn.DbUserLibrary;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.model.SpecialCurriculum;
 
@@ -31,8 +31,8 @@ public class SpecialCurriculumDaoImpl implements SpecialCurriculumDao {
         init();
     }
 
-    public SpecialCurriculumDaoImpl(UserLibrary userLibrary) {
-        dbManager = new DbManager(userLibrary);
+    public SpecialCurriculumDaoImpl(DbUserLibrary dbUserLibrary) {
+        dbManager = new DbManager(dbUserLibrary);
         init();
     }
 

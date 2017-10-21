@@ -2,7 +2,7 @@ package io.erm.ees.dao.impl;
 
 import io.erm.ees.dao.StudentDao;
 import io.erm.ees.dao.conn.DbManager;
-import io.erm.ees.dao.conn.UserLibrary;
+import io.erm.ees.dao.conn.DbUserLibrary;
 import io.erm.ees.dao.exception.NoResultFoundException;
 import io.erm.ees.model.Student;
 
@@ -38,9 +38,9 @@ public class StudentDaoImpl implements StudentDao {
         init();
     }
 
-    public StudentDaoImpl(UserLibrary userLibrary) {
+    public StudentDaoImpl(DbUserLibrary dbUserLibrary) {
         this();
-        dbManager = new DbManager(userLibrary);
+        dbManager = new DbManager(dbUserLibrary);
         init();
     }
 

@@ -15,15 +15,14 @@ public class StudentInputStage extends Stage {
 
     private OnItemAddLister onItemAddLister;
     private StudentInputController controller;
-
+    private Parent root;
     public StudentInputStage() {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/student_input.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root, 590, 390);
+            Parent root=loader.load();
+            Scene scene=new Scene(root, 590, 390);
 
-            controller = loader.getController();
-
+            controller=loader.getController();
             initModality(Modality.APPLICATION_MODAL);
             setResizable(false);
             setScene(scene);
@@ -50,4 +49,13 @@ public class StudentInputStage extends Stage {
     public interface OnItemAddLister {
         void onAddStudent();
     }
+
+    @Override
+    public void showAndWait() {
+        super.showAndWait();
+        if(root != null)
+            root.requestFocus();
+    }
+
+
 }

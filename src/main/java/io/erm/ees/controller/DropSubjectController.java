@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@Deprecated
 public class DropSubjectController implements Initializable, AdvisingDoc.CreationListener {
 
     @FXML

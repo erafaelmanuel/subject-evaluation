@@ -100,6 +100,16 @@ public class StudentInputController implements Initializable {
                 }
             }
         });
+
+        txFName.focusedProperty().addListener((observableValue, focusOut, focusIn) -> {
+            if(focusIn) txFName.setPromptText("First Name");
+        });
+        txLName.focusedProperty().addListener((observableValue, focusOut, focusIn) -> {
+            if(focusIn) txLName.setPromptText("Last Name");
+        });
+        txMName.focusedProperty().addListener((observableValue, focusOut, focusIn) -> {
+            if(focusIn) txMName.setPromptText("Middle Name");
+        });
     }
 
     @FXML

@@ -28,7 +28,7 @@ public class ConfigurationStage extends Stage {
             Parent root = FXMLLoader.load(url);
             Scene scene = new Scene(root, 365, 345);
 
-            this.setTitle("UserLibrary configuration");
+            this.setTitle("DbUserLibrary configuration");
             this.setResizable(false);
             this.setScene(scene);
             this.setOnCloseRequest((e) -> {
@@ -47,7 +47,7 @@ public class ConfigurationStage extends Stage {
             Parent root = FXMLLoader.load(url);
             Scene scene = new Scene(root, 365, 345);
 
-            this.setTitle("UserLibrary configuration");
+            this.setTitle("DbUserLibrary configuration");
             this.setResizable(false);
             this.setScene(scene);
             this.setOnCloseRequest((e) -> {

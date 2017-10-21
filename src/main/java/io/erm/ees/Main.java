@@ -5,6 +5,7 @@ import io.erm.ees.dao.impl.v2.*;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.UserType;
 import io.erm.ees.stage.*;
+import io.erm.ees.util.ResourceHelper;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -28,6 +29,8 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
 
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        this.primaryStage.setOnCloseRequest(e -> setOnClose());
+
         DbManager dbManager = new DbManager();
         if (!dbManager.connect()) {
             showConfig(dbManager);
@@ -43,16 +46,16 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
             DbFactory.addAcademicYearFactory(dbAcademicYear);
             DbFactory.addCourseFactory(dbCourse);
             DbFactory.addStudentFactory(dbStudent);
-
             showLogin(dbManager);
         }
     }
 
     @Override
     public void onFinish(DbManager dbManager, boolean status) {
-        if (!status)
+        if (!status) {
             primaryStage.close();
-        else
+            setOnClose();
+        } else
             showLogin(dbManager);
     }
 
@@ -104,5 +107,13 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         LoginStage loginStage = new LoginStage();
         loginStage.setOnLoginListener(this);
         loginStage.showAndWait();
+    }
+
+    private void setOnClose() {
+        dbSubject.close();
+        dbCreditSubject.close();
+        dbAcademicYear.close();
+        dbCourse.close();
+        dbStudent.close();
     }
 }

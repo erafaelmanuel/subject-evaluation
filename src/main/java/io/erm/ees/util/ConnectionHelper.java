@@ -1,53 +1,53 @@
 package io.erm.ees.util;
 
-import io.erm.ees.dao.conn.UserLibrary;
+import io.erm.ees.dao.conn.DbUserLibrary;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 public class ConnectionHelper {
 
-    public static UserLibrary getUserLibrary() {
+    public static DbUserLibrary getUserLibrary() {
         try {
             InputStream inputStream = ResourceHelper.resourceAsStreamWithBasePath("connection.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
 
-            UserLibrary userLibrary = new UserLibrary();
-            userLibrary.setDriver(properties.getProperty("db.driver"));
-            userLibrary.setHost(properties.getProperty("db.host"));
-            userLibrary.setPort(properties.getProperty("db.port"));
-            userLibrary.setUsername(properties.getProperty("db.user"));
-            userLibrary.setPassword(properties.getProperty("db.password"));
-            userLibrary.setCatalog(properties.getProperty("db.catalog"));
-            userLibrary.setProtocol(properties.getProperty("db.protocol"));
-
-            return userLibrary;
+            DbUserLibrary dbUserLibrary = new DbUserLibrary();
+            dbUserLibrary.setDriver(properties.getProperty("db.driver"));
+            dbUserLibrary.setHost(properties.getProperty("db.host"));
+            dbUserLibrary.setPort(properties.getProperty("db.port"));
+            dbUserLibrary.setUsername(properties.getProperty("db.user"));
+            dbUserLibrary.setPassword(properties.getProperty("db.password"));
+            dbUserLibrary.setCatalog(properties.getProperty("db.catalog"));
+            dbUserLibrary.setProtocol(properties.getProperty("db.protocol"));
+            return dbUserLibrary;
         } catch (IOException e) {
             e.printStackTrace();
-            return new UserLibrary();
+            return new DbUserLibrary();
         }
     }
 
-    public static void setUserLibrary(UserLibrary userLibrary) {
+    public static void setUserLibrary(DbUserLibrary dbUserLibrary) {
         try {
-            File file = new File(ResourceHelper.resourceWithBasePath("connection.properties").toString());
+            File file = new File(ResourceHelper.resourceWithBasePath("connection.properties").toURI().getPath());
             FileOutputStream fos = new FileOutputStream(file);
 
             Properties properties = new Properties();
-            properties.put("db.driver", userLibrary.getDriver());
-            properties.put("db.host", userLibrary.getHost());
-            properties.put("db.port", userLibrary.getPort());
-            properties.put("db.user", userLibrary.getUsername());
-            properties.put("db.password", userLibrary.getPassword());
-            properties.put("db.catalog", userLibrary.getCatalog());
-            properties.put("db.protocol", userLibrary.getProtocol());
+            properties.put("db.driver", dbUserLibrary.getDriver());
+            properties.put("db.host", dbUserLibrary.getHost());
+            properties.put("db.port", dbUserLibrary.getPort());
+            properties.put("db.user", dbUserLibrary.getUsername());
+            properties.put("db.password", dbUserLibrary.getPassword());
+            properties.put("db.catalog", dbUserLibrary.getCatalog());
+            properties.put("db.protocol", dbUserLibrary.getProtocol());
 
             properties.store(fos, "");
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
