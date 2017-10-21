@@ -91,6 +91,37 @@ public class DbCreditSubject implements CreditSubjectDao {
     }
 
     @Override
+    public Record getRecordBySubjectId(long subjectId, long studentId) {
+        try {
+            if (isConnectable) {
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? ORDER BY date DESC LIMIT 1;";
+
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
+                pst.setLong(1, subjectId);
+                pst.setLong(2, studentId);
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    Record record = new Record();
+                    record.setId(rs.getLong(1));
+                    record.setMidterm(rs.getDouble(2));
+                    record.setFinalterm(rs.getDouble(3));
+                    record.setDate(rs.getString(4));
+                    record.setRemark(rs.getString(5));
+                    record.setSubjectId(rs.getLong(6));
+                    record.setAcademicId(rs.getLong(7));
+                    record.setStudentId(rs.getLong(8));
+                    return record;
+                }
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public List<Record> getRecordList() {
         List<Record> recordList = new ArrayList<>();
         try {
@@ -347,9 +378,7 @@ public class DbCreditSubject implements CreditSubjectDao {
                 pst.setLong(2, studentId);
                 pst.setString(3, remark.getCode());
                 ResultSet rs = pst.executeQuery();
-
-                final boolean result = rs.next();
-                return result;
+                return rs.next();
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
@@ -364,16 +393,15 @@ public class DbCreditSubject implements CreditSubjectDao {
             final Remark remark = Remark.FAILED;
             if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
+                String sql = "SELECT * FROM (SELECT * FROM tblcreditsubject WHERE subjectId=? AND studentId=? ORDER" +
+                        " BY date DESC LIMIT 1) AS TBL_CUSTOM WHERE TBL_CUSTOM.remark=?";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, subjectId);
                 pst.setLong(2, studentId);
                 pst.setString(3, remark.getCode());
                 ResultSet rs = pst.executeQuery();
-
-                final boolean result = rs.next();
-                return result;
+                return rs.next();
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
@@ -388,16 +416,15 @@ public class DbCreditSubject implements CreditSubjectDao {
             final Remark remark = Remark.INCOMPLETE;
             if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
+                String sql = "SELECT * FROM (SELECT * FROM tblcreditsubject WHERE subjectId=? AND studentId=? ORDER" +
+                        " BY date DESC LIMIT 1) AS TBL_CUSTOM WHERE TBL_CUSTOM.remark=?";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, subjectId);
                 pst.setLong(2, studentId);
                 pst.setString(3, remark.getCode());
                 ResultSet rs = pst.executeQuery();
-
-                final boolean result = rs.next();
-                return result;
+                return rs.next();
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
@@ -419,9 +446,7 @@ public class DbCreditSubject implements CreditSubjectDao {
                 pst.setLong(2, studentId);
                 pst.setString(3, remark.getCode());
                 ResultSet rs = pst.executeQuery();
-
-                final boolean result = rs.next();
-                return result;
+                return rs.next();
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {
@@ -436,16 +461,15 @@ public class DbCreditSubject implements CreditSubjectDao {
             final Remark remark = Remark.DROPPED;
             if (isConnectable) {
                 Connection connection = DB_MANAGER.getConnection();
-                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE subjectId=? AND studentId=? AND remark=? LIMIT 1;";
+                String sql = "SELECT * FROM (SELECT * FROM tblcreditsubject WHERE subjectId=? AND studentId=? ORDER" +
+                        " BY date DESC LIMIT 1) AS TBL_CUSTOM WHERE TBL_CUSTOM.remark=?";
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 pst.setLong(1, subjectId);
                 pst.setLong(2, studentId);
                 pst.setString(3, remark.getCode());
                 ResultSet rs = pst.executeQuery();
-
-                final boolean result = rs.next();
-                return result;
+                return rs.next();
             }
             throw new SQLException("Connection Problem");
         } catch (SQLException e) {

@@ -150,8 +150,8 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
         final int index = tblMark.getSelectionModel().getSelectedIndex();
         if (index > -1) {
             Record record = RECORD_LIST.get(index);
-            Platform.runLater(() -> gradeInputStage.showAndWait());
-            gradeInputStage.getController().listening(record, STUDENT.getId());
+            Platform.runLater(gradeInputStage::showAndWait);
+            gradeInputStage.getController().listener(record);
         }
     }
 
@@ -172,7 +172,7 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
         stage.close();
     }
 
-    public void initTable() {
+    private void initTable() {
 
         TreeItem<Mark> root = new RecursiveTreeItem<>(MARK_LIST, RecursiveTreeObject::getChildren);
 
@@ -308,11 +308,11 @@ public class StudentGradeInputController implements Initializable, GradeInputSta
         }).start();
     }
 
-    public void showLoading() {
+    private void showLoading() {
         Platform.runLater(() -> pnScreen.setVisible(true));
     }
 
-    public void hideLoading() {
+    private void hideLoading() {
         Platform.runLater(() -> pnScreen.setVisible(false));
     }
 }

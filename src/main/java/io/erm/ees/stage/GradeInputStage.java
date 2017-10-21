@@ -14,12 +14,13 @@ public class GradeInputStage extends Stage {
 
     private GradeInputController controller;
     private OnItemAddListener listener;
+    Parent root = null;
 
     public GradeInputStage() {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/grade_input.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 539, 259);
+            Scene scene = new Scene(root, 525, 250);
 
             initModality(Modality.APPLICATION_MODAL);
             setResizable(false);
@@ -45,5 +46,12 @@ public class GradeInputStage extends Stage {
 
     public interface OnItemAddListener {
         void onAddMark();
+    }
+
+    @Override
+    public void showAndWait() {
+        super.showAndWait();
+        if(root != null)
+            root.requestFocus();
     }
 }

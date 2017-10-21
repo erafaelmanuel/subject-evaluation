@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+@Deprecated
 public class EnrollmentStage extends Stage {
 
     private EnrollmentController controller;

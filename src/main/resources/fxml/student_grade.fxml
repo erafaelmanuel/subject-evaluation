@@ -47,13 +47,12 @@
                         </AnchorPane>
                   </content>
                 </TitledPane>
-                <TitledPane disable="true" text="Maintainance">
+                <TitledPane text="Maintainance">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #bdc3c7;">
                            <children>
-                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="5.0" prefHeight="25.0" prefWidth="192.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="   Evaluation" textFill="WHITE" />
-                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="34.0" prefHeight="25.0" prefWidth="192.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="   Academic Year" textFill="WHITE" />
-                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-4.0" layoutY="62.0" prefHeight="25.0" prefWidth="192.0" ripplerFill="BLACK" style="-fx-background-color: #2980b9;" text="   Academic Year" textFill="WHITE" />
+                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="5.0" onAction="#onClickAcademicYear" prefHeight="25.0" prefWidth="192.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="   Academic Year" textFill="WHITE" />
+                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-3.0" layoutY="34.0" onAction="#onClickGrade" prefHeight="25.0" prefWidth="192.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="   Grade" textFill="WHITE" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -62,7 +61,8 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutY="3.0" onAction="#onClickAS" prefHeight="25.0" prefWidth="192.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="   Advising slipt" textFill="WHITE" />
+                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutY="3.0" onAction="#onClickAS" prefHeight="25.0" prefWidth="192.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="   Advising Slip" textFill="WHITE" />
+                              <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="-2.0" layoutY="31.0" onAction="#onClickAS" prefHeight="25.0" prefWidth="192.0" ripplerFill="BLACK" style="-fx-background-color: #34495e;" text="   Complete Grade" textFill="WHITE" />
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
@@ -109,12 +109,10 @@
                   <AnchorPane prefHeight="42.0" prefWidth="884.0" style="-fx-background-color: #bdc3c7;" BorderPane.alignment="CENTER">
                      <children>
                         <JFXButton buttonType="RAISED" layoutX="803.0" layoutY="7.0" onAction="#onClickRefresh" prefHeight="18.0" prefWidth="67.0" ripplerFill="WHITE" style="-fx-background-color: #2980b9;" text="Refresh" textFill="WHITE" />
-                        <Label layoutX="521.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" text="Year / Semester :" visible="false" />
-                        <JFXComboBox fx:id="cbYearSem" layoutX="614.0" layoutY="7.0" onAction="#onChoose" prefHeight="25.0" prefWidth="186.0" visible="false" />
                         <JFXTextField fx:id="txSearch" layoutX="28.0" layoutY="7.0" onAction="#onActionSearch" promptText="Enter a student number" />
                         <JFXButton buttonType="RAISED" layoutX="168.0" layoutY="8.0" onAction="#onClickSearch" prefHeight="25.0" prefWidth="52.0" ripplerFill="WHITE" style="-fx-background-color: #9b59b6;" text="Search" textFill="WHITE" />
                         <JFXComboBox fx:id="cbAY" layoutX="357.0" layoutY="7.0" onAction="#onChooseAcademicYear" prefHeight="25.0" prefWidth="230.0" />
-                        <Label layoutX="265.0" layoutY="13.0" text="Academic Year : " />
+                        <Label fx:id="lbInfo" layoutX="265.0" layoutY="13.0" text="Academic Year : " />
                      </children>
                   </AnchorPane>
                </top>
@@ -126,14 +124,14 @@
             </TableView>
             <BorderPane prefHeight="54.0" prefWidth="399.0" style="-fx-background-color: #bdc3c7;">
                <right>
-                  <JFXButton buttonType="RAISED" onAction="#onClickNext" prefHeight="31.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Next" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <JFXButton fx:id="bnNext" buttonType="RAISED" onAction="#onClickNext" prefHeight="31.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Next" textFill="WHITE" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>
                   </JFXButton>
                </right>
                <left>
-                  <JFXButton buttonType="RAISED" onAction="#onClickPrevious" prefHeight="29.0" prefWidth="109.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Previous" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <JFXButton fx:id="bnPrevious" buttonType="RAISED" onAction="#onClickPrevious" prefHeight="29.0" prefWidth="109.0" ripplerFill="WHITE" style="-fx-background-color: #34495e;" text="Previous" textFill="WHITE" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>

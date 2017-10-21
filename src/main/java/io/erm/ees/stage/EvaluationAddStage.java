@@ -19,7 +19,7 @@ public class EvaluationAddStage extends Stage {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/evaluation_add.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 940, 690);
+            Scene scene = new Scene(root, 940, 670);
             initModality(Modality.APPLICATION_MODAL);
             setScene(scene);
             setResizable(false);
@@ -42,6 +42,7 @@ public class EvaluationAddStage extends Stage {
     public void setClose() {
         if(listener != null)
             listener.onClose();
+        close();
     }
 
     @FunctionalInterface

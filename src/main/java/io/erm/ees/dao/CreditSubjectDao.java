@@ -20,6 +20,8 @@ public interface CreditSubjectDao {
 
     Record getRecordById(long id);
 
+    Record getRecordBySubjectId(long subjectId, long studentId);
+
     List<Record> getRecordList();
 
     List<Record> getRecordList(long studentId);

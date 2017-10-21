@@ -3,10 +3,9 @@ package io.erm.ees.controller;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import io.erm.ees.dao.CreditSubjectDao;
-import io.erm.ees.dao.DirtyDao;
-import io.erm.ees.dao.impl.DirtyDaoImpl;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.model.v2.Record;
+import io.erm.ees.model.v2.Remark;
 import io.erm.ees.stage.GradeInputStage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,7 +19,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GradeInputController implements Initializable {
-
 
     @FXML
     private JFXTextField txMidterm;
@@ -43,18 +41,13 @@ public class GradeInputController implements Initializable {
     @FXML
     private Label lbFError;
 
-    private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
 
     private Record record;
 
-    private long studentId;
-
-    private String status = "INCOMPLETE";
+    private String status = Remark.INCOMPLETE.getCode();
 
     private boolean isValid = true;
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,12 +83,13 @@ public class GradeInputController implements Initializable {
         });
     }
 
-    public void listening(Record record, long studentId) {
+    public void listener(Record record) {
         this.record = record;
-        this.studentId = studentId;
 
         txMidterm.setText(record.getMidterm() + "");
         txFinalterm.setText(record.getFinalterm() + "");
+
+        selectStatus(record.getRemark());
     }
 
     @FXML
@@ -106,12 +100,17 @@ public class GradeInputController implements Initializable {
 
     @FXML
     protected void onClickSave(ActionEvent event) {
-        if (!txMidterm.getText().trim().matches("^[0-9]+([.][0-9])?$"))
+        if (!txMidterm.getText().trim().matches("^[0-9]([.][0-9])?$"))
             isValid = false;
-        if (!txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
+        if (!txFinalterm.getText().trim().matches("^[0-9]([.][0-9])?$")) {
             isValid = false;
         }
-        if (txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
+        if (txMidterm.getText().trim().matches("^[0-9]([.][0-9])?$")) {
+            final double grade = Double.parseDouble(txFinalterm.getText().trim());
+            if (!(grade <= 5 && grade >= 0))
+                isValid = false;
+        }
+        if (txFinalterm.getText().trim().matches("^[0-9]([.][0-9])?$")) {
             final double grade = Double.parseDouble(txFinalterm.getText().trim());
             if (!(grade <= 5 && grade >= 0))
                 isValid = false;
@@ -139,13 +138,26 @@ public class GradeInputController implements Initializable {
     }
 
     @FXML
-    private void onKeyReleased() {
-        if (txMidterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
+    protected void onKeyReleased() {
+        if (txMidterm.getText().trim().matches("^[0-9]([.][0-9])?$")) {
             lbMError.setVisible(false);
         } else {
             lbMError.setVisible(true);
         }
-        if (txFinalterm.getText().trim().matches("^[0-9]+([.][0-9])?$")) {
+
+        if (txMidterm.getText().trim().matches("^[0-9]([.][0-9])?$")) {
+            lbFError.setVisible(false);
+            final double grade = Double.parseDouble(txMidterm.getText().trim());
+
+            if (grade <= 5 && grade >= 0) {
+                lbMError.setVisible(false);
+            } else {
+                lbMError.setVisible(true);
+            }
+        } else {
+            lbMError.setVisible(true);
+        }
+        if (txFinalterm.getText().trim().matches("^[0-9]([.][0-9])?$")) {
             lbFError.setVisible(false);
             final double grade = Double.parseDouble(txFinalterm.getText().trim());
 
@@ -182,7 +194,7 @@ public class GradeInputController implements Initializable {
         }
     }
 
-    public void selectStatus(String status) {
+    private void selectStatus(String status) {
         switch (status) {
             case "PASSED":
                 rbPassed.setSelected(true);

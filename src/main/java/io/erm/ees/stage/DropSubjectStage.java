@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+@Deprecated
 public class DropSubjectStage extends Stage {
 
     private DropSubjectController controller;

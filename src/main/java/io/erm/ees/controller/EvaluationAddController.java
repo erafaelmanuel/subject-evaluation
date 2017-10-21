@@ -3,10 +3,9 @@ package io.erm.ees.controller;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.*;
-import io.erm.ees.dao.impl.CurriculumDaoImpl;
 import io.erm.ees.dao.impl.DirtyDaoImpl;
 import io.erm.ees.dao.impl.SectionDaoImpl;
-import io.erm.ees.dao.impl.SuggestionDaoImpl;
+import io.erm.ees.helper.DateHelper;
 import io.erm.ees.helper.DbFactory;
 import io.erm.ees.helper.EvaluationHelper;
 import io.erm.ees.helper.SectionHelper;
@@ -38,7 +37,6 @@ import javafx.scene.layout.VBox;
 import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -104,9 +102,6 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final CourseDao courseDao = DbFactory.courseFactory();
     private final SectionDao sectionDao = new SectionDaoImpl();
-    private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
-    private final StudentDao studentDao = DbFactory.studentFactory();
-    private final SuggestionDao suggestionDao = new SuggestionDaoImpl();
     private final AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
     private final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
     private final SubjectDao subjectDao = DbFactory.subjectFactory();
@@ -146,7 +141,7 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
 
             for (Subject s : ENROLL_SUBJECT_LIST) {
                 Record record = new Record();
-                record.setDate(new Date().toString());
+                record.setDate(DateHelper.now());
                 record.setRemark(Remark.NOTSET.getCode());
                 record.setAcademicId(academicYear.getId());
                 record.setSubjectId(s.getId());
@@ -167,7 +162,7 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
             return;
         }
         EvaluationAddStage stage = (EvaluationAddStage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setClose();
+        Platform.runLater(stage::setClose);
 
         new Thread(() -> {
             AdvisingDoc advisingDoc = new AdvisingDoc();
@@ -187,7 +182,7 @@ public class EvaluationAddController implements Initializable, AdvisingDoc.Creat
     @FXML
     protected void onClickClose(ActionEvent event) {
         EvaluationAddStage stage = (EvaluationAddStage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setClose();
+        Platform.runLater(stage::setClose);
     }
 
     @FXML

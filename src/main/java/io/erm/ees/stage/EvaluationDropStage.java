@@ -42,6 +42,7 @@ public class EvaluationDropStage extends Stage {
     public void setClose() {
         if(listener != null)
             listener.onClose();
+        close();
     }
 
     @FunctionalInterface

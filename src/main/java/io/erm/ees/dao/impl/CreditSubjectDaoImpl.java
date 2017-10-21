@@ -91,6 +91,11 @@ public class CreditSubjectDaoImpl implements CreditSubjectDao {
     }
 
     @Override
+    public Record getRecordBySubjectId(long subjectId, long studentId) {
+        return null;
+    }
+
+    @Override
     public List<Record> getRecordList() {
         List<Record> recordList = new ArrayList<>();
         try {

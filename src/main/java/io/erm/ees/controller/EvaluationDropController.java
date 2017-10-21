@@ -3,12 +3,9 @@ package io.erm.ees.controller;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import io.erm.ees.dao.*;
-import io.erm.ees.dao.impl.CurriculumDaoImpl;
 import io.erm.ees.dao.impl.DirtyDaoImpl;
 import io.erm.ees.dao.impl.SectionDaoImpl;
-import io.erm.ees.dao.impl.SuggestionDaoImpl;
 import io.erm.ees.helper.DbFactory;
-import io.erm.ees.helper.EvaluationHelper;
 import io.erm.ees.helper.SectionHelper;
 import io.erm.ees.model.Course;
 import io.erm.ees.model.Section;
@@ -87,18 +84,12 @@ public class EvaluationDropController implements Initializable, AdvisingDoc.Crea
     @FXML
     private VBox pnScreen;
 
-    @FXML
-    private Label lbEnrolledUnit;
-
     private final ObservableList<Subject> ENROLL_SUBJECT_LIST = FXCollections.observableArrayList();
     private final ObservableList<Subject> AVAILABLE_SUBJECT_LIST = FXCollections.observableArrayList();
 
     private final DirtyDao dirtyDao = new DirtyDaoImpl();
     private final CourseDao courseDao = DbFactory.courseFactory();
     private final SectionDao sectionDao = new SectionDaoImpl();
-    private final CurriculumDao curriculumDao = new CurriculumDaoImpl();
-    private final StudentDao studentDao = DbFactory.studentFactory();
-    private final SuggestionDao suggestionDao = new SuggestionDaoImpl();
     private final AcademicYearDao academicYearDao = DbFactory.academicYearFactory();
     private final CreditSubjectDao creditSubjectDao = DbFactory.creditSubjectFactory();
     private final SubjectDao subjectDao = DbFactory.subjectFactory();
@@ -143,13 +134,13 @@ public class EvaluationDropController implements Initializable, AdvisingDoc.Crea
         }
 
         EvaluationDropStage stage = (EvaluationDropStage) ((Node) event.getSource()).getScene().getWindow();
-        Platform.runLater(stage::close);
+        Platform.runLater(stage::setClose);
     }
 
     @FXML
     protected void onClickClose(ActionEvent event) {
         EvaluationDropStage stage = (EvaluationDropStage) ((Node) event.getSource()).getScene().getWindow();
-        Platform.runLater(stage::close);
+        Platform.runLater(stage::setClose);
     }
 
     @FXML

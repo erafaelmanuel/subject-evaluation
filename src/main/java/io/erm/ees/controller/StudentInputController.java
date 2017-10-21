@@ -81,7 +81,7 @@ public class StudentInputController implements Initializable {
 
         cbCourse.getSelectionModel().select(0);
 
-        for (Section s : sectionDao.getSectionList()) {
+        for (Section s : sectionDao.getSectionList("WHERE _year=1 GROUP BY _name")) {
             cbSection.getItems().add(s.getYear() + "-" + s.getName());
             SECTION_LIST.add(s);
         }
@@ -143,7 +143,7 @@ public class StudentInputController implements Initializable {
             txFName.setPromptText("Please enter a name");
             txFName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if (!txFName.getText().trim().matches("^[a-zA-Z]+$")) {
+        } else if (!txFName.getText().trim().matches("^([a-zA-Z]+ ?)+$")) {
             txFName.setText("");
             txFName.setPromptText("Please Enter a valid name");
             txFName.setStyle("-fx-prompt-text-fill:#c0392b");
@@ -163,7 +163,7 @@ public class StudentInputController implements Initializable {
             txLName.setPromptText("Please enter a name");
             txLName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if (!txLName.getText().trim().matches("^[a-zA-Z]+$")) {
+        } else if (!txLName.getText().trim().matches("^([a-zA-Z]+ ?)+$")) {
             txLName.setText("");
             txLName.setPromptText("Please Enter a valid name");
             txLName.setStyle("-fx-prompt-text-fill:#c0392b");
@@ -183,7 +183,7 @@ public class StudentInputController implements Initializable {
             txMName.setPromptText("Please enter a name");
             txMName.setStyle("-fx-prompt-text-fill:#c0392b");
             isValid = false;
-        } else if (!txMName.getText().trim().matches("^[a-zA-Z]+$")) {
+        } else if (!txMName.getText().trim().matches("^([a-zA-Z]+ ?)+$")) {
             txMName.setText("");
             txMName.setPromptText("Please Enter a valid name");
             txMName.setStyle("-fx-prompt-text-fill:#c0392b");

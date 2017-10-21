@@ -257,6 +257,11 @@ public class AcademicYearDaoImpl implements AcademicYearDao {
     }
 
     @Override
+    public List<AcademicYear> getAcademicYearListOpen() {
+        return null;
+    }
+
+    @Override
     public List<AcademicYear> getAcademicYearListOpen(long courseId) {
         List<AcademicYear> academicYearList = new ArrayList<>();
         try {

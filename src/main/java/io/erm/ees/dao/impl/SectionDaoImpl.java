@@ -176,7 +176,7 @@ public class SectionDaoImpl implements SectionDao {
                 String sql = "SELECT * FROM "
                         .concat(TABLE_NAME)
                         .concat(" ")
-                        .concat(query.replace(";", " "));
+                        .concat(query + ";");
 
                 PreparedStatement pst = connection.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();

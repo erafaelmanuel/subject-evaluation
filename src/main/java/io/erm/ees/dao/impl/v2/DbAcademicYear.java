@@ -281,6 +281,37 @@ public class DbAcademicYear implements AcademicYearDao {
     }
 
     @Override
+    public List<AcademicYear> getAcademicYearListOpen() {
+        List<AcademicYear> academicYearList = new ArrayList<>();
+        try {
+            if (isConnectable) {
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE status=? GROUP BY courseId";
+
+                PreparedStatement pst = DB_MANAGER.getConnection().prepareStatement(sql);
+                pst.setBoolean(1, true);
+                ResultSet rs = pst.executeQuery();
+
+                while (rs.next()) {
+                    AcademicYear academicYear = new AcademicYear();
+                    academicYear.setId(rs.getLong(1));
+                    academicYear.setCode(rs.getLong(2));
+                    academicYear.setName(rs.getString(3));
+                    academicYear.setSemester(rs.getInt(4));
+                    academicYear.setYear(rs.getInt(5));
+                    academicYear.setStatus(rs.getBoolean(6));
+                    academicYear.setCourseId(rs.getLong(7));
+                    academicYearList.add(academicYear);
+                }
+                return academicYearList;
+            }
+            throw new NoResultFoundException("No result found");
+        } catch (SQLException | NoResultFoundException e) {
+            LOGGER.warning(e.getMessage());
+            return academicYearList;
+        }
+    }
+
+    @Override
     public AcademicYear addAcademicYear(long courseId, AcademicYear academicYear) {
         try {
             if (isConnectable) {
