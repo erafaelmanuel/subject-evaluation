@@ -15,8 +15,12 @@ import java.util.logging.Logger;
 public class DbSubject implements SubjectDao {
 
     protected static final Logger LOGGER = Logger.getLogger(DbSubject.class.getSimpleName());
-    private final io.erm.ees.dao.conn.DbManager dbManager = new DbManager();
+    private DbManager dbManager;
     private boolean isConnectable = false;
+
+    public DbSubject(DbManager dbManager) {
+        this.dbManager=dbManager;
+    }
 
     public void open() {
         isConnectable= dbManager.connect();

@@ -17,11 +17,11 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
 
     private Stage primaryStage;
 
-    private final DbSubject dbSubject = new DbSubject();
-    private final DbCreditSubject dbCreditSubject = new DbCreditSubject();
-    private final DbAcademicYear dbAcademicYear = new DbAcademicYear();
-    private final DbCourse dbCourse = new DbCourse();
-    private final DbStudent dbStudent = new DbStudent();
+    private DbSubject dbSubject;
+    private DbCreditSubject dbCreditSubject;
+    private DbAcademicYear dbAcademicYear;
+    private DbCourse dbCourse;
+    private DbStudent dbStudent;
 
     public static void main(String args[]) throws IOException {
         launch();
@@ -31,10 +31,16 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
         this.primaryStage = primaryStage;
         this.primaryStage.setOnCloseRequest(e -> setOnClose());
 
-        DbManager dbManager = new DbManager();
+        final DbManager dbManager = new DbManager();
         if (!dbManager.connect()) {
             showConfig(dbManager);
         } else {
+            dbSubject = new DbSubject(dbManager);
+            dbCreditSubject = new DbCreditSubject(dbManager);
+            dbAcademicYear = new DbAcademicYear(dbManager);
+            dbCourse = new DbCourse(dbManager);
+            dbStudent = new DbStudent(dbManager);
+
             dbSubject.open();
             dbCreditSubject.open();
             dbAcademicYear.open();
@@ -63,12 +69,33 @@ public class Main extends Application implements ConfigurationStage.OnFinishList
     public void onLogin(boolean status, UserType userType) {
         if (!status)
             primaryStage.close();
-        else if(userType.getType().equals(UserType.ADMIN.getType()))
-            showAdminWindow();
-        else if(userType.getType().equals(UserType.DEAN.getType()))
-            showDeanWindow();
-        else
-            showTeacherWindow();
+        else {
+            final DbManager dbManager = new DbManager();
+            dbSubject = new DbSubject(dbManager);
+            dbCreditSubject = new DbCreditSubject(dbManager);
+            dbAcademicYear = new DbAcademicYear(dbManager);
+            dbCourse = new DbCourse(dbManager);
+            dbStudent = new DbStudent(dbManager);
+
+            dbSubject.open();
+            dbCreditSubject.open();
+            dbAcademicYear.open();
+            dbCourse.open();
+            dbStudent.open();
+
+            DbFactory.addSubjectFactory(dbSubject);
+            DbFactory.addCreditSubjectFactory(dbCreditSubject);
+            DbFactory.addAcademicYearFactory(dbAcademicYear);
+            DbFactory.addCourseFactory(dbCourse);
+            DbFactory.addStudentFactory(dbStudent);
+
+            if (userType.getType().equals(UserType.ADMIN.getType()))
+                showAdminWindow();
+            else if (userType.getType().equals(UserType.DEAN.getType()))
+                showDeanWindow();
+            else
+                showTeacherWindow();
+        }
     }
 
     private void showConfig(DbManager dbManager) {

@@ -19,7 +19,7 @@ public class StudentInputStage extends Stage {
     public StudentInputStage() {
         try {
             FXMLLoader loader = new FXMLLoader(ResourceHelper.resourceWithBasePath("fxml/student_input.fxml"));
-            Parent root=loader.load();
+            root=loader.load();
             Scene scene=new Scene(root, 590, 390);
 
             controller=loader.getController();

@@ -16,11 +16,15 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class DbAcademicYear implements AcademicYearDao {
-    private static final DbManager DB_MANAGER = new DbManager();
+    private DbManager DB_MANAGER;
 
     private static final Logger LOGGER = Logger.getLogger(DbAcademicYear.class.getSimpleName());
 
     private boolean isConnectable = false;
+
+    public DbAcademicYear(DbManager dbManager) {
+        DB_MANAGER=dbManager;
+    }
 
     public void open() {
         isConnectable=DB_MANAGER.connect();

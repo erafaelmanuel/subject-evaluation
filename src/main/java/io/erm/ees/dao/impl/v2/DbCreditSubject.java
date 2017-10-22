@@ -18,10 +18,14 @@ import java.util.logging.Logger;
 
 public class DbCreditSubject implements CreditSubjectDao {
 
-    private final DbManager DB_MANAGER = new DbManager();
+    private DbManager DB_MANAGER;
     private static final Logger LOGGER = Logger.getLogger(DbCreditSubject.class.getSimpleName());
 
     private boolean isConnectable = false;
+
+    public DbCreditSubject(DbManager dbManager) {
+        DB_MANAGER=dbManager;
+    }
 
     public void open() {
         isConnectable=DB_MANAGER.connect();

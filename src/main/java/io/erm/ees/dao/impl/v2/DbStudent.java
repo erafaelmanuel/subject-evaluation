@@ -17,9 +17,13 @@ import java.util.logging.Logger;
 
 public class DbStudent implements StudentDao {
     public static final Logger LOGGER = Logger.getLogger(DbStudent.class.getSimpleName());
-    private final DbManager dbManager = new DbManager();
+    private DbManager dbManager;
 
     private boolean isConnectable = false;
+
+    public DbStudent(DbManager dbManager) {
+        this.dbManager=dbManager;
+    }
 
     public void open() {
         isConnectable=dbManager.connect();

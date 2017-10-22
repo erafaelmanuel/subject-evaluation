@@ -68,28 +68,30 @@ public class SpecialCurriculumController implements Initializable {
         initTable();
         initTable2();
 
-        cbCourse.getSelectionModel().select(0);
-        cbType.getItems().add("SATURDAY_CLASS");
-        cbType.getItems().add("SUMMER_CLASS");
-        cbType.getSelectionModel().select(0);
+        if(cbCourse.getItems().size() > 0 && COURSE_LIST.size() > 0) {
+            cbCourse.getSelectionModel().select(0);
+            cbType.getItems().add("SATURDAY_CLASS");
+            cbType.getItems().add("SUMMER_CLASS");
+            cbType.getSelectionModel().select(0);
 
-        final int index = cbCourse.getSelectionModel().getSelectedIndex();
-        cbYS.setItems(FXCollections.observableArrayList());
-        for (int year = 1; year <= COURSE_LIST.get(index).getTotalYear(); year++) {
-            for (int sem = 1; sem <= COURSE_LIST.get(index).getTotalSemester(); sem++) {
-                cbYS.getItems().add(format(year) + " YEAR / " + format(sem) + " SEMESTER");
+            final int index = cbCourse.getSelectionModel().getSelectedIndex();
+            cbYS.setItems(FXCollections.observableArrayList());
+            for (int year = 1; year <= COURSE_LIST.get(index).getTotalYear(); year++) {
+                for (int sem = 1; sem <= COURSE_LIST.get(index).getTotalSemester(); sem++) {
+                    cbYS.getItems().add(format(year) + " YEAR / " + format(sem) + " SEMESTER");
+                }
             }
-        }
-        cbYS.getSelectionModel().select(0);
+            cbYS.getSelectionModel().select(0);
 
-        SUBJECT_LIST.clear();
-        Curriculum c = getCurriculumByYearAndSem(COURSE_LIST.get(index).getId(), 0);
-        for (io.erm.ees.model.Subject subject : curriculumDao.getSubjectList(c.getId())) {
-            SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
+            SUBJECT_LIST.clear();
+            Curriculum c = getCurriculumByYearAndSem(COURSE_LIST.get(index).getId(), 0);
+            for (io.erm.ees.model.Subject subject : curriculumDao.getSubjectList(c.getId())) {
+                SUBJECT_LIST.add(new Subject(subject.getId(), subject.getName(), subject.getDesc(), subject.getUnit()));
+            }
+            TreeItem<Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST, RecursiveTreeObject::getChildren);
+            tblFrom.setRoot(root);
+            tblFrom.setShowRoot(false);
         }
-        TreeItem<Subject> root = new RecursiveTreeItem<>(SUBJECT_LIST, RecursiveTreeObject::getChildren);
-        tblFrom.setRoot(root);
-        tblFrom.setShowRoot(false);
     }
 
     @FXML
