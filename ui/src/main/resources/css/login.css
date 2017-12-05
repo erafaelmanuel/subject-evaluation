@@ -1,0 +1,4 @@
+#txUsername, #txPassword {
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #bbbbbb;
+}
