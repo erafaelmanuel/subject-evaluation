@@ -14,6 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>io.ermdev.ees</groupId>
+            <artifactId>commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.ermdev.ees</groupId>
             <artifactId>data</artifactId>
         </dependency>
     </dependencies>

@@ -12,12 +12,13 @@
         <module>core</module>
         <module>ui</module>
         <module>data</module>
+        <module>commons</module>
     </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
+        <version>1.5.6.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -43,7 +44,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.6</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -83,6 +84,12 @@
             <dependency>
                 <groupId>io.ermdev.ees</groupId>
                 <artifactId>data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.ermdev.ees</groupId>
+                <artifactId>commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

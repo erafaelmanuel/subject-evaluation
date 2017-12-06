@@ -6,10 +6,8 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableJpaRepositories
-@SpringBootApplication(scanBasePackages = "io.ermdev.ees")
+@SpringBootApplication
 public class EESApplication extends Application {
 
     private Stage primaryStage;
@@ -25,7 +23,8 @@ public class EESApplication extends Application {
     }
 
     public void start(Stage primaryStage) throws Exception {
-        new LoginStage().showAndWait();
+        LoginStage loginStage = new LoginStage(applicationContext);
+        loginStage.showAndWait();
     }
 
 

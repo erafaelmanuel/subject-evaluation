@@ -10,22 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="370.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ermdev.ees.ui.login.LoginController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ermdev.ees.ui.login.LoginController">
    <children>
       <VBox alignment="TOP_CENTER" minHeight="250.0" minWidth="300.0" prefHeight="370.0" prefWidth="514.0" style="-fx-background-color: #2d3447;">
          <children>
-            <VBox fx:id="plMessage" alignment="CENTER" prefHeight="31.0" prefWidth="522.0" style="-fx-background-color: #2196f3;">
-               <children>
-                  <Label fx:id="lbMessage" alignment="CENTER" prefHeight="27.0" prefWidth="512.0" style="-fx-background-color: ;" text="Subject Evaluation System" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
+            <Label fx:id="lbTitle" alignment="CENTER" onMouseDragged="#onDraggedTitle" onMousePressed="#onPressedTitle" prefHeight="32.0" prefWidth="600.0" style="-fx-background-color: #2196f3;" text="Subject Evaluation System" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
             <StackPane alignment="TOP_CENTER" prefHeight="107.0" prefWidth="592.0">
                <children>
-                  <Label fx:id="lbTitle" alignment="CENTER" prefHeight="43.0" prefWidth="241.0" text="ermdev.io" textAlignment="CENTER" textFill="#b5b5b5">
+                  <Label alignment="CENTER" prefHeight="43.0" prefWidth="241.0" text="ermdev.io" textAlignment="CENTER" textFill="#b5b5b5">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -36,8 +32,8 @@
                <children>
                   <JFXTextField fx:id="txUsername" focusColor="#2196f3" labelFloat="true" layoutX="180.0" layoutY="23.0" prefHeight="30.0" prefWidth="232.0" promptText="Username" unFocusColor="#5a5a5a" />
                   <JFXPasswordField fx:id="txPassword" focusColor="#2196f3" labelFloat="true" layoutX="180.0" layoutY="73.0" prefHeight="30.0" prefWidth="232.0" promptText="Password" unFocusColor="#5a5a5a" />
-                  <JFXButton fx:id="bnLogin" layoutX="248.0" layoutY="125.0" mnemonicParsing="false" onAction="#onActionLogin" prefHeight="36.0" prefWidth="97.0" ripplerFill="WHITE" style="-fx-background-color: #2196f3;" text="Login" textFill="WHITE" />
-                  <JFXButton layoutX="231.0" layoutY="173.0" ripplerFill="#2d3447" text="Forgot password?" textFill="#838383" underline="true">
+                  <JFXButton fx:id="bnLogin" layoutX="247.0" layoutY="138.0" mnemonicParsing="false" onAction="#onActionLogin" prefHeight="30.0" prefWidth="107.0" ripplerFill="WHITE" style="-fx-background-color: #2196f3;" text="Login" textFill="WHITE" />
+                  <JFXButton layoutX="231.0" layoutY="180.0" ripplerFill="#2d3447" text="Forgot password?" textFill="#838383" underline="true">
                      <font>
                         <Font size="14.0" />
                      </font>

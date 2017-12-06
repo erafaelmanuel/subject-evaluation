@@ -1,4 +1,4 @@
-package io.ermdev.ess.data.repository;
+package io.ermdev.ees.data.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

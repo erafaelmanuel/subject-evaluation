@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class LoginStage extends Stage {
 
     private Logger logger = Logger.getLogger(LoginStage.class.getSimpleName());
 
-    public LoginStage() {
+    public LoginStage(ApplicationContext context) {
         try {
             initStyle(StageStyle.UNDECORATED);
             setTitle("Login");
@@ -22,10 +23,17 @@ public class LoginStage extends Stage {
             setMinHeight(370);
             setResizable(false);
 
-            Parent root = FXMLLoader.load(new ClassPathResource("fxml/login.fxml").getURL());
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(new ClassPathResource("fxml/login.fxml").getURL());
+
+            Parent root = loader.load();
             Scene scene = new Scene(root, 592, 390);
             scene.getStylesheets().add(new ClassPathResource("css/login.css").getURL().toString());
             setScene(scene);
+
+            LoginController loginController=loader.getController();
+            loginController.setStage(this);
+            loginController.setApplicationContext(context);
         } catch (IOException e) {
             logger.info(e.getMessage());
         }
