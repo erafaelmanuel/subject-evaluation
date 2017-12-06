@@ -3,6 +3,7 @@ package io.ermdev.ees.ui.login;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import io.ermdev.ees.commons.util.Dimension;
+import io.ermdev.ees.ui.dialog.LoginMessageDialog;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -59,6 +60,7 @@ public class LoginController {
             listener.onLoginSuccess(loginEvent);
         } else {
             System.out.println("failed");
+            new LoginMessageDialog().display();
         }
     }
 

@@ -18,8 +18,8 @@ public class LoginStage extends Stage {
     public LoginStage(ApplicationContext context, LoginListener listener) {
         try {
             initStyle(StageStyle.UNDECORATED);
-            setMinWidth(514);
-            setMinHeight(370);
+            setMinWidth(592);
+            setMinHeight(390);
             setResizable(false);
 
             FXMLLoader loader = new FXMLLoader();
