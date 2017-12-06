@@ -1,4 +1,4 @@
-package io.ermdev.ees.data.repository;
+package io.ermdev.ees.data.entity;
 
 import javax.persistence.*;
 

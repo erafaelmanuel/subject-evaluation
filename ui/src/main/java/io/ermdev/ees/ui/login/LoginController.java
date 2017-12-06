@@ -3,41 +3,32 @@ package io.ermdev.ees.ui.login;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import io.ermdev.ees.commons.util.Dimension;
-import io.ermdev.ees.data.repository.UserRepository;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-public class LoginController implements Initializable {
+public class LoginController {
 
     private final Logger logger = Logger.getLogger(LoginController.class.getSimpleName());
 
-    private Dimension initDimension;
     private Dimension dimension;
 
     private Stage stage;
-
     private ApplicationContext applicationContext;
-    private UserRepository userRepository;
+    private LoginListener listener;
+
+    private LoginService loginService;
 
     @FXML
     private JFXTextField txUsername;
     @FXML
     private JFXPasswordField txPassword;
-    @FXML
-    private Label lbTitle;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initDimension = new Dimension();
+    public LoginController() {
         dimension = new Dimension();
     }
 
@@ -48,15 +39,27 @@ public class LoginController implements Initializable {
     protected void setApplicationContext(ApplicationContext applicationContext) {
         try {
             this.applicationContext = applicationContext;
-            userRepository = applicationContext.getBean(UserRepository.class);
+            loginService = applicationContext.getBean(LoginService.class);
         } catch (NoSuchBeanDefinitionException e) {
             logger.info(e.getMessage());
         }
     }
 
+    protected void setListener(LoginListener listener) {
+        this.listener=listener;
+    }
+
     @FXML
     public void onActionLogin() {
-        System.out.println();
+        String username = txUsername.getText().trim();
+        String password = txPassword.getText().trim();
+
+        if(loginService.authenticateUser(username, password)) {
+            LoginEvent loginEvent = new LoginEvent(loginService.getUser());
+            listener.onLoginSuccess(loginEvent);
+        } else {
+            System.out.println("failed");
+        }
     }
 
     @FXML
@@ -64,9 +67,6 @@ public class LoginController implements Initializable {
         if(m.isPrimaryButtonDown()) {
             dimension.setX(m.getSceneX());
             dimension.setY(m.getSceneY());
-
-            initDimension.setX(stage.getX());
-            initDimension.setY(stage.getY());
         }
     }
 
@@ -76,5 +76,15 @@ public class LoginController implements Initializable {
             stage.setX(m.getScreenX() - dimension.getX());
             stage.setY(m.getScreenY() - dimension.getY());
         }
+    }
+
+    @FXML
+    public void onClickedClose() {
+        stage.close();
+    }
+
+    @FXML
+    public void onClickedMinimize() {
+        stage.setIconified(true);
     }
 }

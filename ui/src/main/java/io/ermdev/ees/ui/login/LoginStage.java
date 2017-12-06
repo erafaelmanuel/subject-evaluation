@@ -15,10 +15,9 @@ public class LoginStage extends Stage {
 
     private Logger logger = Logger.getLogger(LoginStage.class.getSimpleName());
 
-    public LoginStage(ApplicationContext context) {
+    public LoginStage(ApplicationContext context, LoginListener listener) {
         try {
             initStyle(StageStyle.UNDECORATED);
-            setTitle("Login");
             setMinWidth(514);
             setMinHeight(370);
             setResizable(false);
@@ -34,6 +33,7 @@ public class LoginStage extends Stage {
             LoginController loginController=loader.getController();
             loginController.setStage(this);
             loginController.setApplicationContext(context);
+            loginController.setListener(listener);
         } catch (IOException e) {
             logger.info(e.getMessage());
         }
