@@ -20,12 +20,5 @@ public class Dimension {
     public void setY(double y) {
         this.y = y;
     }
-
-    @Override
-    public String toString() {
-        return "Dimension{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
-    }
+    
 }

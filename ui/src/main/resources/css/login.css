@@ -2,3 +2,11 @@
     -fx-text-fill: white;
     -fx-prompt-text-fill: #bbbbbb;
 }
+
+#pMinimize:hover {
+    -fx-background-color: #045cb5;
+}
+
+#pClose:hover {
+    -fx-background-color: #045cb5;
+}

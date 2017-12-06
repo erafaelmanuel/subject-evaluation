@@ -25,10 +25,10 @@ public class EESApplication extends Application implements LoginListener {
     }
 
     public void start(Stage primaryStage) throws Exception {
+        this.primaryStage=primaryStage;
         LoginStage loginStage = new LoginStage(applicationContext, this);
         loginStage.showAndWait();
     }
-
 
     @Override
     public void onLoginSuccess(LoginEvent loginEvent) {
