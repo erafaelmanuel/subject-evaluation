@@ -24,7 +24,7 @@ public class LoginDialog {
             loader.setLocation(new ClassPathResource("/fxml/login_dialog.fxml").getURL());
 
             Parent root = loader.load();
-            Scene scene = new Scene(root, 241, 84);
+            Scene scene = new Scene(root, 241, 158);
             scene.setFill(Color.TRANSPARENT);
             scene.getStylesheets().add(new ClassPathResource("/css/login.css").getURL().toString());
 
