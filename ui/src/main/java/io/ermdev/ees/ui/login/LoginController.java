@@ -60,7 +60,7 @@ public class LoginController {
             listener.onLoginSuccess(loginEvent);
         } else {
             System.out.println("failed");
-            new LoginMessageDialog().display();
+            new LoginDialog().display();
         }
     }
 

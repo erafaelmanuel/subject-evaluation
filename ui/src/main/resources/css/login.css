@@ -10,3 +10,7 @@
 #pClose:hover {
     -fx-background-color: #045cb5;
 }
+
+#bnClose:hover {
+    -fx-opacity: 0.7;
+}
