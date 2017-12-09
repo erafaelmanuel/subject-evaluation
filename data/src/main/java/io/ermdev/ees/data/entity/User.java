@@ -1,6 +1,8 @@
 package io.ermdev.ees.data.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "tbluser")
 @Entity
@@ -11,6 +13,10 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    @ManyToMany
+    @JoinTable(name = "tblstudent_role", joinColumns = @JoinColumn(name = "userId"),
+    inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private List<Role> roles = new ArrayList<>();
 
     public User(){}
 
@@ -36,6 +42,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
