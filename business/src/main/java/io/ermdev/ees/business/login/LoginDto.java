@@ -1,4 +1,4 @@
-package io.ermdev.ess.business.login;
+package io.ermdev.ees.business.login;
 
 public class LoginDto {
 

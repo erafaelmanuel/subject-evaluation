@@ -1,4 +1,4 @@
-package io.ermdev.ess.business;
+package io.ermdev.ees.business;
 
 public class Dimension {
 
