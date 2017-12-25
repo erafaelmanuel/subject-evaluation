@@ -14,12 +14,12 @@
     <dependencies>
         <dependency>
             <groupId>io.ermdev.ees</groupId>
-            <artifactId>commons</artifactId>
+            <artifactId>data</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.ermdev.ees</groupId>
-            <artifactId>data</artifactId>
+            <artifactId>business</artifactId>
         </dependency>
     </dependencies>
 

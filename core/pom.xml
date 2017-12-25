@@ -21,5 +21,10 @@
             <groupId>io.ermdev.ees</groupId>
             <artifactId>data</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.ermdev.ees</groupId>
+            <artifactId>business</artifactId>
+        </dependency>
     </dependencies>
 </project>
