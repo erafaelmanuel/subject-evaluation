@@ -2,6 +2,7 @@ package io.ermdev.ees.business.login;
 
 import io.ermdev.ees.data.entity.User;
 import io.ermdev.ees.data.repository.UserRepository;
+import io.ermdev.mapfierj.core.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +10,13 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     private UserRepository userRepository;
+    private ModelMapper mapper;
     private User user;
 
     @Autowired
-    LoginService(UserRepository userRepository){
+    LoginService(UserRepository userRepository, ModelMapper mapper){
         this.userRepository = userRepository;
+        this.mapper = mapper;
     }
 
     private LoginDto findByUsername(String username) throws LoginException{
@@ -21,7 +24,7 @@ public class LoginService {
         if(user==null)
             throw new LoginException("No user found on username:" + username);
         else
-            return new LoginDto(user.getUsername(), user.getPassword());
+            return mapper.setAndGetTransaction(user).mapTo(LoginDto.class);
     }
 
     public boolean authenticateUser(String username, String password) {

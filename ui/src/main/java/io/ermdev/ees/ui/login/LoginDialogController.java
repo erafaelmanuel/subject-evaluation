@@ -1,6 +1,6 @@
 package io.ermdev.ees.ui.login;
 
-import io.ermdev.ees.commons.util.Dimension;
+import io.ermdev.ees.business.Dimension;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
