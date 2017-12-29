@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>core</module>
+        <module>application</module>
         <module>ui</module>
         <module>data</module>
         <module>business</module>
@@ -95,7 +95,7 @@
         <dependencies>
             <dependency>
                 <groupId>io.ermdev.ees</groupId>
-                <artifactId>core</artifactId>
+                <artifactId>application</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
