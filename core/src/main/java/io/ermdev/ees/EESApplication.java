@@ -2,6 +2,7 @@ package io.ermdev.ees;
 
 import io.ermdev.ees.data.repository.RoleRepository;
 import io.ermdev.ees.data.repository.UserRepository;
+import io.ermdev.ees.ui.admin.AdminStage;
 import io.ermdev.ees.ui.login.LoginStage;
 import io.ermdev.ees.business.login.LoginEvent;
 import io.ermdev.ees.business.login.LoginListener;
@@ -38,11 +39,12 @@ public class EESApplication extends Application implements LoginListener {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage=primaryStage;
         LoginStage loginStage = new LoginStage(applicationContext, this);
-        loginStage.showAndWait();
+        loginStage.show();
     }
 
     @Override
     public void onLoginSuccess(LoginEvent loginEvent) {
-        System.out.println(loginEvent.getUser());
+        AdminStage adminStage = new AdminStage();
+        adminStage.show();
     }
 }

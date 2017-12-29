@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class LoginDialog {
 
-    public void display() {
+    public void displayError() {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);

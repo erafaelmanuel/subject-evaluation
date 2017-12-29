@@ -6,7 +6,9 @@ import io.ermdev.ees.business.Dimension;
 import io.ermdev.ees.business.login.LoginEvent;
 import io.ermdev.ees.business.login.LoginListener;
 import io.ermdev.ees.business.login.LoginService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -53,16 +55,21 @@ public class LoginController {
     }
 
     @FXML
-    public void onActionLogin() {
+    public void onActionLogin(ActionEvent event) {
         String username = txUsername.getText().trim();
         String password = txPassword.getText().trim();
 
         if(loginService.authenticateUser(username, password)) {
+            if(stage != null) {
+                stage.close();
+            } else {
+                ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+            }
             LoginEvent loginEvent = new LoginEvent(loginService.getUser());
             listener.onLoginSuccess(loginEvent);
         } else {
-            System.out.println("failed");
-            new LoginDialog().display();
+            LoginDialog dialog = new LoginDialog();
+            dialog.displayError();
         }
     }
 

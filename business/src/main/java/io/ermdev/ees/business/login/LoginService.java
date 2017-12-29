@@ -23,8 +23,11 @@ public class LoginService {
         user = userRepository.findByUsername(username);
         if(user==null)
             throw new LoginException("No user found on username:" + username);
-        else
-            return mapper.setAndGetTransaction(user).mapTo(LoginDto.class);
+        else {
+            LoginDto loginDto = new LoginDto();
+            mapper.setAndGetTransaction(user).mapTo(loginDto);
+            return loginDto;
+        }
     }
 
     public boolean authenticateUser(String username, String password) {

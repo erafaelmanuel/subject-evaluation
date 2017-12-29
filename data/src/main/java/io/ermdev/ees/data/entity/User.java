@@ -1,5 +1,7 @@
 package io.ermdev.ees.data.entity;
 
+import io.ermdev.mapfierj.core.Ignore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    @Ignore
     @ManyToMany
     @JoinTable(name = "tblstudent_role", joinColumns = @JoinColumn(name = "userId"),
     inverseJoinColumns = @JoinColumn(name = "roleId"))

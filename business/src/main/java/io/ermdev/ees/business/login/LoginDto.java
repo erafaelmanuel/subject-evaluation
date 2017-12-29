@@ -6,6 +6,8 @@ public class LoginDto {
     private String password;
     private Boolean enabled=true;
 
+    public LoginDto() {}
+
     public LoginDto(String username, String password) {
         this.username = username;
         this.password = password;
