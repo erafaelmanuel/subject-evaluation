@@ -1,4 +1,4 @@
-package io.ermdev.ees.ui.login;
+package io.ermdev.ees.ui.teacher;
 
 import io.ermdev.ees.business.login.LoginListener;
 import javafx.fxml.FXMLLoader;
@@ -12,29 +12,28 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class LoginStage extends Stage {
+public class TeacherStage extends Stage {
 
-    private static final Logger LOGGER = Logger.getLogger(LoginStage.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(TeacherStage.class.getSimpleName());
 
-    public LoginStage(ApplicationContext context, LoginListener listener) {
+    public TeacherStage(ApplicationContext context, LoginListener listener) {
         try {
             initStyle(StageStyle.UNDECORATED);
-            setMinWidth(592);
-            setMinHeight(390);
+            setMinWidth(700);
+            setMinHeight(500);
             setResizable(false);
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(new ClassPathResource("fxml/login.fxml").getURL());
+            loader.setLocation(new ClassPathResource("fxml/teacher_menu.fxml").getURL());
 
             Parent root = loader.load();
-            Scene scene = new Scene(root, 592, 390);
-            scene.getStylesheets().add(new ClassPathResource("css/login.css").getURL().toString());
+            Scene scene = new Scene(root, 700, 500);
+            scene.getStylesheets().add(new ClassPathResource("css/teacher_style.css").getURL().toString());
             setScene(scene);
 
-            LoginController controller=loader.getController();
+            TeacherController controller=loader.getController();
             controller.setStage(this);
-            controller.setApplicationContext(context);
-            controller.setListener(listener);
+
         } catch (IOException e) {
             LOGGER.info(e.getMessage());
         }

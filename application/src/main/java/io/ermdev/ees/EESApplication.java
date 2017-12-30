@@ -1,11 +1,11 @@
 package io.ermdev.ees;
 
-import io.ermdev.ees.data.repository.RoleRepository;
-import io.ermdev.ees.data.repository.UserRepository;
-import io.ermdev.ees.ui.admin.AdminStage;
-import io.ermdev.ees.ui.login.LoginStage;
 import io.ermdev.ees.business.login.LoginEvent;
 import io.ermdev.ees.business.login.LoginListener;
+import io.ermdev.ees.data.repository.RoleRepository;
+import io.ermdev.ees.data.repository.UserRepository;
+import io.ermdev.ees.ui.login.LoginStage;
+import io.ermdev.ees.ui.teacher.TeacherStage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.boot.CommandLineRunner;
@@ -44,7 +44,7 @@ public class EESApplication extends Application implements LoginListener {
 
     @Override
     public void onLoginSuccess(LoginEvent loginEvent) {
-        AdminStage adminStage = new AdminStage();
-        adminStage.show();
+        TeacherStage teacherStage = new TeacherStage(applicationContext, this);
+        teacherStage.show();
     }
 }
