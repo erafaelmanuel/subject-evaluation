@@ -3,7 +3,9 @@ package io.ermdev.ees.ui.teacher;
 import io.ermdev.ees.business.Dimension;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -19,9 +21,7 @@ public class TeacherController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
+    public void initialize(URL location, ResourceBundle resources) {}
 
     @FXML
     public void onPressedTitle(MouseEvent m) {

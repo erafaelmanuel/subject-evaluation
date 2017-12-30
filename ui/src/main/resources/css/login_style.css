@@ -1,3 +1,4 @@
+/* Login */
 #pLoginLayout {
     -fx-background-color:  #2d3447;
 }
@@ -15,6 +16,7 @@
     -fx-background-color: #045cb5;
 }
 
+/* Login Dialog */
 #bnClose:hover {
     -fx-opacity: 0.7;
 }

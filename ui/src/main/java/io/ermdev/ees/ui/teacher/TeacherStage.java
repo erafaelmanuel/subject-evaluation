@@ -18,17 +18,17 @@ public class TeacherStage extends Stage {
 
     public TeacherStage(ApplicationContext context, LoginListener listener) {
         try {
-            initStyle(StageStyle.UNDECORATED);
-            setMinWidth(700);
-            setMinHeight(500);
-            setResizable(false);
-
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(new ClassPathResource("fxml/teacher_menu.fxml").getURL());
 
             Parent root = loader.load();
             Scene scene = new Scene(root, 700, 500);
             scene.getStylesheets().add(new ClassPathResource("css/teacher_style.css").getURL().toString());
+
+            initStyle(StageStyle.UNDECORATED);
+            setMinWidth(700);
+            setMinHeight(500);
+            setResizable(false);
             setScene(scene);
 
             TeacherController controller=loader.getController();

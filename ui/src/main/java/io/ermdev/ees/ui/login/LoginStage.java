@@ -18,17 +18,17 @@ public class LoginStage extends Stage {
 
     public LoginStage(ApplicationContext context, LoginListener listener) {
         try {
-            initStyle(StageStyle.UNDECORATED);
-            setMinWidth(592);
-            setMinHeight(390);
-            setResizable(false);
-
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(new ClassPathResource("fxml/login.fxml").getURL());
 
             Parent root = loader.load();
             Scene scene = new Scene(root, 592, 390);
-            scene.getStylesheets().add(new ClassPathResource("css/login.css").getURL().toString());
+            scene.getStylesheets().add(new ClassPathResource("css/login_style.css").getURL().toString());
+
+            initStyle(StageStyle.UNDECORATED);
+            setMinWidth(592);
+            setMinHeight(390);
+            setResizable(false);
             setScene(scene);
 
             LoginController controller=loader.getController();
