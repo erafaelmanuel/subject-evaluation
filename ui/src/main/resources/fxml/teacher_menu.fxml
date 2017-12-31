@@ -84,31 +84,31 @@
       </VBox>
    </top>
    <left>
-      <VBox fx:id="sideLayout" prefHeight="330.0" prefWidth="187.0" style="-fx-background-color: #2c3e50;" BorderPane.alignment="CENTER">
+      <VBox fx:id="sideLayout" onMouseEntered="#onEnteredSideLayout" onMouseExited="#onExitedSideLayout" prefHeight="401.0" prefWidth="0.0" style="-fx-background-color: #2c3e50;" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" prefHeight="36.0" prefWidth="187.0">
+            <VBox alignment="CENTER" prefHeight="36.0" prefWidth="0.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #bdc3c7;">
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="200.0" style="-fx-background-color: ;">
                      <children>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
                               <Insets right="7.0" />
                            </HBox.margin>
                            <image>
-                              <Image url="@../images/graduation-hat.png" />
+                              <Image url="@../images/students-cap.png" />
                            </image>
                         </ImageView>
-                        <Label text="Evaluate">
+                        <Label fx:id="lbEvaluate" text="Evaluate" textAlignment="CENTER" textFill="#8ec2e8" visible="false">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                            <font>
-                              <Font size="13.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
                      </children>
                      <padding>
-                        <Insets left="10.0" />
+                        <Insets left="17.0" />
                      </padding>
                   </HBox>
                </children></VBox>
