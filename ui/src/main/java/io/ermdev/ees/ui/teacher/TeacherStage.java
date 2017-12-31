@@ -22,11 +22,11 @@ public class TeacherStage extends Stage {
             loader.setLocation(new ClassPathResource("fxml/teacher_menu.fxml").getURL());
 
             Parent root = loader.load();
-            Scene scene = new Scene(root, 700, 500);
+            Scene scene = new Scene(root, 750, 500);
             scene.getStylesheets().add(new ClassPathResource("css/teacher_style.css").getURL().toString());
 
             initStyle(StageStyle.UNDECORATED);
-            setMinWidth(700);
+            setMinWidth(750);
             setMinHeight(500);
             setResizable(false);
             setScene(scene);

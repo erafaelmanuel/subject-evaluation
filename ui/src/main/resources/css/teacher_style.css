@@ -13,3 +13,11 @@
 #pClose:hover {
     -fx-background-color: #045cb5;
 }
+
+#boxEvaluate:hover {
+    -fx-background-color: #202020;
+}
+
+#boxDropSubject:hover {
+    -fx-background-color: #202020;
+}

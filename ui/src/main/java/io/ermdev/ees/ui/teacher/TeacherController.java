@@ -4,6 +4,7 @@ import io.ermdev.ees.business.Dimension;
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -23,6 +24,12 @@ public class TeacherController implements Initializable {
 
     @FXML
     private Label lbEvaluate;
+
+    @FXML
+    private Label lbDropSubject;
+
+    @FXML
+    private VBox boxProfile;
 
     public TeacherController() {
         dimension = new Dimension();
@@ -59,18 +66,35 @@ public class TeacherController implements Initializable {
 
     @FXML
     public void onEnteredSideLayout() {
-        sideLayout.setMaxWidth(130);
+        sideLayout.setMaxWidth(160);
         Timeline timeline = new Timeline();
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200), new KeyValue(sideLayout.prefWidthProperty(), 130)));
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200), new KeyValue(lbEvaluate.visibleProperty(), true)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100),
+                new KeyValue(sideLayout.prefWidthProperty(), 160)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100),
+                new KeyValue(lbEvaluate.visibleProperty(), true)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100),
+                new KeyValue(lbDropSubject.visibleProperty(), true)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100),
+                new KeyValue(boxProfile.visibleProperty(), true)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100),
+                new KeyValue(boxProfile.paddingProperty(), new Insets(5, 0, 0, 10))));
         timeline.play();
     }
 
     @FXML
     public void onExitedSideLayout() {
-        sideLayout.setMaxWidth(55);
-        sideLayout.setPrefWidth(55);
-        lbEvaluate.setVisible(false);
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(50),
+                new KeyValue(sideLayout.prefWidthProperty(), 56)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(50),
+                new KeyValue(lbEvaluate.visibleProperty(), false)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(50),
+                new KeyValue(lbDropSubject.visibleProperty(), false)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(50),
+                new KeyValue(boxProfile.visibleProperty(), false)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(50),
+                new KeyValue(boxProfile.paddingProperty(), new Insets(0))));
+        timeline.play();
     }
 
     protected void setStage(Stage stage) {
