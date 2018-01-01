@@ -6,14 +6,6 @@
     -fx-background-color:  #2d3447;
 }
 
-#pMinimize:hover {
-    -fx-background-color: #045cb5;
-}
-
-#pClose:hover {
-    -fx-background-color: #045cb5;
-}
-
 #boxEvaluate:hover {
     -fx-background-color: #202020;
 }

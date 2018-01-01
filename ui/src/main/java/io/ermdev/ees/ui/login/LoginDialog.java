@@ -26,7 +26,7 @@ public class LoginDialog {
             Parent root = loader.load();
             Scene scene = new Scene(root, 241, 158);
             scene.setFill(Color.TRANSPARENT);
-            scene.getStylesheets().add(new ClassPathResource("/css/login_style.css").getURL().toString());
+            scene.getStylesheets().add(new ClassPathResource("/css/login_dialog_style.css").getURL().toString());
 
             stage.setScene(scene);
             stage.showAndWait();

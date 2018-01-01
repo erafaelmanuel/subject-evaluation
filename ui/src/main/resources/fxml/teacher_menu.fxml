@@ -26,9 +26,9 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="200.0">
                            <children>
-                              <StackPane fx:id="pMinimize" onMouseClicked="#onClickedMinimize" prefHeight="20.0" prefWidth="20.0">
+                              <StackPane fx:id="buttonMinimize" onMouseClicked="#onMouseClickedMinimize" onMouseEntered="#onMouseEnteredMinimize" onMouseExited="#onMouseExitedMinimize" prefHeight="20.0" prefWidth="20.0">
                                  <children>
-                                    <ImageView fitHeight="16.0" fitWidth="16.0" onMouseClicked="#onClickedMinimize" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="16.0" fitWidth="16.0" onMouseClicked="#onMouseClickedMinimize" onMouseEntered="#onMouseEnteredMinimize" onMouseExited="#onMouseExitedMinimize" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/minimize.png" />
                                        </image>
@@ -38,9 +38,9 @@
                                     <Insets bottom="6.0" top="6.0" />
                                  </HBox.margin>
                               </StackPane>
-                              <StackPane fx:id="pClose" onMouseClicked="#onClickedClose" prefHeight="20.0" prefWidth="20.0">
+                              <StackPane fx:id="buttonClose" onMouseClicked="#onMouseClickedClose" onMouseEntered="#onMouseEnteredClose" onMouseExited="#onMouseExitedClose" prefHeight="20.0" prefWidth="20.0">
                                  <children>
-                                    <ImageView fitHeight="16.0" fitWidth="16.0" onMouseClicked="#onClickedClose" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="16.0" fitWidth="16.0" onMouseClicked="#onMouseClickedClose" onMouseEntered="#onMouseEnteredClose" onMouseExited="#onMouseExitedClose" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/close.png" />
                                        </image>
