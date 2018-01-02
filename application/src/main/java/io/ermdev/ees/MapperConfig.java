@@ -1,7 +1,7 @@
 package io.ermdev.ees;
 
-import io.ermdev.mapfierj.core.ModelMapper;
-import io.ermdev.mapfierj.core.SimpleMapper;
+import io.ermdev.mapfierj.ModelMapper;
+import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

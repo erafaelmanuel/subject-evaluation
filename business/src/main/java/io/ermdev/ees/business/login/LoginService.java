@@ -2,7 +2,7 @@ package io.ermdev.ees.business.login;
 
 import io.ermdev.ees.data.entity.User;
 import io.ermdev.ees.data.repository.UserRepository;
-import io.ermdev.mapfierj.core.ModelMapper;
+import io.ermdev.mapfierj.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

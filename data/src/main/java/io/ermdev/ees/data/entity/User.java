@@ -1,6 +1,6 @@
 package io.ermdev.ees.data.entity;
 
-import io.ermdev.mapfierj.core.Ignore;
+import io.ermdev.mapfierj.Ignore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
