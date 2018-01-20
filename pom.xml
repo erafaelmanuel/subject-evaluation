@@ -13,6 +13,7 @@
         <module>ui</module>
         <module>data</module>
         <module>business</module>
+        <module>legacy</module>
     </modules>
 
     <parent>
@@ -114,6 +115,12 @@
             <dependency>
                 <groupId>io.ermdev.ees</groupId>
                 <artifactId>business</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.ermdev.ees</groupId>
+                <artifactId>legacy</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
