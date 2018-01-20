@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application implements ConfigurationStage.OnFinishListener, LoginStage.OnLoginListener,
+public class ESSApplication extends Application implements ConfigurationStage.OnFinishListener, LoginStage.OnLoginListener,
         TeacherStage.OnSignOutListener, AdminStage.OnSignOutListener, DeanStage.OnSignOutListener {
 
     private Stage primaryStage;
