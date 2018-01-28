@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("io.ermdev.ees.data")
+@EnableJpaRepositories("io.ermdev.projectx.data.repository")
 public class EESApplication extends Application implements LoginListener {
 
     private Stage primaryStage;
