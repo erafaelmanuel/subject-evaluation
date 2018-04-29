@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+
+<FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="297.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ermdev.ees.controller.StudentFindController">
+   <children>
+      <AnchorPane prefHeight="241.0" prefWidth="273.0" style="-fx-background-color: #ecf0f1;">
+         <children>
+            <VBox alignment="TOP_CENTER" layoutX="24.0" layoutY="1.0" prefHeight="256.0" prefWidth="226.0">
+               <children>
+                  <VBox layoutX="10.0" layoutY="116.0" prefHeight="30.0" prefWidth="226.0" />
+                  <ImageView fx:id="imgvLogo" fitHeight="91.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <VBox prefHeight="22.0" prefWidth="226.0" />
+                  <JFXTextField fx:id="txStudentNumber" focusColor="#c35f0d" labelFloat="true" onAction="#onActionEnter" promptText="Enter a student" unFocusColor="#c35f0d" />
+                  <VBox prefHeight="17.0" prefWidth="226.0" />
+                  <JFXButton buttonType="RAISED" onAction="#onClickEnter" prefHeight="29.0" prefWidth="226.0" ripplerFill="WHITE" style="-fx-background-color: #d35400;" text="Enter" textFill="WHITE" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</FlowPane>

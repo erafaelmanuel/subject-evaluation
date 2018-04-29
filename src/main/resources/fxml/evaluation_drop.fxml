@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.ermdev.ees.controller.EvaluationDropController">
+   <children>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="950.0">
+         <bottom>
+            <BorderPane prefHeight="34.0" prefWidth="700.0" style="-fx-background-color: #34495e;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+            </BorderPane>
+         </bottom>
+         <center>
+            <FlowPane prefHeight="486.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane prefHeight="389.0" prefWidth="951.0" style="-fx-border-color: #bdc3c7; -fx-border-style: dashed; -fx-border-width: 0 0 3 0;">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox prefHeight="365.0" prefWidth="456.0">
+                           <children>
+                              <Label>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <JFXTreeTableView fx:id="tblAbSubject" prefHeight="399.0" prefWidth="350.0" />
+                              <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="139.0" text="TOTAL UNITS : " />
+                                    <Label fx:id="lbAbUnit" style="-fx-text-fill: #27ae60;" text="0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXButton buttonType="RAISED" onAction="#onClickAdd" ripplerFill="BLACK" style="-fx-background-color: #7f8c8d;" text="+ Drop" textFill="#202020">
+                                       <FlowPane.margin>
+                                          <Insets left="20.0" />
+                                       </FlowPane.margin>
+                                    </JFXButton>
+                                    <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickAddAll" ripplerFill="WHITE" style="-fx-background-color: #16a085;" text="+ Drop All" textFill="WHITE">
+                                       <FlowPane.margin>
+                                          <Insets left="5.0" />
+                                       </FlowPane.margin>
+                                    </JFXButton>
+                                 </children>
+                              </FlowPane>
+                           </children>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                           <children>
+                              <Label prefWidth="114.0">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <JFXTreeTableView fx:id="tblYeSubject" prefWidth="473.0" />
+                              <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="lbexceed" prefHeight="22.0" prefWidth="125.0" style="-fx-text-fill: #c0392b;" text="(LIMIT IS EXCEEDED)">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="26.0" prefWidth="84.0" text="TOTAL UNITS :  " />
+                                    <Label fx:id="lbYeUnit" style="-fx-text-fill: #c0392b;" text="0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXButton buttonType="RAISED" onAction="#onClickRemove" ripplerFill="BLACK" style="-fx-background-color: #7f8c8d;" text="- Back" textFill="#202020">
+                                       <FlowPane.margin>
+                                          <Insets left="20.0" />
+                                       </FlowPane.margin>
+                                    </JFXButton>
+                                    <JFXButton buttonType="RAISED" layoutX="392.0" layoutY="11.0" onAction="#onClickRemoveAll" ripplerFill="WHITE" style="-fx-background-color: #c0392b;" text="- Back All" textFill="WHITE">
+                                       <FlowPane.margin>
+                                          <Insets left="5.0" />
+                                       </FlowPane.margin>
+                                    </JFXButton>
+                                 </children>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </FlowPane>
+                           </children>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </VBox>
+                     </children>
+                  </GridPane>
+                  <AnchorPane prefHeight="51.0" prefWidth="952.0">
+                     <children>
+                        <JFXButton buttonType="RAISED" layoutX="745.0" layoutY="13.0" onAction="#onClickSave" prefHeight="29.0" prefWidth="91.0" ripplerFill="WHITE" style="-fx-background-color: #bdc3c7;" text="Save" />
+                        <JFXButton buttonType="RAISED" layoutX="844.0" layoutY="12.0" onAction="#onClickClose" prefHeight="29.0" prefWidth="91.0" ripplerFill="WHITE" style="-fx-background-color: #bdc3c7;" text="Cancel" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </FlowPane>
+         </center>
+         <top>
+            <AnchorPane prefHeight="168.0" prefWidth="956.0" style="-fx-border-color: #bdc3c7; -fx-border-width: 0 0 3 0; -fx-border-style: dashed;" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox layoutX="33.0" layoutY="46.0" prefHeight="111.0" prefWidth="811.0">
+                     <children>
+                        <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="91.0" prefWidth="411.0">
+                           <children>
+                              <HBox layoutX="20.0" layoutY="10.0" prefHeight="7.0" prefWidth="327.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="131.0" text="* COURSE :                 ">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txCourse" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Course of student" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="20.0" layoutY="37.0" prefHeight="7.0" prefWidth="327.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="131.0" text="* ACADEMIC YR/SEM :">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txAYS" editable="false" prefHeight="25.0" prefWidth="251.0" promptText="Academic year / semester" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="7.0" prefWidth="327.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="131.0" text="* STUDENT NUMBER  :">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txStudentNo" editable="false" prefHeight="25.0" prefWidth="254.0" promptText="Student number" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox prefHeight="91.0" prefWidth="346.0">
+                           <children>
+                              <HBox prefHeight="7.0" prefWidth="900.0">
+                                 <children>
+                                    <Label text="* FULL NAME  :">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txFullName" editable="false" prefHeight="25.0" prefWidth="229.0" promptText="Name of student" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="16.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="* YEAR  :          ">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txYear" editable="false" prefHeight="25.0" prefWidth="231.0" promptText="Year of student" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="16.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="* STATUS :       ">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="txStatus" editable="false" prefHeight="25.0" prefWidth="231.0" promptText="Status of student" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="16.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                  </HBox>
+                  <VBox alignment="CENTER" layoutX="-3.0" layoutY="-3.0" prefHeight="33.0" prefWidth="959.0" style="-fx-background-color: #ecf0f1;">
+                     <children>
+                        <Label text="Drop Subject">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children></VBox>
+               </children>
+            </AnchorPane>
+         </top>
+      </BorderPane>
+   </children>
+</StackPane>
