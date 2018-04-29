@@ -1,6 +1,4 @@
-package classifyx.listener;
-
-import classifyx.event.LoginEvent;
+package classifyx.ui.login;
 
 @FunctionalInterface
 public interface LoginListener {

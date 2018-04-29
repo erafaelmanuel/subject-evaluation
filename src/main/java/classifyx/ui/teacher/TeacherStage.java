@@ -1,6 +1,6 @@
 package classifyx.ui.teacher;
 
-import classifyx.listener.LoginListener;
+import classifyx.ui.login.LoginListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

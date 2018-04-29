@@ -1,4 +1,4 @@
-package classifyx;
+package classifyx.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

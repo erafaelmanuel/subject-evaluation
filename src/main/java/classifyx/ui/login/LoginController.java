@@ -1,11 +1,9 @@
 package classifyx.ui.login;
 
 import classifyx.data.service.LoginService;
-import classifyx.event.LoginEvent;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import classifyx.commons.Dimension;
-import classifyx.listener.LoginListener;
+import classifyx.ui.util.Dimension;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

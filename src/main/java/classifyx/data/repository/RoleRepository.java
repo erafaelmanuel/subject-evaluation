@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    @Query("from Role where id=:roleId")
+    @Query("SELECT a FROM Role AS a WHERE id=:roleId")
     Role findById(@Param("roleId") Long id);
 }

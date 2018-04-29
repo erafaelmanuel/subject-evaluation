@@ -1,4 +1,4 @@
-package classifyx.dto;
+package classifyx.ui.login;
 
 public class LoginDto {
 

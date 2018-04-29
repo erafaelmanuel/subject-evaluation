@@ -1,4 +1,4 @@
-package classifyx.commons;
+package classifyx.ui.util;
 
 public class Dimension {
 

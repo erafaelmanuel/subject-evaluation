@@ -1,6 +1,6 @@
 package classifyx.ui.teacher;
 
-import classifyx.commons.Dimension;
+import classifyx.ui.util.Dimension;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

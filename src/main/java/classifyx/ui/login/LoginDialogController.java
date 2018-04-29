@@ -1,6 +1,6 @@
 package classifyx.ui.login;
 
-import classifyx.commons.Dimension;
+import classifyx.ui.util.Dimension;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

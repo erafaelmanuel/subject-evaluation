@@ -2,7 +2,7 @@ package classifyx.data.service;
 
 import classifyx.data.entity.User;
 import classifyx.data.repository.UserRepository;
-import classifyx.dto.LoginDto;
+import classifyx.ui.login.LoginDto;
 import classifyx.exception.LoginException;
 import mapfierj.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
-
-    final private Mapper mapper = new Mapper();
 
     private UserRepository userRepository;
 
@@ -23,6 +21,7 @@ public class LoginService {
     }
 
     private LoginDto findByUsername(String username) throws LoginException {
+        final Mapper mapper = new Mapper();
         user = userRepository.findByUsername(username);
         if(user==null)
             throw new LoginException("No user found on username:" + username);

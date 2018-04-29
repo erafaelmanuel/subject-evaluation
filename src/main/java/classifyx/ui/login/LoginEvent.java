@@ -1,4 +1,4 @@
-package classifyx.event;
+package classifyx.ui.login;
 
 import classifyx.data.entity.User;
 
