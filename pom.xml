@@ -24,13 +24,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -63,12 +56,6 @@
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
             <version>5.0.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.erafaelmanuel</groupId>
-            <artifactId>mapfierJ</artifactId>
-            <version>v1.0-beta.6.2</version>
         </dependency>
 
         <dependency>
