@@ -1,0 +1,15 @@
+#headerLayout {
+    -fx-background-color:  #2d3447;
+}
+
+#sideLayout {
+    -fx-background-color:  #2d3447;
+}
+
+#boxEvaluate:hover {
+    -fx-background-color: #202020;
+}
+
+#boxDropSubject:hover {
+    -fx-background-color: #202020;
+}

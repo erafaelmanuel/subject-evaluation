@@ -1,0 +1,13 @@
+#bnClose:hover {
+    -fx-opacity: 0.7;
+}
+
+#pDialogLayout {
+    -fx-background-radius: 4;
+}
+
+#topDialog {
+    -fx-background-radius: 4 4 0 0;
+    -fx-background-color:  #e95350;
+    -fx-background-color:  #bdc3c7;
+}

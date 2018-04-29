@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<AnchorPane fx:id="pDialogLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#onDraggedDialog" onMousePressed="#onPressedDialog" prefHeight="158.0" prefWidth="241.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classifyx.ui.login.LoginDialogController">
+   <children>
+      <AnchorPane fx:id="topDialog" layoutY="-1.0" prefHeight="98.0" prefWidth="241.0">
+         <children>
+            <ImageView fitHeight="65.0" fitWidth="87.0" layoutX="88.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/warning.png" />
+               </image>
+            </ImageView>
+            <StackPane layoutX="215.0" layoutY="9.0" prefHeight="20.0" prefWidth="20.0">
+               <children>
+                  <ImageView fx:id="bnClose" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onClickClose" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/close.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+         </children>
+      </AnchorPane>
+      <Label layoutX="36.0" layoutY="118.0" text="Incorrect username or password" textFill="#616161" />
+   </children>
+</AnchorPane>
