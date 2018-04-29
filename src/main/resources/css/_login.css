@@ -1,0 +1,15 @@
+#wrapper {
+    -fx-background-color: #f1f2f6;
+}
+
+#btnLogin {
+    -fx-text-fill: #fff;
+    -fx-background-color: #1e90ff;
+    -fx-border-color: #1e90ff;
+}
+
+#btnLogin: hover {
+    -fx-text-fill: #1e90ff;
+    -fx-background-color: #fff;
+    -fx-border-color: #1e90ff;
+}

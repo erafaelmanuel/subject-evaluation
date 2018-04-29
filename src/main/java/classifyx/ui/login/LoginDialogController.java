@@ -1,6 +1,5 @@
 package classifyx.ui.login;
 
-import classifyx.ui.util.Dimension;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,14 +10,9 @@ import javafx.stage.Stage;
 
 public class LoginDialogController {
 
-    private Dimension dimension;
 
     @FXML
     private StackPane buttonClose;
-
-    public LoginDialogController() {
-        dimension = new Dimension();
-    }
 
     @FXML
     public void onActionOK(ActionEvent event) {
@@ -33,19 +27,12 @@ public class LoginDialogController {
 
     @FXML
     public void onMousePressedTitle(MouseEvent m) {
-        if (m.isPrimaryButtonDown()) {
-            dimension.setX(m.getSceneX());
-            dimension.setY(m.getSceneY());
-        }
+
     }
 
     @FXML
     public void onMouseDraggedTitle(MouseEvent event) {
-        if (event.isPrimaryButtonDown()) {
-            Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
-            stage.setX(event.getScreenX() - dimension.getX());
-            stage.setY(event.getScreenY() - dimension.getY());
-        }
+
     }
 
     @FXML

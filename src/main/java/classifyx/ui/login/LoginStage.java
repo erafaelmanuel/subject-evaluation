@@ -4,38 +4,42 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.net.URL;
 
 public class LoginStage extends Stage {
 
-    private static final Logger LOGGER = Logger.getLogger(LoginStage.class.getSimpleName());
-
     public LoginStage(ApplicationContext context, LoginListener listener) {
+        final ClassLoader classLoader = getClass().getClassLoader();
         try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(new ClassPathResource("fxml/login.fxml").getURL());
+            final URL fxml = classLoader.getResource("fxml/_login.fxml");
+            final URL style = classLoader.getResource("css/_login.css");
+            final FXMLLoader loader = new FXMLLoader();
 
-            Parent root = loader.load();
-            Scene scene = new Scene(root, 592, 390);
-            scene.getStylesheets().add(new ClassPathResource("css/login_style.css").getURL().toString());
+            if (fxml != null) {
+                loader.setLocation(fxml);
+            }
 
-            initStyle(StageStyle.UNDECORATED);
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root, 592, 390);
+
+            if (style != null) {
+                scene.getStylesheets().add(style.toString());
+            }
             setMinWidth(592);
             setMinHeight(390);
             setResizable(false);
             setScene(scene);
+            setResizable(false);
 
             LoginController controller = loader.getController();
             controller.setStage(this);
             controller.setApplicationContext(context);
             controller.setListener(listener);
         } catch (IOException e) {
-            LOGGER.info(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

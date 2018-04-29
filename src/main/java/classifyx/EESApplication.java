@@ -3,7 +3,6 @@ package classifyx;
 import classifyx.ui.login.LoginEvent;
 import classifyx.ui.login.LoginListener;
 import classifyx.ui.login.LoginStage;
-import classifyx.ui.teacher.TeacherStage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
@@ -28,8 +27,7 @@ public class EESApplication extends Application implements LoginListener {
 
     @Override
     public void onLoginSuccess(LoginEvent loginEvent) {
-        TeacherStage teacherStage = new TeacherStage(applicationContext, this);
-        teacherStage.show();
+
     }
 
     public static void main(String args[]) {
