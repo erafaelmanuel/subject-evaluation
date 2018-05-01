@@ -13,3 +13,15 @@
     -fx-background-color: #fff;
     -fx-border-color: #1e90ff;
 }
+
+#btnClose {
+    -fx-text-fill: #fff;
+    -fx-background-color: #ff4757;
+    -fx-border-color: #ff4757;
+}
+
+#btnClose: hover {
+    -fx-text-fill: #ff4757;
+    -fx-background-color: #fff;
+    -fx-border-color: #ff4757;
+}

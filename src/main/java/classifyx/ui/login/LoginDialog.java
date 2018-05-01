@@ -17,19 +17,19 @@ public class LoginDialog {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initStyle(StageStyle.UTILITY);
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(new ClassPathResource("/fxml/login_dialog.fxml").getURL());
 
             Parent root = loader.load();
-            Scene scene = new Scene(root, 385, 122);
+            Scene scene = new Scene(root, 385, 173);
             scene.setFill(Color.TRANSPARENT);
-            scene.getStylesheets().add(new ClassPathResource("/css/login_dialog_style.css").getURL().toString());
+            scene.getStylesheets().add(new ClassPathResource("/css/_login.css").getURL().toString());
 
+            stage.setTitle("Error");
             stage.setScene(scene);
-            stage.showAndWait();
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,68 +1,28 @@
 package classifyx.ui.login;
 
-import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class LoginDialogController {
+import java.net.URL;
+import java.util.ResourceBundle;
 
+public class LoginDialogController implements Initializable {
 
     @FXML
-    private StackPane buttonClose;
+    ImageView imgv;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        imgv.setImage(new Image(getClass().getResource("/image/warning.png").toExternalForm()));
+    }
 
     @FXML
-    public void onActionOK(ActionEvent event) {
+    void onClose(ActionEvent event) {
         ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
     }
-
-    @FXML
-    public void onClickClose(MouseEvent event) {
-        Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
-        stage.close();
-    }
-
-    @FXML
-    public void onMousePressedTitle(MouseEvent m) {
-
-    }
-
-    @FXML
-    public void onMouseDraggedTitle(MouseEvent event) {
-
-    }
-
-    @FXML
-    public void onMouseClickedClose(MouseEvent event) {
-        final Stage window;
-        window = ((Stage) ((Node) event.getSource()).getScene().getWindow());
-        AnimationTimer timer = new AnimationTimer() {
-            int count = 2;
-
-            @Override
-            public void handle(long now) {
-                if (--count <= 0) {
-                    window.close();
-                    this.stop();
-                }
-            }
-        };
-        buttonClose.setStyle("-fx-background-color: #0366d6;");
-        timer.start();
-    }
-
-    @FXML
-    public void onMouseEnteredClose() {
-        buttonClose.setStyle("-fx-background-color: #045cb5;");
-    }
-
-
-    @FXML
-    public void onMouseExitedClose() {
-        buttonClose.setStyle("-fx-background-color: #0366d6;");
-    }
-
 }
