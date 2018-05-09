@@ -14,8 +14,8 @@ public class LoginStage extends Stage {
     public LoginStage(ApplicationContext context, LoginListener listener) {
         final ClassLoader classLoader = getClass().getClassLoader();
         try {
-            final URL fxml = classLoader.getResource("fxml/_login.fxml");
-            final URL style = classLoader.getResource("css/_login.css");
+            final URL fxml = classLoader.getResource("fxml/login.fxml");
+            final URL style = classLoader.getResource("css/login.css");
             final FXMLLoader loader = new FXMLLoader();
 
             if (fxml != null) {
